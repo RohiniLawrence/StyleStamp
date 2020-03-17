@@ -2,6 +2,8 @@ package com.stylestamp.controller;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -21,6 +23,7 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
         bottomNavigationView = findViewById(R.id.bottom_navigation_view);
         bottomNavigationView.setSelectedItemId(R.id.nav_shop);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
+
 
 
     }
