@@ -30,7 +30,9 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
 
     Shop shopFragment = new Shop();
     Profile profileFragment = new Profile();
-    Cart cartFragment = new Cart();
+    //Cart cartFragment = new Cart();
+
+    ProductFragment productFragment = new ProductFragment();
 
 
 
@@ -47,7 +49,7 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
                 return  true;
 
             case R.id.nav_cart:
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, cartFragment).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, productFragment).commit();
                 return  true;
 
         }
