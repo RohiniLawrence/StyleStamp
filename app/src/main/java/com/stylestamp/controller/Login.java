@@ -95,7 +95,7 @@ public class Login extends AppCompatActivity {
         Log.e("Login-Log", "password is -> " + userPassword);
 
         if (et_Email.getText().toString().trim().equals("")) {
-            CommonMethods.showAlert("UserId Cannot be left blank", Login.this);
+            CommonMethods.showAlert("email Cannot be left blank", Login.this);
             return false;
         } else if (et_Pass.getText().toString().trim().equals("")) {
             CommonMethods.showAlert("password Cannot be left blank", Login.this);
