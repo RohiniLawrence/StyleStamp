@@ -2,6 +2,8 @@ package com.stylestamp.controller;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -23,11 +25,14 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
 
+
     }
 
     Shop shopFragment = new Shop();
     Profile profileFragment = new Profile();
-    Cart cartFragment = new Cart();
+    //Cart cartFragment = new Cart();
+
+    ProductFragment productFragment = new ProductFragment();
 
 
 
@@ -44,7 +49,7 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
                 return  true;
 
             case R.id.nav_cart:
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, cartFragment).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, productFragment).commit();
                 return  true;
 
         }

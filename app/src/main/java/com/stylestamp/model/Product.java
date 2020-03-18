@@ -59,6 +59,24 @@ public class Product {
     @Expose
     private Category category;
 
+    //constructor
+
+    public Product(int productId, int stock, int nbReviews, int reorderLevel, int discountPercentage, String name, String description, String serialNumber, String brand, double price, double isActive, Category category) {
+        this.productId = productId;
+        this.stock = stock;
+        this.nbReviews = nbReviews;
+        this.reorderLevel = reorderLevel;
+        this.discountPercentage = discountPercentage;
+        this.name = name;
+        this.description = description;
+        this.serialNumber = serialNumber;
+        this.brand = brand;
+        this.price = price;
+        this.isActive = isActive;
+        //add after api ....       this.images = images;
+        this.category = category;
+    }
+
     //setters and getters
 
 

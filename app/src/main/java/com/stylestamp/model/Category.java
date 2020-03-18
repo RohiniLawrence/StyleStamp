@@ -6,6 +6,36 @@ import com.google.gson.annotations.SerializedName;
 
 public class Category {
 
+    public Category(int categoryId, String categoryName, String categoryDescription, Boolean isActive) {
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
+        this.categoryDescription = categoryDescription;
+        this.isActive = isActive;
+        expanded=false;
+
+    }
+
+    public boolean isExpanded() {
+        return expanded;
+    }
+
+    public void setExpanded(boolean expanded) {
+        this.expanded = expanded;
+    }
+
+    private boolean expanded;
+
+    @Override
+    public String toString() {
+        return "Category{" +
+                "categoryId=" + categoryId +
+                ", categoryName='" + categoryName + '\'' +
+                ", categoryDescription='" + categoryDescription + '\'' +
+//                ", parentCategory=" + parentCategory +
+                ", isActive=" + isActive +
+                '}';
+    }
+
     @SerializedName("categoryId")
     @Expose
     private int categoryId;
@@ -18,9 +48,9 @@ public class Category {
     @Expose
     private String categoryDescription;
 
-    @SerializedName("parentCategory")
-    @Expose
-    private Category parentCategory;
+//    @SerializedName("parentCategory")
+//    @Expose
+//    private Category parentCategory;
 
     @SerializedName("isActive")
     @Expose
@@ -53,13 +83,13 @@ public class Category {
         this.categoryDescription = categoryDescription;
     }
 
-    public Category getParentCategory() {
-        return parentCategory;
-    }
-
-    public void setParentCategory(Category parentCategory) {
-        this.parentCategory = parentCategory;
-    }
+//    public Category getParentCategory() {
+//        return parentCategory;
+//    }
+//
+//    public void setParentCategory(Category parentCategory) {
+//        this.parentCategory = parentCategory;
+//    }
 
     public Boolean getActive() {
         return isActive;
