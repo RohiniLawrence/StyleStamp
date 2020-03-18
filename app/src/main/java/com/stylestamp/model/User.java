@@ -30,6 +30,11 @@ public class User {
     @Expose
     private Address shippingAddress;
 
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
     @SerializedName("billingAddress")
     @Expose
     private Address billingAddress;
@@ -42,7 +47,26 @@ public class User {
     @Expose
     private Boolean gender;
 
+    @SerializedName("ResponseCode")
+    public String ResponseCode;
+    @SerializedName("ResponseMessage")
+    public String ResponseMessage;
 
+    public String getResponseCode() {
+        return ResponseCode;
+    }
+
+    public void setResponseCode(String responseCode) {
+        ResponseCode = responseCode;
+    }
+
+    public String getResponseMessage() {
+        return ResponseMessage;
+    }
+
+    public void setResponseMessage(String responseMessage) {
+        ResponseMessage = responseMessage;
+    }
 //setters and getters
 
 

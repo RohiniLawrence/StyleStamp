@@ -1,8 +1,22 @@
 package com.stylestamp.api;
+import com.stylestamp.controller.Login;
+import com.stylestamp.model.User;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.Query;
 
-public class ApiInterface {
-    @GET("/")
-    List< >
+
+public interface ApiInterface {
+
+    @FormUrlEncoded
+    @POST("/api/login")
+    Call<User> createUser(@Body User user);
+
+
 }
