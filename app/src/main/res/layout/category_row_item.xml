@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:weightSum="2"
     android:id="@+id/category_row"
     android:background="?attr/selectableItemBackground"
@@ -20,22 +21,28 @@
         android:layout_weight="1"/>
 
     <LinearLayout
-        android:id="@+id/expandable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
+        android:id="@+id/expandable"
+
 
         >
-        <TextView
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginLeft="16dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp">
 
-            android:text="Hello"
-            >
-
-        </TextView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/subcategory_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clipToPadding="false"
+                android:foregroundGravity="center"
+                android:overScrollMode="never"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        </FrameLayout>
 
     </LinearLayout>
 
