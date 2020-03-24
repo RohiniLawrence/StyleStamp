@@ -1,9 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".controller.SignUp">
+    tools:context=".controller.SignUp"
+    android:gravity="center">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView">
+
+        <RelativeLayout
+            android:id="@+id/scroll_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtappname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="StyleStamp"
+                android:textSize="50dp"
+                android:gravity="center"
+                android:textAppearance="@style/AppTheme"
+                android:typeface="monospace"/>
+
+
+            <EditText
+                android:id="@+id/editFirstname"
+                android:layout_below="@id/txtappname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Firstname"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                />
+
+            <EditText
+                android:id="@+id/editLastname"
+                android:layout_below="@id/editFirstname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Lastname"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                />
+
+            <EditText
+                android:id="@+id/editEmail"
+                android:layout_below="@id/editLastname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                />
+
+            <DatePicker
+                android:id="@+id/datePicker"
+                android:layout_below="@id/editEmail"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="36dp" />
+
+            <EditText
+                android:id="@+id/textArea_information"
+                android:layout_below="@id/datePicker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Address"
+                android:inputType="textMultiLine"
+                android:overScrollMode="always"
+                android:scrollbarStyle="outsideInset"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                />
+
+            <EditText
+                android:id="@+id/editPostalCode"
+                android:layout_below="@id/textArea_information"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="PostalCode"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                />
+
+            <EditText
+                android:id="@+id/editPassword"
+                android:layout_below="@id/editPostalCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:inputType="textWebPassword"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                />
+
+            <TextView
+                android:id="@+id/txtAlredyAccount"
+                android:layout_below="@+id/editPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Alredy have a account? Login"
+                android:textSize="12dp"
+                android:gravity="center"
+                android:textAppearance="@style/AppTheme"
+                android:typeface="monospace"/>
+
+            <Button
+                android:id="@+id/btnSignup"
+                android:layout_below="@id/txtAlredyAccount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="80dp"
+                android:layout_marginRight="80dp"
+                android:layout_centerInParent="true"
+                android:text="Sign Up"
+                android:background="#fff"
+                android:layout_marginTop="20dp"
+                />
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

@@ -11,7 +11,7 @@ public class CommonMethods {
 
 
     public static final String DISPLAY_MESSAGE_ACTION =
-            "com.codecube.broking.gcm";
+            "stylestamp";
 
     public static final String EXTRA_MESSAGE = "message";
 

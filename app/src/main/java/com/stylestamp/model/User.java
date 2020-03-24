@@ -6,9 +6,9 @@ import java.util.Date;
 
 public class User {
 
-    @SerializedName("userId")
+    @SerializedName("user_id")
     @Expose
-    private int userId;
+    private String userId;
 
     @SerializedName("email")
     @Expose
@@ -18,63 +18,47 @@ public class User {
     @Expose
     private String password;
 
-    @SerializedName("firstName")
+    @SerializedName("first_name")
     @Expose
     private String firstName;
 
-    @SerializedName("lastName")
+    @SerializedName("last_name")
     @Expose
-    private int lastName;
+    private String lastName;
 
-    @SerializedName("shippingAddress")
+@SerializedName("contact")
+@Expose
+private String contact;
+
+    @SerializedName("D_O_B")
     @Expose
-    private Address shippingAddress;
-
-    public User(String email, String password) {
-        this.email = email;
-        this.password = password;
-    }
-
-    @SerializedName("billingAddress")
-    @Expose
-    private Address billingAddress;
-
-    @SerializedName("dateOfBirth")
-    @Expose
-    private Date dateOfBirth;
+    private String dateOfBirth;
 
     @SerializedName("gender")
     @Expose
-    private Boolean gender;
+    private String gender;
+    // constructor
 
-    @SerializedName("ResponseCode")
-    public String ResponseCode;
-    @SerializedName("ResponseMessage")
-    public String ResponseMessage;
-
-    public String getResponseCode() {
-        return ResponseCode;
+    public User(String userId,  String password,String email, String firstName, String lastName, String contact, String dateOfBirth, String gender) {
+        this.userId = userId;
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.contact = contact;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
     }
 
-    public void setResponseCode(String responseCode) {
-        ResponseCode = responseCode;
-    }
 
-    public String getResponseMessage() {
-        return ResponseMessage;
-    }
-
-    public void setResponseMessage(String responseMessage) {
-        ResponseMessage = responseMessage;
-    }
 //setters and getters
 
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -102,43 +86,35 @@ public class User {
         this.firstName = firstName;
     }
 
-    public int getLastName() {
+    public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(int lastName) {
+    public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    public Address getShippingAddress() {
-        return shippingAddress;
+    public String getContact() {
+        return contact;
     }
 
-    public void setShippingAddress(Address shippingAddress) {
-        this.shippingAddress = shippingAddress;
+    public void setContact(String contact) {
+        this.contact = contact;
     }
 
-    public Address getBillingAddress() {
-        return billingAddress;
-    }
-
-    public void setBillingAddress(Address billingAddress) {
-        this.billingAddress = billingAddress;
-    }
-
-    public Date getDateOfBirth() {
+    public String getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public Boolean getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(Boolean gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 }

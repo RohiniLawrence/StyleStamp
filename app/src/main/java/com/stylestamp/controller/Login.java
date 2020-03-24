@@ -2,37 +2,52 @@ package com.stylestamp.controller;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.*;
+import com.google.gson.JsonObject;
 import com.stylestamp.R;
 import com.stylestamp.api.ApiClient;
 import com.stylestamp.api.ApiInterface;
+import com.stylestamp.api.LoginService;
+import com.stylestamp.api.ServiceGenerator;
 import com.stylestamp.model.User;
+import com.stylestamp.model.jsonResponse;
 import com.stylestamp.utils.CommonMethods;
 
+import java.io.IOException;
+
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class Login extends AppCompatActivity {
-
+//private LoginAsyncTask mAuthTask =null;
  ApiInterface apiInterface;
     EditText et_Email;
     EditText et_Pass;
     Button loginSub;
     String userEmail,userPassword;
+    Retrofit retrofit=ApiClient.getClient();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        apiInterface = ApiClient.getClient().create(ApiInterface.class);
+//        apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         loginSub = (Button) findViewById(R.id.btn_login);
         et_Email = (EditText) findViewById(R.id.edtEmail);
@@ -44,65 +59,106 @@ public class Login extends AppCompatActivity {
             public void onClick(View v) {
                 userEmail=et_Email.getText().toString();
                 userPassword=et_Pass.getText().toString();
-                if (checkValidation()) {
-                    if (CommonMethods.isNetworkAvailable(Login.this))
-                        loginRetrofit2Api(userEmail,userPassword);
-                    else
-                        CommonMethods.showAlert("Internet Connectivity Failure", Login.this);
-                }
-            }
-        });
-    }
-    private void loginRetrofit2Api(String userId, String password) {
-        final User user = new User(userId, password);
-        Call<User> call1 = apiInterface.createUser(user);
-        call1.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                User User = response.body();
 
-                Log.e("Login-Log", "User 1 --> " + User);
-                if (User != null) {
-                    Log.e("Login-Log", "getUserId          -->  " + User.getUserId());
-                    Log.e("Login-Log", "getFirstName       -->  " + User.getFirstName());
-                    Log.e("Login-Log", "getLastName        -->  " + User.getLastName());
-//                    Log.e("Login-Log", "getProfilePicture  -->  " + User.getProfilePicture());
-
-                    String responseCode = User.getResponseCode();
-                    Log.e("Login-Log", "getResponseCode  -->  " + User.getResponseCode());
-//                    Log.e("Login-Log", "getResponseMessage  -->  " + User.getResponseMessage());
-                    if (responseCode != null && responseCode.equals("404")) {
-                        Toast.makeText(Login.this, "Invalid Login Details \n Please try again", Toast.LENGTH_SHORT).show();
+                if (userEmail.equals("") || userPassword.equals("")) {
+                    Toast.makeText(getApplicationContext(), "Please Enter Both Field", Toast.LENGTH_LONG).show();
+                } else {
+                    ConnectivityManager con = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                    NetworkInfo netw = con.getActiveNetworkInfo();
+                    if (netw != null && netw.isConnected()) {
+                        executeAuthenticateUser("","");
                     } else {
-                        Toast.makeText(Login.this, "Welcome " + User.getFirstName(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Internet Connection not available", Toast.LENGTH_LONG).show();
                     }
                 }
             }
+        });
+    }
+    private void executeAuthenticateUser(String email,String password){
+        LoginService loginService=retrofit.create(LoginService.class);
+            String unm="admin";
+            String pwd="1234";
+            String base=unm+":"+pwd;
+            String keyHeader="stylestamp@123";
+            String authHeader="Basic "+ Base64.encodeToString(base.getBytes(),Base64.NO_WRAP);
+        Call<jsonResponse> call=loginService.basicLogin(keyHeader,authHeader,"jeelg46@gmail.com","12345678");
+//                Call<User> call=loginService.basicLogin("jeelg46@gmail.com","12345678");
+        Toast.makeText(getApplicationContext(),authHeader,Toast.LENGTH_LONG).show();
+        call.enqueue(new Callback<jsonResponse>() {
+            @Override
+            public void onResponse(Call<jsonResponse> call, Response<jsonResponse> response) {
+                Log.e("login-res",response.message());
+                if(response.body() != null) {
+                    int status = response.body().getStatus();
+                        Log.e("status",String.valueOf(status));
+
+                        Log.e("name",response.body().user.getFirstName()+" "+response.body().user.getLastName());
+                        Log.e("email",response.body().user.getEmail());
+
+                }
+
+
+                Toast.makeText(getApplicationContext(),response.body().toString(),Toast.LENGTH_SHORT).show();
+            }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "onFailure called ", Toast.LENGTH_SHORT).show();
-                call.cancel();
+            public void onFailure(Call<jsonResponse> call, Throwable t) {
+                Log.e("login-res",t.toString());
+                Toast.makeText(getApplicationContext(),"failed",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),t.getMessage(),Toast.LENGTH_LONG).show();
             }
         });
     }
+//
+//    private class LoginAsyncTask extends AsyncTask<Void, Void, Boolean> {
+//        private final String email,password;
+//
+//        public LoginAsyncTask(String email, String password) {
+//            this.email = email;
+//            this.password = password;
+//        }
+//
+//        @Override
+//        protected Boolean doInBackground(Void... params) {
+////            LoginService loginService=retrofit.create(LoginService.class);
+////            String unm="admin";
+////            String pwd="1234";
+////            String base=unm+":"+pwd;
+////            String keyHeader="stylestamp@123";
+////            String authHeader="Basic "+ Base64.encodeToString(base.getBytes(),Base64.NO_WRAP);
+////            Call<User>  call=LoginService.basicLogin(keyHeader,authHeader);
+//////            call.execute();
+////            try{
+////                Response<User> response=call.execute();
+////                if(response.isSuccessful()){
+////                    return true;
+////                }
+////            }catch (IOException e){
+////                e.printStackTrace();
+////            }
+//            return false;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(final Boolean success) {
+//            mAuthTask=null;
+////            showProgress(false);
+//            if(success){
+//                Toast.makeText(getApplicationContext(),"successful login",Toast.LENGTH_LONG).show();
+//            }
+//            else{
+//                Toast.makeText(getApplicationContext(),"unsuccessful login",Toast.LENGTH_LONG).show();
+//            }
+//        }
+//
+//        @Override
+//        protected void onCancelled() {
+//            super.onCancelled();
+//        }
+//    }
 
-    public boolean checkValidation() {
-        userEmail = et_Email.getText().toString();
-        userPassword = et_Pass.getText().toString();
 
-        Log.e("Login-Log", "userId is -> " + userEmail);
-        Log.e("Login-Log", "password is -> " + userPassword);
 
-        if (et_Email.getText().toString().trim().equals("")) {
-            CommonMethods.showAlert("email Cannot be left blank", Login.this);
-            return false;
-        } else if (et_Pass.getText().toString().trim().equals("")) {
-            CommonMethods.showAlert("password Cannot be left blank", Login.this);
-            return false;
-        }
-        return true;
-    }
 }
 
 
