@@ -1,42 +1,27 @@
 package com.stylestamp.controller;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import com.google.gson.JsonObject;
 import com.stylestamp.R;
 import com.stylestamp.api.ApiClient;
 import com.stylestamp.api.ApiInterface;
 import com.stylestamp.api.LoginService;
-import com.stylestamp.api.ServiceGenerator;
-import com.stylestamp.model.User;
 import com.stylestamp.model.jsonResponse;
-import com.stylestamp.utils.CommonMethods;
-
-import java.io.IOException;
-
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class Login extends AppCompatActivity {
-//private LoginAsyncTask mAuthTask =null;
- ApiInterface apiInterface;
     EditText et_Email;
     EditText et_Pass;
     Button loginSub;
@@ -47,11 +32,10 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-//        apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
-        loginSub = (Button) findViewById(R.id.btn_login);
-        et_Email = (EditText) findViewById(R.id.edtEmail);
-        et_Pass = (EditText) findViewById(R.id.edtPass);
+        loginSub = findViewById(R.id.btn_login);
+        et_Email =  findViewById(R.id.edtEmail);
+        et_Pass = findViewById(R.id.edtPass);
 
         loginSub.setOnClickListener(new View.OnClickListener() {
 
@@ -64,9 +48,12 @@ public class Login extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Please Enter Both Field", Toast.LENGTH_LONG).show();
                 } else {
                     ConnectivityManager con = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-                    NetworkInfo netw = con.getActiveNetworkInfo();
+                    NetworkInfo netw = null;
+                    if (con != null) {
+                        netw = con.getActiveNetworkInfo();
+                    }
                     if (netw != null && netw.isConnected()) {
-                        executeAuthenticateUser("","");
+                        executeAuthenticateUser("jeelg46@gmail.com","12345678");
                     } else {
                         Toast.makeText(getApplicationContext(), "Internet Connection not available", Toast.LENGTH_LONG).show();
                     }
@@ -81,7 +68,7 @@ public class Login extends AppCompatActivity {
             String base=unm+":"+pwd;
             String keyHeader="stylestamp@123";
             String authHeader="Basic "+ Base64.encodeToString(base.getBytes(),Base64.NO_WRAP);
-        Call<jsonResponse> call=loginService.basicLogin(keyHeader,authHeader,"jeelg46@gmail.com","12345678");
+        Call<jsonResponse> call=loginService.basicLogin(keyHeader,authHeader,email,password);
 //                Call<User> call=loginService.basicLogin("jeelg46@gmail.com","12345678");
         Toast.makeText(getApplicationContext(),authHeader,Toast.LENGTH_LONG).show();
         call.enqueue(new Callback<jsonResponse>() {
@@ -98,14 +85,14 @@ public class Login extends AppCompatActivity {
                 }
 
 
-                Toast.makeText(getApplicationContext(),response.body().toString(),Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(),response.body().toString(),Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onFailure(Call<jsonResponse> call, Throwable t) {
-                Log.e("login-res",t.toString());
-                Toast.makeText(getApplicationContext(),"failed",Toast.LENGTH_SHORT).show();
-                Toast.makeText(getApplicationContext(),t.getMessage(),Toast.LENGTH_LONG).show();
+//                Log.e("login-res",t.toString());
+//                Toast.makeText(getApplicationContext(),"failed",Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(),t.getMessage(),Toast.LENGTH_LONG).show();
             }
         });
     }
