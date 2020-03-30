@@ -11,5 +11,11 @@
         android:layout_height="match_parent"
         android:text="CART" />
 
+    <Button
+        android:id="@+id/btnCheckout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Check Out"/>
+
 
 </FrameLayout>
