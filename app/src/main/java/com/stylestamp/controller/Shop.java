@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.ViewFlipper;
 
 import com.stylestamp.R;
@@ -31,11 +32,12 @@ public class Shop extends Fragment {
     CategoryListAdapter categoryListAdapter;
     ViewFlipper viewFlipper;
 
+    SearchView searchView;
 
 
     int images[] = {R.drawable.banner1, R.drawable.banner1_1, R.drawable.banner3};
-    List<Category> categories = new ArrayList<>();
-    List<Category> subCategories = new ArrayList<>();
+    ArrayList<Category> categories = new ArrayList<>();
+    ArrayList<Category> subCategories = new ArrayList<>();
 
 
     public static Shop newInstance(String param1, String param2) {
@@ -64,10 +66,13 @@ public class Shop extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_shop, container, false);
         viewFlipper = v.findViewById(R.id.viewPager);
-        for(int image:images){
+        for (int image : images) {
             flipperImages(image);
         }
-        recyclerView =  (RecyclerView)  v.findViewById(R.id.recyclerView);
+        recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
+
+        searchView = v.findViewById(R.id.searchView);
+
         initData();
         initRecyclerView();
         return v;
@@ -76,30 +81,49 @@ public class Shop extends Fragment {
 
     private void initRecyclerView() {
 
-        categoryListAdapter = new CategoryListAdapter(this.getContext(), categories ,subCategories);
+        categoryListAdapter = new CategoryListAdapter(this.getContext(), categories, subCategories);
         recyclerView.setAdapter(categoryListAdapter);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
 
 
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+
+
+        // listening to search query text change
+        searchView.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit (String query){
+                // filter recycler view when query submitted
+                categoryListAdapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange (String query){
+                // filter recycler view when text is changed
+                categoryListAdapter.getFilter().filter(query);
+                return false;
+            }
+        });
     }
 
     private void initData() {
         categories = new ArrayList<>();
-        categories.add(new Category(0,"Woman","sdasd",TRUE));
-        categories.add(new Category(1,"Man","sdasd",TRUE));
-        categories.add(new Category(2,"Kids","sdasd",TRUE));
-        categories.add(new Category(3,"Home","sdasd",TRUE));
+        categories.add(new Category(0, "Woman", "sdasd", TRUE));
+        categories.add(new Category(1, "Man", "sdasd", TRUE));
+        categories.add(new Category(2, "Kids", "sdasd", TRUE));
+        categories.add(new Category(3, "Home", "sdasd", TRUE));
+
         subCategories = new ArrayList<>();
-        subCategories.add(new Category(0,"Shirt","sdasd",TRUE));
-        subCategories.add(new Category(1,"Bottoms","sdasd",TRUE));
-        subCategories.add(new Category(2,"Accessories","sdasd",TRUE));
-        subCategories.add(new Category(3,"Sale","sdasd",TRUE));
+        subCategories.add(new Category(0, "Shirt", "sdasd", TRUE));
+        subCategories.add(new Category(1, "Bottoms", "sdasd", TRUE));
+        subCategories.add(new Category(2, "Accessories", "sdasd", TRUE));
+        subCategories.add(new Category(3, "Sale", "sdasd", TRUE));
+
+        // recyclerView.setLayoutManager(new LinearLayoutManager(v.getContext()));
     }
-
-
-       // recyclerView.setLayoutManager(new LinearLayoutManager(v.getContext()));
 
 
 
@@ -110,9 +134,7 @@ public class Shop extends Fragment {
         viewFlipper.addView(imageView);
         viewFlipper.setFlipInterval(4000);
         viewFlipper.setAutoStart(true);
-
-
-
-
     }
+
+
 }
