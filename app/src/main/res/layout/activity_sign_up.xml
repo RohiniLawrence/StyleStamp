@@ -63,9 +63,21 @@
                 android:layout_marginTop="20dp"
                 />
 
+            <EditText
+                android:id="@+id/editContact"
+                android:layout_below="@id/editEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Contact "
+                android:inputType="phone"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                />
+
             <DatePicker
                 android:id="@+id/datePicker"
-                android:layout_below="@id/editEmail"
+                android:layout_below="@id/radioGroup1"
                 android:layout_width="wrap_content"
                 android:layout_marginTop="30dp"
                 android:layout_height="wrap_content"
@@ -74,33 +86,41 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginBottom="36dp" />
 
-            <EditText
-                android:id="@+id/textArea_information"
-                android:layout_below="@id/datePicker"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Address"
-                android:inputType="textMultiLine"
-                android:overScrollMode="always"
-                android:scrollbarStyle="outsideInset"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                />
 
-            <EditText
-                android:id="@+id/editPostalCode"
-                android:layout_below="@id/textArea_information"
-                android:layout_width="match_parent"
+
+            <RadioGroup
+                android:id="@+id/radioGroup1"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="PostalCode"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp"
-                />
+                android:layout_below="@+id/editContact"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="36dp"
+                android:orientation="horizontal"
+                >
+
+                <RadioButton
+                    android:id="@+id/radioButton1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Male"
+                    android:checked="true"
+                    />
+
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/radioGroup1"
+                    android:layout_below="@+id/radioGroup1"
+                    android:text="Female" />
+
+
+            </RadioGroup>
+
 
             <EditText
                 android:id="@+id/editPassword"
-                android:layout_below="@id/editPostalCode"
+                android:layout_below="@id/datePicker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Password"

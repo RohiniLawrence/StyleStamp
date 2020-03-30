@@ -28,10 +28,10 @@ public interface LoginService {
             @Header("authorization") String authHeader,
             @Field("fname") String firstname,
             @Field("lname") String lastname,
-            @Field("contact") long contact,
+            @Field("contact_no") String contact,
             @Field("email") String email,
             @Field("password") String password,
-            @Field("gender") Boolean gender,
+            @Field("gender") int gender,
                @Field("dob") Date dob
     );
 

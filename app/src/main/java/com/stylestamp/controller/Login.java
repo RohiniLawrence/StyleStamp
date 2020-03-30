@@ -81,71 +81,14 @@ public class Login extends AppCompatActivity {
 
                         Log.e("name",response.body().user.getFirstName()+" "+response.body().user.getLastName());
                         Log.e("email",response.body().user.getEmail());
-
                 }
-
-
-//                Toast.makeText(getApplicationContext(),response.body().toString(),Toast.LENGTH_SHORT).show();
             }
-
             @Override
             public void onFailure(Call<jsonResponse> call, Throwable t) {
-//                Log.e("login-res",t.toString());
-//                Toast.makeText(getApplicationContext(),"failed",Toast.LENGTH_SHORT).show();
-//                Toast.makeText(getApplicationContext(),t.getMessage(),Toast.LENGTH_LONG).show();
+
             }
         });
     }
-//
-//    private class LoginAsyncTask extends AsyncTask<Void, Void, Boolean> {
-//        private final String email,password;
-//
-//        public LoginAsyncTask(String email, String password) {
-//            this.email = email;
-//            this.password = password;
-//        }
-//
-//        @Override
-//        protected Boolean doInBackground(Void... params) {
-////            LoginService loginService=retrofit.create(LoginService.class);
-////            String unm="admin";
-////            String pwd="1234";
-////            String base=unm+":"+pwd;
-////            String keyHeader="stylestamp@123";
-////            String authHeader="Basic "+ Base64.encodeToString(base.getBytes(),Base64.NO_WRAP);
-////            Call<User>  call=LoginService.basicLogin(keyHeader,authHeader);
-//////            call.execute();
-////            try{
-////                Response<User> response=call.execute();
-////                if(response.isSuccessful()){
-////                    return true;
-////                }
-////            }catch (IOException e){
-////                e.printStackTrace();
-////            }
-//            return false;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(final Boolean success) {
-//            mAuthTask=null;
-////            showProgress(false);
-//            if(success){
-//                Toast.makeText(getApplicationContext(),"successful login",Toast.LENGTH_LONG).show();
-//            }
-//            else{
-//                Toast.makeText(getApplicationContext(),"unsuccessful login",Toast.LENGTH_LONG).show();
-//            }
-//        }
-//
-//        @Override
-//        protected void onCancelled() {
-//            super.onCancelled();
-//        }
-//    }
-
-
-
 }
 
 

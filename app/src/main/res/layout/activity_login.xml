@@ -1,45 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".controller.Login">
+    tools:context=".controller.Login"
+    android:gravity="center">
+
+
+    <TextView
+        android:id="@+id/txtappname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="StyleStamp"
+        android:textSize="50dp"
+        android:gravity="center"
+        android:textAppearance="@style/AppTheme"
+        android:typeface="monospace"/>
 
     <Button
-        android:id="@+id/btn_login"
-        android:layout_width="wrap_content"
+        android:id="@+id/btnSignup"
+        android:layout_below="@id/txtappname"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.666" />
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="80dp"
+        android:layout_centerInParent="true"
+        android:text="Sign Up"
+        android:background="#fff"
+        android:layout_marginTop="20dp"
+        />
+
+
+    <TextView
+        android:id="@+id/txtor"
+        android:layout_below="@id/btnSignup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Or"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:textAppearance="@style/AppTheme"
+        android:typeface="monospace"/>
+
+    <TextView
+        android:id="@+id/txtLogin"
+        android:layout_below="@id/txtor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:layout_marginTop="20dp"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:textAppearance="@style/AppTheme"
+        android:typeface="monospace"/>
 
     <EditText
         android:id="@+id/edtEmail"
-        android:layout_width="wrap_content"
+        android:layout_below="@id/txtLogin"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="Email"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.344" />
+        android:gravity="center"
+        android:hint="E-mail"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        />
+
 
     <EditText
         android:id="@+id/edtPass"
-        android:layout_width="wrap_content"
+        android:layout_below="@id/edtEmail"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPassword"
+        android:gravity="center"
         android:hint="Password"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:inputType="textWebPassword"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        />
+
+    <TextView
+        android:id="@+id/txtForgotPassword"
+        android:layout_below="@id/edtPass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="ForgotPassword?"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:layout_marginTop="20dp" />
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_below="@id/txtForgotPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="Lets Go"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:background="#fff"
+        android:layout_marginTop="20dp"
+        />
+
+    <TextView
+        android:id="@+id/txtSkip"
+        android:layout_below="@id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Skip for now"
+        android:textSize="20dp"
+        android:gravity="center"
+        android:layout_marginTop="20dp" />
+
+</RelativeLayout>
