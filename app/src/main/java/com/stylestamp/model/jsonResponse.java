@@ -17,6 +17,7 @@ public class jsonResponse {
     @Expose
     public User user;
 
+
     public jsonResponse(int status, String login_status, String message, User user) {
         this.status = status;
         this.login_status = login_status;

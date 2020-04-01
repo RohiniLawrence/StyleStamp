@@ -6,14 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class Category {
 
-    public Category(int categoryId, String categoryName, String categoryDescription, Boolean isActive) {
-        this.categoryId = categoryId;
-        this.categoryName = categoryName;
-        this.categoryDescription = categoryDescription;
-        this.isActive = isActive;
-        expanded=false;
 
-    }
 
     public boolean isExpanded() {
         return expanded;
@@ -32,32 +25,49 @@ public class Category {
                 ", categoryName='" + categoryName + '\'' +
                 ", categoryDescription='" + categoryDescription + '\'' +
 //                ", parentCategory=" + parentCategory +
-                ", isActive=" + isActive +
+
                 '}';
     }
 
-    @SerializedName("categoryId")
+    @SerializedName("category_id")
     @Expose
     private int categoryId;
 
-    @SerializedName("categoryName")
+    @SerializedName("category_name")
     @Expose
     private String categoryName;
 
-    @SerializedName("categoryDescription")
+    @SerializedName("description")
     @Expose
     private String categoryDescription;
 
-//    @SerializedName("parentCategory")
-//    @Expose
-//    private Category parentCategory;
-
-    @SerializedName("isActive")
+    @SerializedName("parent_category")
     @Expose
-    private Boolean isActive;
+   private String parentCategory;
 
-//setters and getters
+ /*   @SerializedName("status")
+    @Expose
+    private Boolean isActive;*/
 
+    public Category( int categoryId, String categoryName, String categoryDescription, String parentCategory) {
+        this.expanded = false;
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
+        this.categoryDescription = categoryDescription;
+        this.parentCategory = parentCategory;
+
+    }
+
+    //setters and getters
+
+
+    public String getParentCategory() {
+        return parentCategory;
+    }
+
+    public void setParentCategory(String parentCategory) {
+        this.parentCategory = parentCategory;
+    }
 
     public int getCategoryId() {
         return categoryId;
@@ -91,11 +101,5 @@ public class Category {
 //        this.parentCategory = parentCategory;
 //    }
 
-    public Boolean getActive() {
-        return isActive;
-    }
 
-    public void setActive(Boolean active) {
-        isActive = active;
-    }
 }

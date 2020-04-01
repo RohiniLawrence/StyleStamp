@@ -6,14 +6,19 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Date;
 
 public class Order {
+    public Order(int orderId, String orderStatus) {
+        this.orderId = orderId;
+        this.orderStatus = orderStatus;
+    }
 
-    @SerializedName("orderId")
+    @SerializedName("order_id")
     @Expose
     private int orderId;
 
-    @SerializedName("userId")
+    @SerializedName("user_id")
     @Expose
     private int uesrId;
+
 
     @SerializedName("orderDate")
     @Expose
@@ -23,15 +28,15 @@ public class Order {
     @Expose
     private Date shipDate;
 
-    @SerializedName("orderStatus")
+    @SerializedName("order_status")
     @Expose
     private String orderStatus;
 
-    @SerializedName("shipStatus")
+    @SerializedName("shipped_status")
     @Expose
     private String shipStatus;
 
-    @SerializedName("paymentType")
+    @SerializedName("payment_type")
     @Expose
     private String paymentType;
 
@@ -46,6 +51,10 @@ public class Order {
     @SerializedName("orderInfo")
     @Expose
     private OrderInfo orderInfo;
+
+    @SerializedName("promotion_id")
+    @Expose
+    private Integer promotionId;
 
 
     //setters and getters

@@ -4,6 +4,8 @@ import android.animation.ArgbEvaluator;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
@@ -11,7 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.stylestamp.R;
+import com.stylestamp.adapter.NewArrivalsAdapter;
 import com.stylestamp.adapter.ProductDetailImagesListAdapter;
+import com.stylestamp.adapter.RelatedProductsAdapter;
+import com.stylestamp.model.Category;
+import com.stylestamp.model.Product;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +29,13 @@ public class ProductDetail extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public ProductDetail() {
+    private int productID;
+
+    public ProductDetail(int productID) {
+        this.productID = productID;
     }
+
+
 
 
     ViewPager viewPager;
@@ -32,6 +43,10 @@ public class ProductDetail extends Fragment {
     Integer[] colors = null;
     ArgbEvaluator argbEvaluator = new ArgbEvaluator();
     int productImages[] = new int[]{R.drawable.banner3, R.drawable.banner1_1, R.drawable.banner1};
+
+    public ProductDetail() {
+
+    }
 
 
     public static ProductDetail newInstance(String param1, String param2) {
@@ -62,6 +77,31 @@ public class ProductDetail extends Fragment {
         proAdapter = new ProductDetailImagesListAdapter(productImages, this.getActivity());
         viewPager = view.findViewById(R.id.proDetViewPager);
         viewPager.setAdapter(proAdapter);
+        ArrayList<Category> categories = new ArrayList<>();
+        categories.add(new Category(0,"Men","dasdas", "null"));
+        categories.add(new Category(0,"Women","dasdas", "null"));
+        categories.add(new Category(0,"Kids","dasdas", "null"));
+        categories.add(new Category(0,"Home","dasdas", "null"));
+        ArrayList<Product> products = new ArrayList<>();
+        products.add(new Product(0, 1, 0, 0, 0, "xyz", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
+        products.add(new Product(1, 1, 0, 0, 0, "abc", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
+        products.add(new Product(2, 1, 0, 0, 0, "asdas", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
+        products.add(new Product(3, 1, 0, 0, 0, "xaxa", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
+        products.add(new Product(0, 1, 0, 0, 0, "xyz", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
+        products.add(new Product(1, 1, 0, 0, 0, "abc", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
+        products.add(new Product(2, 1, 0, 0, 0, "asdas", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
+        products.add(new Product(3, 1, 0, 0, 0, "xaxa", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
+        products.add(new Product(0, 1, 0, 0, 0, "xyz", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
+        products.add(new Product(1, 1, 0, 0, 0, "abc", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
+        products.add(new Product(2, 1, 0, 0, 0, "asdas", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
+        products.add(new Product(3, 1, 0, 0, 0, "xaxa", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
+        products.add(new Product(0, 1, 0, 0, 0, "xyz", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
+
+
+        RecyclerView recyclerViewRelatedProduct = (RecyclerView) view.findViewById(R.id.recyclerView_shop_relatedProducts);
+        final RelatedProductsAdapter relatedProductsAdapter = new RelatedProductsAdapter(getActivity(), products);
+        recyclerViewRelatedProduct.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        recyclerViewRelatedProduct.setAdapter(relatedProductsAdapter);
 
         return view;
     }

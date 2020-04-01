@@ -3,7 +3,7 @@ package com.stylestamp.api;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ApiClient {
+public class  ApiClient {
 
     public static final String BASE_URL = "http:/stylestamp.dipenoverseas.com/api/";
     private static Retrofit retrofit = null;

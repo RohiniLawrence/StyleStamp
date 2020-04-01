@@ -63,10 +63,7 @@ public class ProductFragment extends Fragment {
 
         //remove after api----------------
        List<Category> categories = new ArrayList<>();
-        categories.add(new Category(0,"Woman","sdasd",TRUE));
-        categories.add(new Category(1,"Man","sdasd",TRUE));
-        categories.add(new Category(2,"Kids","sdasd",TRUE));
-        categories.add(new Category(3,"Home","sdasd",TRUE));
+        categories.add(new Category(0,"Men","dasdas", "null"));
 
 
         //---------------------

@@ -50,11 +50,6 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         boolean isExpanded = arrCategoryListFiltered.get(position).isExpanded();
         holder.expandableLayout.setVisibility(isExpanded?View.VISIBLE:View.GONE);
 
-
-
-
-
-
     }
 
     @Override

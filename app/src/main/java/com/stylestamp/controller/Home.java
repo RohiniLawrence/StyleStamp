@@ -17,7 +17,7 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
     Shop shopFragment = new Shop();
     Profile profileFragment = new Profile();
     Cart cartFragment = new Cart();
-    ProductFragment pd = new ProductFragment();
+    OrderHistoryFragment pd = new OrderHistoryFragment();
 
     private Toolbar toolbar;
     private static final String TAG = "HOME";
@@ -29,18 +29,12 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
         setContentView(R.layout.activity_home);
 
 
-        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         bottomNavigationView = findViewById(R.id.bottom_navigation_view);
         if (savedInstanceState == null) this. onNavigationItemSelected(bottomNavigationView.getMenu().getItem(0));
         bottomNavigationView.setSelectedItemId(R.id.nav_shop);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
-
-
-
     }
-
-
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -51,7 +45,7 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
 
 
             case R.id.nav_profile:
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, profileFragment).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, pd).commit();
                 return  true;
 
             case R.id.nav_cart:
