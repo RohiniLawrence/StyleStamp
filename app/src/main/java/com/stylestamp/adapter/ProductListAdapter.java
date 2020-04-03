@@ -3,9 +3,12 @@ package com.stylestamp.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,17 +22,20 @@ import com.stylestamp.R;
 import com.stylestamp.controller.ProductDetail;
 import com.stylestamp.model.Product;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.MyViewHolder>{
+public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.MyViewHolder> implements Filterable {
 
 
     private Context context;
-    private List<Product> products;
+    private ArrayList<Product> products;
+    private ArrayList<Product> arrProductListFiltered = new ArrayList<>();
 
-    public ProductListAdapter(Context context, List<Product> products) {
+    public ProductListAdapter(Context context, ArrayList<Product> products) {
         this.context = context;
         this.products = products;
+        this.arrProductListFiltered = products;
     }
 
     @NonNull
@@ -44,9 +50,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
 
-        holder.productTitle.setText(products.get(position).getName());
-        holder.productPrice.setText(String.valueOf(products.get(position).getPrice()));
-        //holder.productImage.setImageResource(products.get(position).getImages().get(0));
+        holder.productTitle.setText(arrProductListFiltered.get(position).getName());
+        holder.productPrice.setText(String.valueOf(arrProductListFiltered.get(position).getPrice()));
+        //holder.productImage.setImageResource(arrProductListFiltered.get(position).getImages().get(0));
         holder.productCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,7 +66,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
     @Override
     public int getItemCount() {
-        return products.size();
+        return arrProductListFiltered.size();
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
@@ -77,5 +83,41 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
 
         }
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                Log.i("Adapter","character String" + charString);
+                if (charString.isEmpty()) {
+                    arrProductListFiltered = products;
+                } else {
+                    ArrayList<Product> filteredList = new ArrayList<>();
+                    for (Product row : products) {
+
+                        // name match condition. this might differ depending on your requirement
+                        // here we are looking for name or phone number match
+                        if (row.getName().toLowerCase().contains(charString.toLowerCase()) || row.getName().contains(charSequence)) {
+                            filteredList.add(row);
+                        }
+                    }
+
+                    arrProductListFiltered = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = arrProductListFiltered;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                arrProductListFiltered = (ArrayList<Product>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 }

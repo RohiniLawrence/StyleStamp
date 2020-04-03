@@ -1,9 +1,12 @@
 package com.stylestamp.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -12,19 +15,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.stylestamp.R;
 import com.stylestamp.model.Category;
+import com.stylestamp.model.Product;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.ViewHolder> {
+public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.ViewHolder> implements Filterable {
 
 
-    List<Category> categoryList;
-    List<Category> subCategoryList;
+    ArrayList<Category> categoryList;
+    ArrayList<Category> arrCategoryListFiltered;
+    ArrayList<Category> subCategoryList;
     SubCategoryListAdapter subCategoryListAdapter;
 
     Context context;
-    public CategoryListAdapter(Context context, List<Category> categories , List<Category> subCategories ) {
+    public CategoryListAdapter(Context context, ArrayList<Category> categories , ArrayList<Category> subCategories ) {
         this.categoryList = categories;
+        this.arrCategoryListFiltered = categories;
         this.subCategoryList = subCategories;
         this.context = context;
     }
@@ -39,8 +46,8 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        holder.textView.setText(categoryList.get(position).getCategoryName());
-        boolean isExpanded = categoryList.get(position).isExpanded();
+        holder.textView.setText(arrCategoryListFiltered.get(position).getCategoryName());
+        boolean isExpanded = arrCategoryListFiltered.get(position).isExpanded();
         holder.expandableLayout.setVisibility(isExpanded?View.VISIBLE:View.GONE);
 
 
@@ -52,7 +59,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
     @Override
     public int getItemCount() {
-        return categoryList.size();
+        return arrCategoryListFiltered.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -85,5 +92,41 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         public void onClick(View v) {
 
         }
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                Log.i("Adapter","character String" + charString);
+                if (charString.isEmpty()) {
+                    arrCategoryListFiltered = categoryList;
+                } else {
+                    ArrayList<Category> filteredList = new ArrayList<>();
+                    for (Category row : categoryList) {
+
+                        // name match condition. this might differ depending on your requirement
+                        // here we are looking for name or phone number match
+                        if (row.getCategoryName().toLowerCase().contains(charString.toLowerCase()) || row.getCategoryName().contains(charSequence)) {
+                            filteredList.add(row);
+                        }
+                    }
+
+                    arrCategoryListFiltered = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = arrCategoryListFiltered;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                arrCategoryListFiltered = (ArrayList<Category>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 }
