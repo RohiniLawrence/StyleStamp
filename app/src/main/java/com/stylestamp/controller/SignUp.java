@@ -52,8 +52,8 @@ public class SignUp extends AppCompatActivity {
         email = findViewById(R.id.editEmail);
         dob = findViewById(R.id.datePicker);
 //        address=findViewById(R.id.textArea_information);
-       /* postalcode=findViewById(R.id.editPostalCode);
-        password=findViewById(R.id.editPostalCode);*/
+        postalcode=findViewById(R.id.editPostalCode);
+        password=findViewById(R.id.editPostalCode);
 
         signupSub.setOnClickListener(new View.OnClickListener() {
 

@@ -89,6 +89,10 @@ public class Shop extends Fragment {
 
         searchView = v.findViewById(R.id.searchView);
 
+        recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
+
+        searchView = v.findViewById(R.id.searchView);
+
 
         Retrofit retrofit =  new Retrofit.Builder()
                     .baseUrl("http:/stylestamp.dipenoverseas.com/api/")
@@ -195,14 +199,7 @@ public class Shop extends Fragment {
         products.add(new Product(2, 1, 0, 0, 0, "asdas", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
 
 
-        // recyclerView.setLayoutManager(new LinearLayoutManager(v.getContext()));
-    }
-
-    private void getCategories(){
-
-
-
-    }
+       // recyclerView.setLayoutManager(new LinearLayoutManager(v.getContext()));
 
 
 
@@ -216,4 +213,5 @@ public class Shop extends Fragment {
     }
 
 
+    }
 }
