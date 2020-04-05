@@ -17,7 +17,7 @@ import android.widget.Toast;
 import com.stylestamp.R;
 import com.stylestamp.api.ApiClient;
 import com.stylestamp.api.LoginService;
-import com.stylestamp.model.jsonResponse;
+import com.stylestamp.response.JsonResponse;
 
 import java.text.SimpleDateFormat;
 
@@ -52,8 +52,8 @@ public class SignUp extends AppCompatActivity {
         email = findViewById(R.id.editEmail);
         dob = findViewById(R.id.datePicker);
 //        address=findViewById(R.id.textArea_information);
-//        postalcode=findViewById(R.id.editPostalCode);
-//        password=findViewById(R.id.editPostalCode);
+      /*  postalcode=findViewById(R.id.editPostalCode);
+        password=findViewById(R.id.editPostalCode);*/
 
         signupSub.setOnClickListener(new View.OnClickListener() {
 
@@ -83,12 +83,12 @@ public class SignUp extends AppCompatActivity {
         String base=unm+":"+pwd;
         String keyHeader="stylestamp@123";
         String authHeader="Basic "+ Base64.encodeToString(base.getBytes(),Base64.NO_WRAP);
-        Call<jsonResponse> call=loginService.basicLogin(keyHeader,authHeader,email.getText().toString(),password);
+        Call<JsonResponse> call=loginService.basicLogin(keyHeader,authHeader,email.getText().toString(),password);
 //                Call<User> call=loginService.basicLogin("jeelg46@gmail.com","12345678");
         Toast.makeText(getApplicationContext(),authHeader,Toast.LENGTH_LONG).show();
-        call.enqueue(new Callback<jsonResponse>() {
+        call.enqueue(new Callback<JsonResponse>() {
             @Override
-            public void onResponse(Call<jsonResponse> call, Response<jsonResponse> response) {
+            public void onResponse(Call<JsonResponse> call, Response<JsonResponse> response) {
                 Log.e("login-res",response.message());
                 if(response.body() != null) {
                     int status = response.body().getStatus();
@@ -104,7 +104,7 @@ public class SignUp extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<jsonResponse> call, Throwable t) {
+            public void onFailure(Call<JsonResponse> call, Throwable t) {
 //                Log.e("login-res",t.toString());
 //                Toast.makeText(getApplicationContext(),"failed",Toast.LENGTH_SHORT).show();
 //                Toast.makeText(getApplicationContext(),t.getMessage(),Toast.LENGTH_LONG).show();

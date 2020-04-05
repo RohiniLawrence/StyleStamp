@@ -1,28 +1,25 @@
-package com.stylestamp.model;
+package com.stylestamp.response;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.stylestamp.model.User;
 
-public class jsonResponse {
+public class SignupJsonResponse {
     @SerializedName("status")
     @Expose
     public int status;
-    @SerializedName("login_status")
+    @SerializedName("signup_status")
     @Expose
-    public String   login_status;
+    public String signup_status;
     @SerializedName("message")
     @Expose
     public String message;
-    @SerializedName("user")
-    @Expose
-    public User user;
 
 
-    public jsonResponse(int status, String login_status, String message, User user) {
+    public SignupJsonResponse(int status, String signup_status, String message, User user) {
         this.status = status;
-        this.login_status = login_status;
+        this.signup_status = signup_status;
         this.message = message;
-        this.user = user;
     }
 
     public int getStatus() {
@@ -34,11 +31,11 @@ public class jsonResponse {
     }
 
     public String getLogin_status() {
-        return login_status;
+        return signup_status;
     }
 
     public void setLogin_status(String login_status) {
-        this.login_status = login_status;
+        this.signup_status = login_status;
     }
 
     public String getMessage() {
@@ -49,11 +46,4 @@ public class jsonResponse {
         this.message = message;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

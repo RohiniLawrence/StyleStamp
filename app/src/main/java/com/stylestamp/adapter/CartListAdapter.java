@@ -10,23 +10,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.stylestamp.R;
-import com.stylestamp.model.CartItem;
+import com.stylestamp.model.Cart;
 
 import java.util.List;
 
 public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.MyViewHolder> {
     private Context context;
-    private List<CartItem> cartItems;
+    private List<Cart> carts;
     Dialog dialog;
 
-    public CartListAdapter(Context context, List<CartItem> cartItems) {
+    public CartListAdapter(Context context, List<Cart> carts) {
         this.context = context;
-        this.cartItems = cartItems;
+        this.carts = carts;
     }
 
     @NonNull
@@ -86,7 +84,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.MyView
 
     @Override
     public int getItemCount() {
-        return cartItems.size();
+        return carts.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{

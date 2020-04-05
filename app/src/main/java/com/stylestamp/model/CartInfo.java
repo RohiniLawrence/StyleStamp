@@ -7,45 +7,12 @@ import java.util.List;
 
 public class CartInfo {
 
-    @SerializedName("cartId")
+    @SerializedName("product_id")
     @Expose
-    private int cartId;
+    private int productId;
 
-    @SerializedName("cartItems")
+    @SerializedName("quantity")
     @Expose
-    private List<CartItem> cartItemList ;
+    private int quantity;
 
-    @SerializedName("cartTotal")
-    @Expose
-    private double cartTotal;
-
-    public CartInfo(int cartId, List<CartItem> cartItemList, double cartTotal) {
-        this.cartId = cartId;
-        this.cartItemList = cartItemList;
-        this.cartTotal = cartTotal;
-    }
-
-    public int getCartId() {
-        return cartId;
-    }
-
-    public void setCartId(int cartId) {
-        this.cartId = cartId;
-    }
-
-    public List<CartItem> getCartItemList() {
-        return cartItemList;
-    }
-
-    public void setCartItemList(List<CartItem> cartItemList) {
-        this.cartItemList = cartItemList;
-    }
-
-    public double getCartTotal() {
-        return cartTotal;
-    }
-
-    public void setCartTotal(int cartTotal) {
-        this.cartTotal = cartTotal;
-    }
 }

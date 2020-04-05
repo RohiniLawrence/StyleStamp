@@ -1,6 +1,7 @@
 package com.stylestamp.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +40,7 @@ public class SubCategoryListAdapter extends RecyclerView.Adapter<SubCategoryList
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
 
         holder.textView.setText(subCategoryList.get(position).getCategoryName());
         holder.textView.setOnClickListener(new View.OnClickListener() {
@@ -47,7 +48,11 @@ public class SubCategoryListAdapter extends RecyclerView.Adapter<SubCategoryList
             public void onClick(View v) {
                 AppCompatActivity activity = (AppCompatActivity) context;
                 ProductFragment productFragment = new ProductFragment();
+                Bundle args = new Bundle();
+                args.putString("CategoryID",  Integer.toString(subCategoryList.get(position).getCategoryId()));
+                productFragment.setArguments(args);
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, productFragment).addToBackStack(null).commit();
+
             }
         });
     }

@@ -45,7 +45,7 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
 
 
             case R.id.nav_profile:
-                getSupportFragmentManager().beginTransaction().replace(R.id.container, pd).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, profileFragment).commit();
                 return  true;
 
             case R.id.nav_cart:

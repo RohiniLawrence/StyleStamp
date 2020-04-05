@@ -22,7 +22,7 @@ import com.stylestamp.R;
 import com.stylestamp.api.ApiClient;
 import com.stylestamp.api.ApiInterface;
 import com.stylestamp.api.LoginService;
-import com.stylestamp.model.jsonResponse;
+import com.stylestamp.response.JsonResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -81,10 +81,7 @@ public class Login extends AppCompatActivity {
                 if (netw != null && netw.isConnected()) {
                     if(checkdata(userEmail,userPassword)) {
                         //calling service
-                        Log.e("inputs",userEmail+" "+userPassword);
                         executeAuthenticateUser(userEmail, userPassword);
-                    }else{
-                        Toast.makeText(getApplicationContext(), "Invalid credentials!", Toast.LENGTH_LONG).show();
                     }
                 } else {
                     Toast.makeText(getApplicationContext(), "Internet Connection not available", Toast.LENGTH_LONG).show();
@@ -94,20 +91,17 @@ public class Login extends AppCompatActivity {
     }
     // validate email id and password
     private boolean checkdata(String userEmail, String userPassword) {
-        boolean flag=false;
         if(isValidEmail(userEmail)){
-            flag=true;
+            return true;
         }else{
-            flag=false;
             Toast.makeText(getApplicationContext(), "email id is mandatory and must be in valid format", Toast.LENGTH_LONG).show();
         }
         if(isValidPassword(userPassword)){
-            flag=true;
+            return true;
         }else{
-            flag=false;
             Toast.makeText(getApplicationContext(), "password is mandatory and must be atleast 8 character long", Toast.LENGTH_LONG).show();
         }
-        return flag;
+        return false;
     }
 
     private void executeAuthenticateUser(String email,String password){//send request to base_url with necessary header authentication keys and parameters
@@ -119,30 +113,29 @@ public class Login extends AppCompatActivity {
         //basic authentication encryption to BASE64
         String authHeader="Basic "+ Base64.encodeToString(base.getBytes(),Base64.NO_WRAP);
         //call login service
-
-        Call<jsonResponse> call=loginService.basicLogin(keyHeader,authHeader,email,password);
-        call.enqueue(new Callback<jsonResponse>() {
+        Call<JsonResponse> call=loginService.basicLogin(keyHeader,authHeader,email,password);
+        call.enqueue(new Callback<JsonResponse>() {
             @Override
-            public void onResponse(Call<jsonResponse> call, Response<jsonResponse> response) {
+            public void onResponse(Call<JsonResponse> call, Response<JsonResponse> response) {
                 //checks responce is not empty
                 if(response.body() != null) {
                     int status = response.body().getStatus();
                     //check the login status code
                     if(status==1){
-                        jsonResponse jsonResponse=response.body();
+                        JsonResponse jsonResponse=response.body();
                         Log.e("status",String.valueOf(status));
                         Log.e("name",response.body().user.getFirstName()+" "+response.body().user.getLastName());
                         Log.e("email",response.body().user.getEmail());
                         SharedPreferences pref = getApplicationContext().getSharedPreferences("mp", 0); // 0 - for private mode
                         Intent intent=new Intent(Login.this,Home.class);
                         SharedPreferences.Editor editor = pref.edit();
+                        editor.putString("uid", jsonResponse.getUser().getUserId());
                         editor.putString("first name",jsonResponse.getUser().getFirstName());
                         editor.putString("last name",jsonResponse.getUser().getLastName());
                         editor.putString("email",jsonResponse.getUser().getEmail());
                         editor.putString("password",jsonResponse.getUser().getPassword());
                         editor.commit();
                         startActivity(intent);
-                        finish();
                         Toast.makeText(getApplicationContext(),"login success",Toast.LENGTH_SHORT).show();
                     }
                     else if(status==0){
@@ -153,8 +146,7 @@ public class Login extends AppCompatActivity {
                 }
             }
             @Override
-            public void onFailure(Call<jsonResponse> call, Throwable t) {
-                Log.e("onfail","false");
+            public void onFailure(Call<JsonResponse> call, Throwable t) {
                 Toast.makeText(getApplicationContext(),"problem while retrieving data from server ",Toast.LENGTH_SHORT).show();
             }
         });

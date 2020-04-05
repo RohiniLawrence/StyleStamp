@@ -8,12 +8,14 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.stylestamp.R;
@@ -22,8 +24,9 @@ import com.stylestamp.adapter.NewArrivalsAdapter;
 import com.stylestamp.api.ApiClient;
 import com.stylestamp.api.ApiInterface;
 import com.stylestamp.model.Category;
-import com.stylestamp.model.CategoryJsonResponse;
+import com.stylestamp.response.CategoryJsonResponse;
 import com.stylestamp.model.Product;
+import com.stylestamp.response.ProductJsonResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,25 +38,25 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
-
 public class Shop extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private String mParam1;
     private String mParam2;
+    Context context;
 
     RecyclerView recyclerView;
     CategoryListAdapter categoryListAdapter;
     ViewFlipper viewFlipper;
     SearchView searchView;
+    Retrofit retrofit=ApiClient.getClient();
 
+    ArrayList<Category> subCategories= new ArrayList<>();;
+    ArrayList<Product> products= new ArrayList<>();;
+    List<Category> categories = new ArrayList<>();
 
     int images[] = {R.drawable.banner1, R.drawable.banner1_1, R.drawable.banner3};
-    ArrayList<Category> categories = new ArrayList<>();
-    ArrayList<Category> subCategories = new ArrayList<>();
-    ArrayList<Product> products = new ArrayList<>();
+
 
 
     public static Shop newInstance(String param1, String param2) {
@@ -86,31 +89,35 @@ public class Shop extends Fragment {
             flipperImages(image);
         }
         recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
-
         searchView = v.findViewById(R.id.searchView);
 
-        recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
-
-        searchView = v.findViewById(R.id.searchView);
-
-
-        Retrofit retrofit =  new Retrofit.Builder()
-                    .baseUrl("http:/stylestamp.dipenoverseas.com/api/")
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
 
         ApiInterface apiInterface =retrofit.create(ApiInterface.class);
-        Call<CategoryJsonResponse> call= apiInterface.getCategories();
-        Log.i("im in","here");
+        String unm="admin";
+        String pwd="1234";
+        String base=unm+":"+pwd;
+        String keyHeader="stylestamp@123";
+        //basic authentication encryption to BASE64
+        String authHeader="Basic "+ Base64.encodeToString(base.getBytes(),Base64.NO_WRAP);
 
+        Call<CategoryJsonResponse> call= apiInterface.getCategories(authHeader,keyHeader);
         call.enqueue(new Callback<CategoryJsonResponse>() {
-
             @Override
             public void onResponse(Call<CategoryJsonResponse> call, Response<CategoryJsonResponse> response) {
-                if(response.body() != null) {
+                Log.e("shop-res",response.message());
 
-                    Log.i("thiiii",response.toString());
+                if(response.isSuccessful() && response.body().getCategories() != null){
+                    if(!categories.isEmpty()){
+                        categories.clear();
+                    }
                     categories = response.body().getCategories();
+                    categoryListAdapter = new CategoryListAdapter(getContext(), categories, subCategories);
+                    recyclerView.setAdapter(categoryListAdapter);
+                    categoryListAdapter.notifyDataSetChanged();
+                    DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
+                    recyclerView.addItemDecoration(dividerItemDecoration);
+                }else{
+
                 }
             }
 
@@ -118,22 +125,48 @@ public class Shop extends Fragment {
             public void onFailure(Call<CategoryJsonResponse> call, Throwable t) {
                 Log.e("fail","-------fail");
 
+                Log.e("fail",t.toString());
             }
         });
 
+        subCategories.add(new Category(0,"sdfsdf","dasdas", "null"));
+        subCategories.add(new Category(0,"sdfsdf","dasdas", "null"));
+        subCategories.add(new Category(0,"sdfsdf","dasdas", "null"));
 
-        initData();
+
+
+
+
+
+/*
+        Call<ProductJsonResponse> callProducts = apiInterface.getProducts(keyHeader,authHeader);
+        Log.i("Calling:","Products");
+
+        callProducts.enqueue(new Callback<ProductJsonResponse>() {
+
+            @Override
+            public void onResponse(Call<ProductJsonResponse> call, Response<ProductJsonResponse> response) {
+                if(response.body() != null) {
+
+                    Log.i("products to string:",response.toString());
+                    products = response.body().getProducts();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ProductJsonResponse> call, Throwable t) {
+                Log.e("Products fail","-------fail");
+
+            }
+        });*/
+       /* initData();*/
         initRecyclerView();
 
 
-        RecyclerView recyclerViewNewArrivals = (RecyclerView) v.findViewById(R.id.recyclerView_shop_newArrivals);
+     /*   RecyclerView recyclerViewNewArrivals = (RecyclerView) v.findViewById(R.id.recyclerView_shop_newArrivals);
         final NewArrivalsAdapter newArrivalsAdapter = new NewArrivalsAdapter(getActivity(), products);
         recyclerViewNewArrivals.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerViewNewArrivals.setAdapter(newArrivalsAdapter);
-
-
-
-
+        recyclerViewNewArrivals.setAdapter(newArrivalsAdapter);*/
 
         return v;
 
@@ -141,13 +174,9 @@ public class Shop extends Fragment {
 
     private void initRecyclerView() {
 
-        categoryListAdapter = new CategoryListAdapter(this.getContext(), categories, subCategories);
-        recyclerView.setAdapter(categoryListAdapter);
-
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
-        recyclerView.addItemDecoration(dividerItemDecoration);
 
 
+/*
         searchView.setMaxWidth(Integer.MAX_VALUE);
 
 
@@ -170,36 +199,30 @@ public class Shop extends Fragment {
     }
 
     private void initData() {
-        categories = new ArrayList<>();
-        categories.add(new Category(0, "Men", "dasdas", "null"));
-        categories.add(new Category(0, "Women", "dasdas", "null"));
-        categories.add(new Category(0, "Kids", "dasdas", "null"));
-        categories.add(new Category(0, "Home", "dasdas", "null"));
-
-        subCategories = new ArrayList<>();
-        subCategories.add(new Category(0, "sdfsdf", "dasdas", "null"));
-        subCategories.add(new Category(0, "sdfsdf", "dasdas", "null"));
-        subCategories.add(new Category(0, "sdfsdf", "dasdas", "null"));
-
-        products = new ArrayList<>();
-        products.add(new Product(0, 1, 0, 0, 0, "xyz", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1, categories.get(0)));
-        products.add(new Product(1, 1, 0, 0, 0, "abc", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1, categories.get(0)));
-        products.add(new Product(2, 1, 0, 0, 0, "asdas", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1, categories.get(0)));
-        products.add(new Product(3, 1, 0, 0, 0, "xaxa", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1, categories.get(0)));
-        products.add(new Product(0, 1, 0, 0, 0, "xyz", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1, categories.get(0)));
-        products.add(new Product(1, 1, 0, 0, 0, "abc", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1, categories.get(0)));
-        products.add(new Product(2, 1, 0, 0, 0, "asdas", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1, categories.get(0)));
-        products.add(new Product(3, 1, 0, 0, 0, "xaxa", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1, categories.get(0)));
-        products.add(new Product(0, 1, 0, 0, 0, "xyz", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1, categories.get(0)));
-        products.add(new Product(1, 1, 0, 0, 0, "abc", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1, categories.get(0)));
-        products.add(new Product(2, 1, 0, 0, 0, "asdas", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1, categories.get(0)));
-        products.add(new Product(3, 1, 0, 0, 0, "xaxa", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1, categories.get(0)));
-        products.add(new Product(0, 1, 0, 0, 0, "xyz", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1, categories.get(0)));
-        products.add(new Product(1, 1, 0, 0, 0, "abc", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1, categories.get(0)));
-        products.add(new Product(2, 1, 0, 0, 0, "asdas", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1, categories.get(0)));
 
 
-        // recyclerView.setLayoutManager(new LinearLayoutManager(v.getContext()));
+
+
+
+
+       /* products.add(new Product(0, 1, 0, 0, 0, "xyz", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
+        products.add(new Product(1, 1, 0, 0, 0, "abc", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
+        products.add(new Product(2, 1, 0, 0, 0, "asdas", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
+        products.add(new Product(3, 1, 0, 0, 0, "xaxa", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
+        products.add(new Product(0, 1, 0, 0, 0, "xyz", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
+        products.add(new Product(1, 1, 0, 0, 0, "abc", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
+        products.add(new Product(2, 1, 0, 0, 0, "asdas", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
+        products.add(new Product(3, 1, 0, 0, 0, "xaxa", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
+        products.add(new Product(0, 1, 0, 0, 0, "xyz", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
+        products.add(new Product(1, 1, 0, 0, 0, "abc", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
+        products.add(new Product(2, 1, 0, 0, 0, "asdas", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
+        products.add(new Product(3, 1, 0, 0, 0, "xaxa", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
+        products.add(new Product(0, 1, 0, 0, 0, "xyz", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
+        products.add(new Product(1, 1, 0, 0, 0, "abc", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
+        products.add(new Product(2, 1, 0, 0, 0, "asdas", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
+*/
+
+       // recyclerView.setLayoutManager(new LinearLayoutManager(v.getContext()));
 
     }
 

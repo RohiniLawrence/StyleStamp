@@ -64,16 +64,18 @@ public class ProductFragment extends Fragment {
         //remove after api----------------
        List<Category> categories = new ArrayList<>();
         categories.add(new Category(0,"Men","dasdas", "null"));
-//       List<Category> categories = new ArrayList<>();
-//        categories.add(new Category(0,"Woman","sdasd",TRUE));
-//        categories.add(new Category(1,"Man","sdasd",TRUE));
-//        categories.add(new Category(2,"Kids","sdasd",TRUE));
-//        categories.add(new Category(3,"Home","sdasd",TRUE));
+        categories.add(new Category(0,"Women","dasdas", "null"));
+        categories.add(new Category(0,"Kids","dasdas", "null"));
+        categories.add(new Category(0,"Home","dasdas", "null"));
 
 
         //---------------------
 
         products = new ArrayList<>();
+        String categoryId = getArguments().getString("CategoryID");
+        //here we have the category ID so when the user clicks on a category they see products from that category.....i just need to fetch all the products from that category
+
+
         products.add(new Product(0, 1, 0, 0, 0, "xyz", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
         products.add(new Product(1, 1, 0, 0, 0, "abc", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
         products.add(new Product(2, 1, 0, 0, 0, "asdas", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));

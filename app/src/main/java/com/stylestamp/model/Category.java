@@ -28,7 +28,17 @@ public class Category {
 
                 '}';
     }
-
+/*
+"category_id": "5",
+        "category_name": "shoes",
+        "description": "",
+        "parent_category": null,
+        "status": "active",
+        "date_created": "2020-03-24 09:40:12",
+        "modified_date": "2020-03-24 04:40:12",
+        "created_by": "2",
+        "modified_by": "2"
+ */
     @SerializedName("category_id")
     @Expose
     private int categoryId;

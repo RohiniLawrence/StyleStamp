@@ -29,7 +29,6 @@ public class ActiveOrderFragment extends Fragment {
 
 
 
-
     public ActiveOrderFragment( List<Order> _orders) {
         this.orders = _orders;
     }
@@ -55,6 +54,7 @@ public class ActiveOrderFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
 
     }
 

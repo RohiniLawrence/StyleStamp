@@ -23,13 +23,13 @@ import java.util.List;
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.ViewHolder> implements Filterable {
 
 
-    ArrayList<Category> categoryList;
-    ArrayList<Category> arrCategoryListFiltered;
-    ArrayList<Category> subCategoryList;
+    List<Category> categoryList;
+    List<Category> arrCategoryListFiltered;
+    List<Category> subCategoryList;
     SubCategoryListAdapter subCategoryListAdapter;
 
     Context context;
-    public CategoryListAdapter(Context context, ArrayList<Category> categories , ArrayList<Category> subCategories ) {
+    public CategoryListAdapter(Context context, List<Category> categories , List<Category> subCategories ) {
         this.categoryList = categories;
         this.arrCategoryListFiltered = categories;
         this.subCategoryList = subCategories;

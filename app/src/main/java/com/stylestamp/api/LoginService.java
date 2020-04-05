@@ -1,7 +1,7 @@
 package com.stylestamp.api;
 
-import com.stylestamp.model.jsonResponse;
-import com.stylestamp.model.signupJsonResponse;
+import com.stylestamp.response.JsonResponse;
+import com.stylestamp.response.SignupJsonResponse;
 
 import java.util.Date;
 
@@ -14,7 +14,7 @@ import retrofit2.http.POST;
 public interface LoginService {
     @FormUrlEncoded
     @POST("login/")
-     Call<jsonResponse> basicLogin(
+     Call<JsonResponse> basicLogin(
             @Header("X-API-KEY") String keyHeader,
             @Header("authorization") String authHeader,
             @Field("email") String email,
@@ -23,7 +23,7 @@ public interface LoginService {
 
     @FormUrlEncoded
     @POST("signup/")
-    Call<signupJsonResponse> basicSignup(
+    Call<SignupJsonResponse> basicSignup(
             @Header("X-API-KEY") String keyHeader,
             @Header("authorization") String authHeader,
             @Field("fname") String firstname,

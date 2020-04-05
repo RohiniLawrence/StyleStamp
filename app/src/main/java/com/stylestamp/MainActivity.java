@@ -6,11 +6,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.ListView;
 
-import com.stylestamp.api.ApiClient;
-import com.stylestamp.controller.Home;
 
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
+import com.stylestamp.controller.Home;
+import com.stylestamp.controller.Shop;
+import com.stylestamp.controller.Splash;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent i = new Intent(getApplicationContext(), Home.class);
+        Intent i = new Intent(getApplicationContext(), Splash.class);
         startActivity(i);
 
 //
