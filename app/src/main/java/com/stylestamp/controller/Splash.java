@@ -9,7 +9,7 @@ import android.os.Bundle;
 import com.stylestamp.MainActivity;
 import com.stylestamp.R;
 
-public class splash extends AppCompatActivity {
+public class Splash extends AppCompatActivity {
     SharedPreferences sp;
     SharedPreferences.Editor editor;
     int s=0,n=0;
@@ -19,16 +19,10 @@ public class splash extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         sp = getSharedPreferences("mp", 0);
         editor = sp.edit();
-
-        SharedPreferences sp = getSharedPreferences("mp", 0);
+//
+//        SharedPreferences sp = getSharedPreferences("mp", 0);
         String email=sp.getString("email",null);
-        //String emial=sp.getString("password",null);
-        if(email!=null)
-        {
-            s=1;
-        }
-        else
-        {
+        if(email==null){
             n=1;
         }
         Thread d=new Thread()
@@ -46,12 +40,12 @@ public class splash extends AppCompatActivity {
 
                     if(n==1)
                     {
-                        Intent in = new Intent(splash.this, Login.class);
+                        Intent in = new Intent(Splash.this, Login.class);
                         startActivity(in);
                     }
                     else
                     {
-                        Intent in = new Intent(splash.this, MainActivity.class);
+                        Intent in = new Intent(Splash.this, Home.class);
                         startActivity(in);
                     }
                 }

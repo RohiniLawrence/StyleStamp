@@ -15,13 +15,15 @@
         android:usesCleartextTraffic="true">
 
         <activity android:name=".MainActivity">
+
+        </activity>
+        <activity android:name=".controller.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".controller.splash"></activity>
         <activity android:name=".controller.Home"></activity>
         <activity android:name=".controller.ForgetPassword" />
         <activity android:name=".controller.SignUp" />
