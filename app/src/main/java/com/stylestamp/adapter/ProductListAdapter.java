@@ -103,23 +103,13 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                     arrProductListFiltered = products;
                 } else {
                     ArrayList<Product> filteredList = new ArrayList<>();
-                    for (Product row : products) {
-
-                        // name match condition. this might differ depending on your requirement
-                        // here we are looking for name or phone number match
-//                        if (row.getProductName().toLowerCase().contains(charString.toLowerCase()) || row.getProductName().contains(charSequence)) {
-//                            filteredList.add(row);
-//                        }
-                    }//:(
 
                     arrProductListFiltered = filteredList;
                 }
-
                 FilterResults filterResults = new FilterResults();
                 filterResults.values = arrProductListFiltered;
                 return filterResults;
             }
-
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
                 arrProductListFiltered = (ArrayList<Product>) filterResults.values;

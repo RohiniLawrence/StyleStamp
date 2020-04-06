@@ -50,12 +50,12 @@ public interface ApiInterface {
     );
 
     //order history..
-    @GET("orderHistory/{id}")
+    @GET("Order/userorder/{id}")
     Call<OrderHistoryJsonResponse> getOrderHistory(
 
             @Header("Authorization") String credential,
             @Header("X-API-KEY") String key,
-            @Path("id") String userId
+            @Query("id") String userId
     );
 
 

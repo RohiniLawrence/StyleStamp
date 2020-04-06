@@ -78,6 +78,7 @@ public class ProductDetail extends Fragment {
         final TextView name = view.findViewById(R.id.pro_name_txt);
         final TextView price = view.findViewById(R.id.price_text);
         final TextView description = view.findViewById(R.id.description_text);
+        final TextView descriptionClick = view.findViewById(R.id.description_title);
         proAdapter = new ProductDetailImagesListAdapter(productImages, this.getActivity());
         viewPager = view.findViewById(R.id.proDetViewPager);
         viewPager.setAdapter(proAdapter);
@@ -106,8 +107,14 @@ public class ProductDetail extends Fragment {
                         Product product = productResponse.getProduct();
                         name.setText(product.getProductName());
                         price.setText(product.getPrice());
-                        
                         description.setText(product.getDescription());
+                       /* descriptionClick.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                             description.setVisibility(View.VISIBLE);
+                            }
+                        });*/
+
                     } else {
                         Log.e("res-newarr-mes", response.message());
                     }

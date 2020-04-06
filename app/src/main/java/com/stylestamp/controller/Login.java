@@ -194,7 +194,7 @@ public class Login extends AppCompatActivity {
 
                         User loginUser = response.body().user;
 
-                        editor.putString("userId","" + loginUser.getUserId());
+                        editor.putString("uid","" + loginUser.getUserId());
                         editor.putString("email",""+ loginUser.getEmail());
                         editor.putString("firstName",""+ loginUser.getFirstName());
                         editor.putString("lastName",""+ loginUser.getLastName());

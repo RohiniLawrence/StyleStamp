@@ -111,6 +111,7 @@ Context context;
             String keyHeader = "stylestamp@123";
             String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP);
             Call<CartJasonResponse> call;
+
             call = apiInterface.getCart(authHeader, keyHeader, uid);
             call.enqueue(new Callback<CartJasonResponse>() {
                 @Override

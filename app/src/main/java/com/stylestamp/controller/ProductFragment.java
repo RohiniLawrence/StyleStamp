@@ -126,10 +126,6 @@ public class ProductFragment extends Fragment {
                     if (response.isSuccessful() && response.body() != null) {
                         products = response.body();
                         final ProductListAdapter productListAdapter = new ProductListAdapter(getActivity(), products);
-                        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-                        recyclerView.setAdapter(productListAdapter);
-
-                        // listening to search query text change
                         searchView.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
                             @Override
                             public boolean onQueryTextSubmit(String query) {
@@ -145,6 +141,10 @@ public class ProductFragment extends Fragment {
                                 return false;
                             }
                         });
+                        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+                        recyclerView.setAdapter(productListAdapter);
+
+                        // listening to search query text change
                     } else {
 
                     }

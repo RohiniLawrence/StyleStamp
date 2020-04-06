@@ -83,17 +83,18 @@ public class OrderHistoryFragment extends Fragment  {
         String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP);
         final RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView_orderHistory);
 
-        final Call<OrderHistoryJsonResponse> call = apiInterface.getOrderHistory(authHeader, keyHeader, "6"/*uid*/);
+        final Call<OrderHistoryJsonResponse> call = apiInterface.getOrderHistory(authHeader, keyHeader, uid);
         call.enqueue(new Callback<OrderHistoryJsonResponse>() {
             @Override
             public void onResponse(Call<OrderHistoryJsonResponse> call, Response<OrderHistoryJsonResponse> response) {
                 Log.e("orderhistory-res", response.message());
 
-                if (response.isSuccessful() && response.body().getOrders() != null) {
+                if (response.isSuccessful() && response.body().getOrders()!= null) {
                     if (!orders.isEmpty()) {
                         orders.clear();
                     }
                     orders = response.body().getOrders();
+
                     OrderListAdapter orderListAdapter = new OrderListAdapter(getActivity(), orders);
                     recyclerView.setAdapter(orderListAdapter);
                 } else {

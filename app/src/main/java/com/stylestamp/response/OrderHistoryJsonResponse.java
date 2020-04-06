@@ -5,16 +5,17 @@ import com.google.gson.annotations.SerializedName;
 import com.stylestamp.model.Order;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class OrderHistoryJsonResponse {
     @SerializedName("order")
     @Expose
-    public ArrayList<Order> orders;
-    public OrderHistoryJsonResponse(ArrayList<Order> orders) {
+    public List<Order> orders;
+    public OrderHistoryJsonResponse(List<Order> orders) {
         this.orders = orders;
     }
 
-    public ArrayList<Order> getOrders() {
+    public List<Order> getOrders() {
         return orders;
     }
 

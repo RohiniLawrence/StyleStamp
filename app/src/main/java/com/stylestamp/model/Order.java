@@ -36,6 +36,9 @@ public class Order {
     @SerializedName("shipped_status")
     @Expose
     private String shippedStatus;
+    @SerializedName("order_status")
+    @Expose
+    private String orderStatus;
 
 
     @SerializedName("total")
