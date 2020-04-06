@@ -28,11 +28,7 @@
         <activity android:name=".controller.ForgetPassword" />
         <activity android:name=".controller.SignUp" />
         <activity android:name=".controller.Login">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
     </application>

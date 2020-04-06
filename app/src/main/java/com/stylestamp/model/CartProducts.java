@@ -20,16 +20,16 @@ public class CartProducts {
     @SerializedName("color")
     @Expose
     private String color;
-    @SerializedName("product")
-    @Expose
-    private Product product;
+//    @SerializedName("product")
+//    @Expose
+//    private Product product;
 
-    public CartProducts(String productId, String quantity, String size, String color, Product product) {
+    public CartProducts(String productId, String quantity, String size, String color){//}, Product product) {
         this.productId = productId;
         this.quantity = quantity;
         this.size = size;
         this.color = color;
-        this.product = product;
+//        this.product = product;
     }
 
     public String getProductId() {
@@ -64,11 +64,11 @@ public class CartProducts {
         this.color = color;
     }
 
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
+//    public Product getProduct() {
+//        return product;
+//    }
+//
+//    public void setProduct(Product product) {
+//        this.product = product;
+//    }
 }

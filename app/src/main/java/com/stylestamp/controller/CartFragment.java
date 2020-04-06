@@ -91,7 +91,7 @@ public class CartFragment extends Fragment {
         String keyHeader = "stylestamp@123";
         String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP);
         Call<CartJasonResponse> call;
-        call = apiInterface.getCart(authHeader, keyHeader, "3");
+        call = apiInterface.getCart(authHeader, keyHeader,"3");
         call.enqueue(new Callback<CartJasonResponse>() {
             @Override
             public void onResponse(Call<CartJasonResponse> call, Response<CartJasonResponse> response) {
@@ -101,8 +101,8 @@ public class CartFragment extends Fragment {
                     }
 
                     Log.e("attaching", "cartListAdapter");
-                    cartProducts = response.body().getCart().get(0).getCartProducts();
-                    Log.e("cart-res-message", response.message());
+                    cartProducts = response.body().getCart().getCartProducts();
+                    Log.e("cart-res-message", response.body().getMessage());
 
                     cartListAdapter = new CartListAdapter(getActivity(), cartProducts);
                     recyclerView.setAdapter(cartListAdapter);

@@ -16,18 +16,16 @@ public class Cart {
     @Expose
     private String userId;
 
-    public Cart(String cartId, String userId, ArrayList<CartProducts> cartProducts) {
-        this.cartId = cartId;
-        this.userId = userId;
-        this.cartProducts = cartProducts;
-    }
-
     @SerializedName("cart_info")
     @Expose
     private ArrayList<CartProducts> cartProducts;
 
 
-
+    public Cart(String cartId, String userId, ArrayList<CartProducts> cartProducts) {
+        this.cartId = cartId;
+        this.userId = userId;
+        this.cartProducts = cartProducts;
+    }
     public String getCartId() {
         return cartId;
     }

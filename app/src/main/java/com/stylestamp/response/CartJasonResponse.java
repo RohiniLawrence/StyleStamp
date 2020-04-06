@@ -19,9 +19,9 @@ public class CartJasonResponse {
 
     @SerializedName("cart")
     @Expose
-    public ArrayList<Cart> cart;
+    public Cart cart;
 
-    public CartJasonResponse(int status, String message, ArrayList<Cart> cart) {
+    public CartJasonResponse(int status, String message, Cart cart) {
         this.status = status;
         this.message = message;
         this.cart = cart;
@@ -43,11 +43,11 @@ public class CartJasonResponse {
         this.message = message;
     }
 
-    public ArrayList<Cart> getCart() {
+    public Cart getCart() {
         return cart;
     }
 
-    public void setCart(ArrayList<Cart> cart) {
+    public void setCart(Cart cart) {
         this.cart = cart;
     }
 }
