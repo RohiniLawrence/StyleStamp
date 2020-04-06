@@ -41,7 +41,7 @@ public class Category {
  */
     @SerializedName("category_id")
     @Expose
-    private int categoryId;
+    private String categoryId;
 
     @SerializedName("category_name")
     @Expose
@@ -59,7 +59,7 @@ public class Category {
     @Expose
     private Boolean isActive;*/
 
-    public Category( int categoryId, String categoryName, String categoryDescription, String parentCategory) {
+    public Category( String categoryId, String categoryName, String categoryDescription, String parentCategory) {
         this.expanded = false;
         this.categoryId = categoryId;
         this.categoryName = categoryName;
@@ -79,11 +79,11 @@ public class Category {
         this.parentCategory = parentCategory;
     }
 
-    public int getCategoryId() {
+    public String getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(int categoryId) {
+    public void setCategoryId(String categoryId) {
         this.categoryId = categoryId;
     }
 

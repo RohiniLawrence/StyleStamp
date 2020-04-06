@@ -41,7 +41,7 @@ public class OrderDetailListAdapter extends RecyclerView.Adapter<OrderDetailList
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
 
-        holder.productTitle.setText(products.get(position).getName());
+        holder.productTitle.setText(products.get(position).getProductName());
         holder.productPrice.setText(String.valueOf(products.get(position).getPrice()));
         holder.productID.setText("Not Available");
         holder.quantity.setText("Not Available");

@@ -7,125 +7,88 @@ import java.util.List;
 
 public class Product {
 
-    @SerializedName("productId")
+    @SerializedName("product_id")
     @Expose
-    private int productId;
+    private String productId;
 
-    @SerializedName("stock")
+    @SerializedName("product_name")
     @Expose
-    private int stock;
+    private String productName;
 
-    @SerializedName("nbReviews")
+    @SerializedName("category_id")
     @Expose
-    private int nbReviews;
+    private String categoryId;
 
-    @SerializedName("reorderLevel")
-    @Expose
-    private int reorderLevel;
-
-    @SerializedName("discountPercentage")
-    @Expose
-    private int discountPercentage;
-
-    @SerializedName("name")
-    @Expose
-    private String name;
-
-    @SerializedName("discription")
+    @SerializedName("description")
     @Expose
     private String description;
 
-    @SerializedName("serialNumber")
-    @Expose
-    private String serialNumber;
-
-    @SerializedName("brand")
-    @Expose
-    private String brand;
-
     @SerializedName("price")
     @Expose
-    private double price;
+    private String price;
 
-    @SerializedName("isActive")
+    @SerializedName("stock")
     @Expose
-    private double isActive;
+    private String stock;
+
+    @SerializedName("discount_percentage")
+    @Expose
+    private String discountPercentage;
+
+    @SerializedName("status")
+    @Expose
+    private String status;
+
+    @SerializedName("date_created")
+    @Expose
+    private String dateCreated;
 
     @SerializedName("images")
     @Expose
-    private List<String> images;
+    private List<ProductImages> images;
 
-    @SerializedName("category")
+    @SerializedName("specs")
     @Expose
-    private Category category;
+    private ProductSpecs specs;
 
-    //constructor
-
-    public Product(int productId, int stock, int nbReviews, int reorderLevel, int discountPercentage, String name, String description, String serialNumber, String brand, double price, double isActive, Category category) {
-        this.productId = productId;
-        this.stock = stock;
-        this.nbReviews = nbReviews;
-        this.reorderLevel = reorderLevel;
-        this.discountPercentage = discountPercentage;
-        this.name = name;
-        this.description = description;
-        this.serialNumber = serialNumber;
-        this.brand = brand;
-        this.price = price;
-        this.isActive = isActive;
-        //add after api ....       this.images = images;
-        this.category = category;
+    public List<ProductImages> getImages() {
+        return images;
     }
 
-    //setters and getters
+    public void setImages(List<ProductImages> images) {
+        this.images = images;
+    }
 
+    public ProductSpecs getSpecs() {
+        return specs;
+    }
 
-    public int getProductId() {
+    public void setSpecs(ProductSpecs specs) {
+        this.specs = specs;
+    }
+
+    public String getProductId() {
         return productId;
     }
 
-    public void setProductId(int productId) {
+    public void setProductId(String productId) {
         this.productId = productId;
     }
 
-    public int getStock() {
-        return stock;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setStock(int stock) {
-        this.stock = stock;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
-    public int getNbReviews() {
-        return nbReviews;
+    public String getCategoryId() {
+        return categoryId;
     }
 
-    public void setNbReviews(int nbReviews) {
-        this.nbReviews = nbReviews;
-    }
-
-    public int getReorderLevel() {
-        return reorderLevel;
-    }
-
-    public void setReorderLevel(int reorderLevel) {
-        this.reorderLevel = reorderLevel;
-    }
-
-    public int getDiscountPercentage() {
-        return discountPercentage;
-    }
-
-    public void setDiscountPercentage(int discountPercentage) {
-        this.discountPercentage = discountPercentage;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setCategoryId(String categoryId) {
+        this.categoryId = categoryId;
     }
 
     public String getDescription() {
@@ -136,51 +99,45 @@ public class Product {
         this.description = description;
     }
 
-    public String getSerialNumber() {
-        return serialNumber;
-    }
-
-    public void setSerialNumber(String serialNumber) {
-        this.serialNumber = serialNumber;
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public double getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 
-    public double getIsActive() {
-        return isActive;
+    public String getStock() {
+        return stock;
     }
 
-    public void setIsActive(double isActive) {
-        this.isActive = isActive;
+    public void setStock(String stock) {
+        this.stock = stock;
     }
 
-    public List<String> getImages() {
-        return images;
+    public String getDiscountPercentage() {
+        return discountPercentage;
     }
 
-    public void setImages(List<String> images) {
-        this.images = images;
+    public void setDiscountPercentage(String discountPercentage) {
+        this.discountPercentage = discountPercentage;
     }
 
-    public Category getCategory() {
-        return category;
+    public String getStatus() {
+        return status;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getDateCreated() {
+        return dateCreated;
+    }
+
+    public void setDateCreated(String dateCreated) {
+        this.dateCreated = dateCreated;
     }
 }
+
+

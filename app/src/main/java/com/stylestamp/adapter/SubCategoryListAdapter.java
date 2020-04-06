@@ -43,13 +43,14 @@ public class SubCategoryListAdapter extends RecyclerView.Adapter<SubCategoryList
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
 
         holder.textView.setText(subCategoryList.get(position).getCategoryName());
+
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AppCompatActivity activity = (AppCompatActivity) context;
                 ProductFragment productFragment = new ProductFragment();
                 Bundle args = new Bundle();
-                args.putString("CategoryID",  Integer.toString(subCategoryList.get(position).getCategoryId()));
+                args.putString("CategoryID",  (subCategoryList.get(position).getCategoryId()));
                 productFragment.setArguments(args);
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, productFragment).addToBackStack(null).commit();
 

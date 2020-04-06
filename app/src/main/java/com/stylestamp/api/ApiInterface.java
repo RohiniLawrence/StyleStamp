@@ -1,9 +1,14 @@
 package com.stylestamp.api;
-import com.stylestamp.controller.Cart;
-import com.stylestamp.response.CartJasonResponse;
-import com.stylestamp.response.CategoryJsonResponse;
-import com.stylestamp.response.ProductJsonResponse;
+import android.util.Base64;
+
+import com.stylestamp.model.Cart;
+import com.stylestamp.model.Category;
+import com.stylestamp.model.Product;
+import com.stylestamp.response.CategoryResponse;
 import com.stylestamp.response.OrderHistoryJsonResponse;
+import com.stylestamp.response.SubCategoryResponse;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -14,30 +19,32 @@ import retrofit2.http.Query;
 
 public interface ApiInterface {
 
-    @GET("category/")
-    Call<CategoryJsonResponse> getCategories(
+    String unm = "admin";
+    String pwd = "1234";
+    String base = unm + ":" + pwd;
+    final String keyHeader = "stylestamp@123";
+    final String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP);
 
+    @GET("category/")
+    Call<CategoryResponse> getCategories(
             @Header("Authorization") String credential,
             @Header("X-API-KEY") String key
     );
 
     @GET("subcategory/")
-    Call<CategoryJsonResponse> getSubCategories(
-
+    Call<List<Category>> getSubCategories(
             @Header("Authorization") String credential,
             @Header("X-API-KEY") String key
     );
-    @GET("getproductbycategoryid/{id}")
-    Call<ProductJsonResponse> getProductByCategory(
 
+    @GET("subcategory/")
+    Call<SubCategoryResponse> getSubCategoriesById(
             @Header("Authorization") String credential,
             @Header("X-API-KEY") String key,
-            @Path("id") String id
-
+            @Query("id") String id
     );
 
     //order history..
-
     @GET("orderHistory/")
     Call<OrderHistoryJsonResponse> getOrderHistory(
 
@@ -46,21 +53,25 @@ public interface ApiInterface {
             @Path("id") String userId
     );
     //cart..
-
     @GET("cart/")
-    Call<CartJasonResponse> getCart(
+    Call<Cart> getCart(
             @Header("Authorization") String credential,
             @Header("X-API-KEY") String key,
             @Query("userid") String userId
     );
 
-    @GET("Productapi/")
-    Call<ProductJsonResponse> getProducts(
+    @GET("product/")
+    Call<List<Product>> getProducts(
             @Header("Authorization") String credential,
             @Header("X-API-KEY") String key
     );
 
-
+    @GET("getproductbyproductid/{id}")
+    Call<Product> getProductById(
+            @Header("Authorization") String credential,
+            @Header("X-API-KEY") String key,
+            @Path("id") String id
+    );
 
 
 }

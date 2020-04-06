@@ -29,9 +29,9 @@ public class ProductDetail extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private int productID;
+    private String productID;
 
-    public ProductDetail(int productID) {
+    public ProductDetail(String productID) {
         this.productID = productID;
     }
 
@@ -78,11 +78,12 @@ public class ProductDetail extends Fragment {
         viewPager = view.findViewById(R.id.proDetViewPager);
         viewPager.setAdapter(proAdapter);
         ArrayList<Category> categories = new ArrayList<>();
-        categories.add(new Category(0,"Men","dasdas", "null"));
+     /*   categories.add(new Category(0,"Men","dasdas", "null"));
         categories.add(new Category(0,"Women","dasdas", "null"));
         categories.add(new Category(0,"Kids","dasdas", "null"));
-        categories.add(new Category(0,"Home","dasdas", "null"));
+        categories.add(new Category(0,"Home","dasdas", "null"));*/
         ArrayList<Product> products = new ArrayList<>();
+/*
         products.add(new Product(0, 1, 0, 0, 0, "xyz", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
         products.add(new Product(1, 1, 0, 0, 0, "abc", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
         products.add(new Product(2, 1, 0, 0, 0, "asdas", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
@@ -96,6 +97,12 @@ public class ProductDetail extends Fragment {
         products.add(new Product(2, 1, 0, 0, 0, "asdas", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
         products.add(new Product(3, 1, 0, 0, 0, "xaxa", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
         products.add(new Product(0, 1, 0, 0, 0, "xyz", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
+
+*/
+
+
+
+
 
 
         RecyclerView recyclerViewRelatedProduct = (RecyclerView) view.findViewById(R.id.recyclerView_shop_relatedProducts);

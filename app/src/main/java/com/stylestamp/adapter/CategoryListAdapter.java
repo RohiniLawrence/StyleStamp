@@ -1,6 +1,7 @@
 package com.stylestamp.adapter;
 
 import android.content.Context;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,28 +12,35 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.stylestamp.R;
+import com.stylestamp.api.ApiClient;
+import com.stylestamp.api.ApiInterface;
 import com.stylestamp.model.Category;
 import com.stylestamp.model.Product;
+import com.stylestamp.response.SubCategoryResponse;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.ViewHolder> implements Filterable {
 
 
-    List<Category> categoryList;
-    List<Category> arrCategoryListFiltered;
-    List<Category> subCategoryList;
+    List<Category> categoryList = new ArrayList<>();
+    List<Category> arrCategoryListFiltered  = new ArrayList<>();
+    List<Category> subCategories  ;
     SubCategoryListAdapter subCategoryListAdapter;
 
     Context context;
-    public CategoryListAdapter(Context context, List<Category> categories , List<Category> subCategories ) {
+    public CategoryListAdapter(Context context, List<Category> categories  ) {
         this.categoryList = categories;
         this.arrCategoryListFiltered = categories;
-        this.subCategoryList = subCategories;
         this.context = context;
     }
     @NonNull
@@ -41,15 +49,63 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.category_row_item, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
+
         return viewHolder;
+
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         holder.textView.setText(arrCategoryListFiltered.get(position).getCategoryName());
-        boolean isExpanded = arrCategoryListFiltered.get(position).isExpanded();
+        final boolean isExpanded = arrCategoryListFiltered.get(position).isExpanded();
         holder.expandableLayout.setVisibility(isExpanded?View.VISIBLE:View.GONE);
+        subCategories =new ArrayList<>();
+        holder.subCategoryRV.setAdapter(subCategoryListAdapter);
+        final ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        String unm = "admin";
+        String pwd = "1234";
+        String base = unm + ":" + pwd;
+        final String keyHeader = "stylestamp@123";
+        final String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP);
+        Log.e("parent category", categoryList.get(position).getCategoryId());
 
+        Call<SubCategoryResponse> call = apiInterface.getSubCategoriesById(authHeader, keyHeader, categoryList.get(position).getCategoryId());
+        call.enqueue(new Callback<SubCategoryResponse>() {
+            @Override
+            public void onResponse(Call<SubCategoryResponse> call, Response<SubCategoryResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+
+                    subCategories = response.body().getSubcategories();
+                    subCategoryListAdapter = new SubCategoryListAdapter(context, subCategories );
+
+
+                } else {
+                    Log.e("attaching", "nothing-shop-subcat");
+                    Log.e("shop-res", response.message());
+                }
+            }
+            @Override
+            public void onFailure(Call<SubCategoryResponse> call2, Throwable t) {
+                Log.e("subcat fail", t.toString());
+            }
+        });
+
+
+        holder.textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                for(Category category: categoryList){
+                    if(categoryList.indexOf(category) == position) {
+                        category.setExpanded(!category.isExpanded());
+                        notifyItemChanged(position);
+                    }else{
+                        category.setExpanded(false);
+                        notifyItemChanged(categoryList.indexOf(category));
+                    }
+                }
+
+            }
+        });
     }
 
     @Override
@@ -67,19 +123,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             itemView.setOnClickListener(this);
             expandableLayout = itemView.findViewById(R.id.expandable);
             subCategoryRV =  (RecyclerView)  itemView.findViewById(R.id.subcategory_recycler_view);
-            subCategoryListAdapter = new SubCategoryListAdapter(context, subCategoryList );
-            subCategoryRV.setAdapter(subCategoryListAdapter);
-            textView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
 
-//                    DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
-//                    subCategoryRV.addItemDecoration(dividerItemDecoration);
-                    Category category =categoryList.get(getAdapterPosition());
-                    category.setExpanded(!category.isExpanded());
-                    notifyItemChanged(getAdapterPosition());
-                }
-            });
 
         }
 

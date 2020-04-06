@@ -1,6 +1,8 @@
 package com.stylestamp.controller;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -63,6 +65,16 @@ public class Profile extends Fragment {
                AppCompatActivity activity = (AppCompatActivity) context;
                OrderHistoryFragment orderHistoryFragment = new OrderHistoryFragment();
                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, orderHistoryFragment).addToBackStack(null).commit();
+           }
+       });
+       signOut.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               SharedPreferences settings = getActivity().getSharedPreferences("mp", Context.MODE_PRIVATE);
+               settings.edit().clear().commit();
+               Intent in = new Intent(getActivity(), Login.class);
+               startActivity(in);
+
            }
        });
 

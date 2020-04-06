@@ -20,14 +20,15 @@ import com.stylestamp.controller.ProductDetail;
 import com.stylestamp.model.Product;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NewArrivalsAdapter extends RecyclerView.Adapter<NewArrivalsAdapter.MyViewHolder> {
 
 
     private Context context;
-    private ArrayList<Product> products;
+    private List<Product> products;
 
-    public NewArrivalsAdapter(Context context, ArrayList<Product> products) {
+    public NewArrivalsAdapter(Context context, List<Product> products) {
         this.context = context;
         this.products = products;
     }
@@ -44,7 +45,7 @@ public class NewArrivalsAdapter extends RecyclerView.Adapter<NewArrivalsAdapter.
     @Override
     public void onBindViewHolder(@NonNull NewArrivalsAdapter.MyViewHolder holder, final int position) {
 
-        holder.productTitle.setText(products.get(position).getName());
+        holder.productTitle.setText(products.get(position).getProductName());
         holder.productPrice.setText(String.valueOf(products.get(position).getPrice()));
         //holder.productImage.setImageResource(arrProductListFiltered.get(position).getImages().get(0));
         holder.productCardView.setOnClickListener(new View.OnClickListener() {

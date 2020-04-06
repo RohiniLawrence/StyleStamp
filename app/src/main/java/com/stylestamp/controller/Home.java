@@ -4,9 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -16,7 +14,7 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
 
     Shop shopFragment = new Shop();
     Profile profileFragment = new Profile();
-    Cart cartFragment = new Cart();
+    CartFragment cartFragment = new CartFragment();
     OrderHistoryFragment pd = new OrderHistoryFragment();
 
     private Toolbar toolbar;

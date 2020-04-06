@@ -3,9 +3,11 @@ package com.stylestamp.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Cart {
+
 
     @SerializedName("cart_id")
     @Expose
@@ -17,13 +19,9 @@ public class Cart {
 
     @SerializedName("cart_info")
     @Expose
-    private List<CartInfo> cartInfo;
+    private ArrayList<CartProducts> cartProducts;
 
-    public Cart(String cartId, String userId, List<CartInfo> cartInfo) {
-        this.cartId = cartId;
-        this.userId = userId;
-        this.cartInfo = cartInfo;
-    }
+
 
     public String getCartId() {
         return cartId;
@@ -41,11 +39,14 @@ public class Cart {
         this.userId = userId;
     }
 
-    public List<CartInfo> getCartInfo() {
-        return cartInfo;
+    public ArrayList<CartProducts> getCartProducts() {
+
+        return cartProducts;
     }
 
-    public void setCartInfo(List<CartInfo> cartInfo) {
-        this.cartInfo = cartInfo;
+    public void setCartProducts(ArrayList<CartProducts> cartProducts) {
+        this.cartProducts = cartProducts;
     }
+
+
 }

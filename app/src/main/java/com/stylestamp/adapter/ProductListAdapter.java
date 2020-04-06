@@ -50,7 +50,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
 
-        holder.productTitle.setText(arrProductListFiltered.get(position).getName());
+     /*   holder.productTitle.setText(arrProductListFiltered.get(position).getName());
         holder.productPrice.setText(String.valueOf(arrProductListFiltered.get(position).getPrice()));
         //holder.productImage.setImageResource(arrProductListFiltered.get(position).getImages().get(0));
         holder.productCardView.setOnClickListener(new View.OnClickListener() {
@@ -60,7 +60,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                 ProductDetail productDetailFragment = new ProductDetail();
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, productDetailFragment).addToBackStack(null).commit();
             }
-        });
+        });*/
 
     }
 
@@ -100,7 +100,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
                         // name match condition. this might differ depending on your requirement
                         // here we are looking for name or phone number match
-                        if (row.getName().toLowerCase().contains(charString.toLowerCase()) || row.getName().contains(charSequence)) {
+                        if (row.getProductName().toLowerCase().contains(charString.toLowerCase()) || row.getProductName().contains(charSequence)) {
                             filteredList.add(row);
                         }
                     }

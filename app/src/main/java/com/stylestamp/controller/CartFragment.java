@@ -1,6 +1,5 @@
 package com.stylestamp.controller;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -20,9 +19,8 @@ import com.stylestamp.R;
 import com.stylestamp.adapter.CartListAdapter;
 import com.stylestamp.api.ApiClient;
 import com.stylestamp.api.ApiInterface;
-import com.stylestamp.api.LoginService;
-import com.stylestamp.model.CartInfo;
-import com.stylestamp.response.CartJasonResponse;
+import com.stylestamp.model.Cart;
+import com.stylestamp.model.CartProducts;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,14 +31,13 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 
-public class Cart extends Fragment {
+public class CartFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    Retrofit retrofit = ApiClient.getClient();
+
     SharedPreferences sp;
     SharedPreferences.Editor editor;
-    private ArrayList<CartInfo> cartProducts = new ArrayList<>();
-    private CartInfo cartInfo;
+    private ArrayList<CartProducts> cartProducts = new ArrayList<>();
     private String mParam1;
     private String mParam2;
     CartListAdapter cartListAdapter;
@@ -48,12 +45,12 @@ public class Cart extends Fragment {
 
     CheckOut checkOutFragment = new CheckOut();
 
-    public Cart() {
+    public CartFragment() {
         // Required empty public constructor
     }
 
-    public static Cart newInstance(String param1, String param2) {
-        Cart fragment = new Cart();
+    public static CartFragment newInstance(String param1, String param2) {
+        CartFragment fragment = new CartFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -73,57 +70,63 @@ public class Cart extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_cart, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_cart, container, false);
         /*carts.add(new com.stylestamp.model.Cart(0, 0, "S", 2));
         carts.add(new com.stylestamp.model.Cart(0, 2, "S", 2));
         carts.add(new com.stylestamp.model.Cart(0, 3, "S", 2));
         cartInfo = new CartInfo(0, carts, 97.26);*/
-        Cart cart = new Cart();
-        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView_cart);
 
+        final RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView_cart);
         sp = getActivity().getSharedPreferences("mp", 0);
         editor = sp.edit();
         String uid = sp.getString("uid", null);
+        Log.e("uid", uid);
 
 
-        ApiInterface apiInterface = retrofit.create(ApiInterface.class);
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         String unm = "admin";
         String pwd = "1234";
         String base = unm + ":" + pwd;
         String keyHeader = "stylestamp@123";
-        //basic authentication encryption to BASE64
         String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP);
-        //call login service
-
-        Call<CartJasonResponse> call = apiInterface.getCart(keyHeader, authHeader, uid);
-        call.enqueue(new Callback<CartJasonResponse>() {
+        Call<Cart> call;
+        call = apiInterface.getCart(authHeader, keyHeader, "1");
+        call.enqueue(new Callback<Cart>() {
             @Override
-            public void onResponse(Call<CartJasonResponse> call, Response<CartJasonResponse> response) {
-                //checks responce is not empty
-                if (response.body() != null) {
+            public void onResponse(Call<Cart> call, Response<Cart> response) {
+                if(response.isSuccessful() && response.body() != null ){
+                    if(!cartProducts.isEmpty()){
+                        cartProducts.clear();
+                    }
 
-                    CartJasonResponse cartJasonResponse = response.body();
-                    cartProducts 
-                    cartListAdapter = new CartListAdapter(getActivity(), );
-
+                    Log.e("attaching", "cartListAdapter");
+                    cartProducts = response.body().getCartProducts();
+                    cartListAdapter = new CartListAdapter(getActivity(), cartProducts);
                     recyclerView.setAdapter(cartListAdapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+
+                }
+                else{
+
+                    Log.e("attaching", "nothing-cart");
+                    Log.e("res-body", response.message() );
+                    Toast.makeText(getActivity(), "No results", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<CartJasonResponse> call, Throwable t) {
-                Toast.makeText(getActivity().getApplicationContext(), "problem while retrieving data from server ", Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<Cart> call, Throwable t) {
+                Log.e("problem: ", t.toString());
             }
         });
 
 
+
+
+
         Button btnCheckout;
-
-
         btnCheckout = rootView.findViewById(R.id.btnCheckout);
-
         btnCheckout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,5 +135,10 @@ public class Cart extends Fragment {
         });
 
         return rootView;
+    }
+
+    public void LoadJson(){
+
+
     }
 }
