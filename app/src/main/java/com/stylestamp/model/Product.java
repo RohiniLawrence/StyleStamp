@@ -3,6 +3,7 @@ package com.stylestamp.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Product {
@@ -19,7 +20,7 @@ public class Product {
     @Expose
     private String categoryId;
 
-    @SerializedName("description")
+    @SerializedName("decription")
     @Expose
     private String description;
 
@@ -49,7 +50,29 @@ public class Product {
 
     @SerializedName("specs")
     @Expose
-    private ProductSpecs specs;
+    private ArrayList<ProductSpecs> specs;
+
+    public Product(String productId, String productName, String categoryId, String description, String price, String stock, String discountPercentage, String status, String dateCreated, List<ProductImages> images, ArrayList<ProductSpecs> specs) {
+        this.productId = productId;
+        this.productName = productName;
+        this.categoryId = categoryId;
+        this.description = description;
+        this.price = price;
+        this.stock = stock;
+        this.discountPercentage = discountPercentage;
+        this.status = status;
+        this.dateCreated = dateCreated;
+        this.images = images;
+        this.specs = specs;
+    }
+
+    public ArrayList<ProductSpecs> getSpecs() {
+        return specs;
+    }
+
+    public void setSpecs(ArrayList<ProductSpecs> specs) {
+        this.specs = specs;
+    }
 
     public List<ProductImages> getImages() {
         return images;
@@ -59,13 +82,7 @@ public class Product {
         this.images = images;
     }
 
-    public ProductSpecs getSpecs() {
-        return specs;
-    }
 
-    public void setSpecs(ProductSpecs specs) {
-        this.specs = specs;
-    }
 
     public String getProductId() {
         return productId;

@@ -4,6 +4,7 @@ import android.util.Base64;
 import com.stylestamp.model.Cart;
 import com.stylestamp.model.Category;
 import com.stylestamp.model.Product;
+import com.stylestamp.response.CartJasonResponse;
 import com.stylestamp.response.CategoryResponse;
 import com.stylestamp.response.OrderHistoryJsonResponse;
 import com.stylestamp.response.SubCategoryResponse;
@@ -35,13 +36,13 @@ public interface ApiInterface {
     Call<List<Category>> getSubCategories(
             @Header("Authorization") String credential,
             @Header("X-API-KEY") String key
-    );
+    );//where you called this?
 
-    @GET("subcategory/")
+    @GET("subcategory/{id}")
     Call<SubCategoryResponse> getSubCategoriesById(
             @Header("Authorization") String credential,
             @Header("X-API-KEY") String key,
-            @Query("id") String id
+            @Path("id") String id
     );
 
     //order history..
@@ -52,12 +53,14 @@ public interface ApiInterface {
             @Header("X-API-KEY") String key,
             @Path("id") String userId
     );
+
+
     //cart..
-    @GET("cart/")
-    Call<Cart> getCart(
+    @GET("cart/{userid}")
+    Call<CartJasonResponse> getCart(
             @Header("Authorization") String credential,
             @Header("X-API-KEY") String key,
-            @Query("userid") String userId
+            @Path("userid") String userId
     );
 
     @GET("product/")
@@ -68,6 +71,13 @@ public interface ApiInterface {
 
     @GET("getproductbyproductid/{id}")
     Call<Product> getProductById(
+            @Header("Authorization") String credential,
+            @Header("X-API-KEY") String key,
+            @Query("id") String id
+    );
+
+    @GET("getproductbycategoryid/{id}")
+    Call<List<Product>> getProductByCategoryId(
             @Header("Authorization") String credential,
             @Header("X-API-KEY") String key,
             @Path("id") String id

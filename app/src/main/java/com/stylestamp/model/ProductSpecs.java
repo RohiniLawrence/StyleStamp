@@ -9,28 +9,34 @@ import java.util.List;
 public class ProductSpecs {
     @SerializedName("color")
     @Expose
-    private List<String> color;
+    private String color;
 
     @SerializedName("size")
     @Expose
-    private List<String> sizes;
+    private String sizes;
     @SerializedName("composition")
     @Expose
     private String composition;
 
-    public List<String> getColor() {
+    public ProductSpecs(String color, String sizes, String composition) {
+        this.color = color;
+        this.sizes = sizes;
+        this.composition = composition;
+    }
+
+    public String getColor() {
         return color;
     }
 
-    public void setColor(List<String> color) {
+    public void setColor(String color) {
         this.color = color;
     }
 
-    public List<String> getSizes() {
+    public String getSizes() {
         return sizes;
     }
 
-    public void setSizes(List<String> sizes) {
+    public void setSizes(String sizes) {
         this.sizes = sizes;
     }
 

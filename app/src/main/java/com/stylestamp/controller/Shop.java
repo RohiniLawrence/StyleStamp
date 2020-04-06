@@ -90,6 +90,8 @@ public class Shop extends Fragment {
         final String keyHeader = "stylestamp@123";
         //basic authentication encryption to BASE64
         final String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP);
+
+
         //______________getting categories_________________
         Call<CategoryResponse> call = apiInterface.getCategories(authHeader, keyHeader);
         call.enqueue(new Callback<CategoryResponse>() {
@@ -99,6 +101,7 @@ public class Shop extends Fragment {
                     if (!categories.isEmpty()) {
                         categories.clear();
                     }
+
                     categories = response.body().getCategories();
                     categoryListAdapter = new CategoryListAdapter(getActivity(), categories);
                     recyclerView.setAdapter(categoryListAdapter);
@@ -106,28 +109,6 @@ public class Shop extends Fragment {
                     DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
                     recyclerView.addItemDecoration(dividerItemDecoration);
 
-                    //------getting subcategories---
-                   /* Call<List<Category>> call2 = apiInterface.getSubCategories(authHeader, keyHeader);
-                    call2.enqueue(new Callback<List<Category>>() {
-                        @Override
-                        public void onResponse(Call<List<Category>> call, Response<List<Category>> response2) {
-                            if (response2.isSuccessful() && response2.body() != null) {
-                                if (!subCategories.isEmpty()) {
-                                    subCategories.clear();
-                                }
-                                subCategories = response2.body();
-
-                            } else {
-                                Log.e("attaching", "nothing-shop-subcat");
-                                Log.e("shop-res", response2.message());
-                            }
-                        }
-                        @Override
-                        public void onFailure(Call<List<Category>> call2, Throwable t) {
-                            Log.e("subcat fail", t.toString());
-                        }
-                    });*/
-                    //----subcat----
                 } else {
                     Log.e("attaching", "nothing-shop-cat");
                     Log.e("shop-res", response.message());

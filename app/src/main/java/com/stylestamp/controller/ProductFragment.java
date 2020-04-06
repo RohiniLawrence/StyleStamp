@@ -6,18 +6,27 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
 import com.stylestamp.R;
 import com.stylestamp.adapter.ProductListAdapter;
+import com.stylestamp.api.ApiClient;
+import com.stylestamp.api.ApiInterface;
 import com.stylestamp.model.Category;
 import com.stylestamp.model.Product;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static java.lang.Boolean.TRUE;
 
@@ -33,7 +42,7 @@ public class ProductFragment extends Fragment {
     public ProductFragment() {
     }
 
-    ArrayList<Product> products;
+    List<Product> products ;
 
 
     public static ProductFragment newInstance(String param1, String param2) {
@@ -61,63 +70,64 @@ public class ProductFragment extends Fragment {
 
         searchView = v.findViewById(R.id.searchView);
 
-        //remove after api----------------
-       List<Category> categories = new ArrayList<>();
-    /*    categories.add(new Category(0,"Men","dasdas", "null"));
-        categories.add(new Category(0,"Women","dasdas", "null"));
-        categories.add(new Category(0,"Kids","dasdas", "null"));
-        categories.add(new Category(0,"Home","dasdas", "null"));
-*/
-
-        //---------------------
 
         products = new ArrayList<>();
         String categoryId = getArguments().getString("CategoryID");
-        //here we have the category ID so when the user clicks on a category they see products from that category.....i just need to fetch all the products from that category
+        final RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.productRecyclerView);
 
-/*
 
-        products.add(new Product(0, 1, 0, 0, 0, "xyz", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
-        products.add(new Product(1, 1, 0, 0, 0, "abc", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
-        products.add(new Product(2, 1, 0, 0, 0, "asdas", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
-        products.add(new Product(3, 1, 0, 0, 0, "xaxa", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
-        products.add(new Product(0, 1, 0, 0, 0, "xyz", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
-        products.add(new Product(1, 1, 0, 0, 0, "abc", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
-        products.add(new Product(2, 1, 0, 0, 0, "asdas", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
-        products.add(new Product(3, 1, 0, 0, 0, "xaxa", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
-        products.add(new Product(0, 1, 0, 0, 0, "xyz", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
-        products.add(new Product(1, 1, 0, 0, 0, "abc", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
-        products.add(new Product(2, 1, 0, 0, 0, "asdas", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
-        products.add(new Product(3, 1, 0, 0, 0, "xaxa", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
-        products.add(new Product(0, 1, 0, 0, 0, "xyz", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
-        products.add(new Product(1, 1, 0, 0, 0, "abc", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
-        products.add(new Product(2, 1, 0, 0, 0, "asdas", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
-*/
+        String unm = "admin";
+        String pwd = "1234";
+        String base = unm + ":" + pwd;
+        String keyHeader = "stylestamp@123";
+        String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP);
 
-        RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.productRecyclerView);
-        final ProductListAdapter productListAdapter = new ProductListAdapter(getActivity(), products);
-        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        recyclerView.setAdapter(productListAdapter);
+
+        //___________GETTING PRODUCTS_________________
+
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<Product>> call = apiInterface.getProductByCategoryId(authHeader, keyHeader, "3");
+
+        call.enqueue(new Callback<List<Product>>() {
+            @Override
+            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
+                if(response.isSuccessful() && response.body() != null ){
+                    products = response.body();
+                    final ProductListAdapter productListAdapter = new ProductListAdapter(getActivity(), products);
+                    recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+                    recyclerView.setAdapter(productListAdapter);
+
+                    // listening to search query text change
+                    searchView.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
+                        @Override
+                        public boolean onQueryTextSubmit (String query){
+                            // filter recycler view when query submitted
+                            productListAdapter.getFilter().filter(query);
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onQueryTextChange (String query){
+                            // filter recycler view when text is changed
+                            productListAdapter.getFilter().filter(query);
+                            return false;
+                        }
+                    });
+                }
+                else{
+
+                }
+            }
+            @Override
+            public void onFailure(Call<List<Product>> call, Throwable t) {
+            }
+        });
+
 
         searchView.setMaxWidth(Integer.MAX_VALUE);
 
 
-        // listening to search query text change
-        searchView.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit (String query){
-                // filter recycler view when query submitted
-                productListAdapter.getFilter().filter(query);
-                return false;
-            }
 
-            @Override
-            public boolean onQueryTextChange (String query){
-                // filter recycler view when text is changed
-                productListAdapter.getFilter().filter(query);
-                return false;
-            }
-        });
 
         return v;
     }

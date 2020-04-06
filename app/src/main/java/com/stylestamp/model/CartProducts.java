@@ -14,6 +14,30 @@ public class CartProducts {
     @SerializedName("quantity")
     @Expose
     private int quantity;
+    @SerializedName("size")
+    @Expose
+    private int size;
+    @SerializedName("color")
+    @Expose
+    private int color;
+    @SerializedName("product")
+    @Expose
+    private Product product;
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+    }
+
+    public int getColor() {
+        return color;
+    }
+
+    public void setColor(int color) {
+        this.color = color;
+    }
 
     public int getProductId() {
         return productId;

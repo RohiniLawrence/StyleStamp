@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
 import com.stylestamp.R;
 import com.stylestamp.controller.ProductDetail;
 import com.stylestamp.model.Product;
@@ -29,10 +30,10 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
 
     private Context context;
-    private ArrayList<Product> products;
-    private ArrayList<Product> arrProductListFiltered = new ArrayList<>();
+    private List<Product> products;
+    private List<Product> arrProductListFiltered = new ArrayList<>();
 
-    public ProductListAdapter(Context context, ArrayList<Product> products) {
+    public ProductListAdapter(Context context, List<Product> products) {
         this.context = context;
         this.products = products;
         this.arrProductListFiltered = products;
@@ -50,9 +51,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
 
-     /*   holder.productTitle.setText(arrProductListFiltered.get(position).getName());
+        holder.productTitle.setText(arrProductListFiltered.get(position).getProductName());
         holder.productPrice.setText(String.valueOf(arrProductListFiltered.get(position).getPrice()));
-        //holder.productImage.setImageResource(arrProductListFiltered.get(position).getImages().get(0));
+        Picasso.get().load( arrProductListFiltered.get(position).getImages().get(0).getUrl()).into(holder.productImage);
         holder.productCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,7 +61,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                 ProductDetail productDetailFragment = new ProductDetail();
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, productDetailFragment).addToBackStack(null).commit();
             }
-        });*/
+        });
 
     }
 

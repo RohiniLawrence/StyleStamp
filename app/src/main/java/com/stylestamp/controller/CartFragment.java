@@ -21,6 +21,7 @@ import com.stylestamp.api.ApiClient;
 import com.stylestamp.api.ApiInterface;
 import com.stylestamp.model.Cart;
 import com.stylestamp.model.CartProducts;
+import com.stylestamp.response.CartJasonResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,18 +90,20 @@ public class CartFragment extends Fragment {
         String base = unm + ":" + pwd;
         String keyHeader = "stylestamp@123";
         String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP);
-        Call<Cart> call;
-        call = apiInterface.getCart(authHeader, keyHeader, "1");
-        call.enqueue(new Callback<Cart>() {
+        Call<CartJasonResponse> call;
+        call = apiInterface.getCart(authHeader, keyHeader, "3");
+        call.enqueue(new Callback<CartJasonResponse>() {
             @Override
-            public void onResponse(Call<Cart> call, Response<Cart> response) {
+            public void onResponse(Call<CartJasonResponse> call, Response<CartJasonResponse> response) {
                 if(response.isSuccessful() && response.body() != null ){
                     if(!cartProducts.isEmpty()){
                         cartProducts.clear();
                     }
 
                     Log.e("attaching", "cartListAdapter");
-                    cartProducts = response.body().getCartProducts();
+                    cartProducts = response.body().getCart().get(0).getCartProducts();
+                    Log.e("cart-res-message", response.message());
+
                     cartListAdapter = new CartListAdapter(getActivity(), cartProducts);
                     recyclerView.setAdapter(cartListAdapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -116,8 +119,9 @@ public class CartFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<Cart> call, Throwable t) {
-                Log.e("problem: ", t.toString());
+            public void onFailure(Call<CartJasonResponse> call, Throwable t) {
+                Log.e("problem: ", t.getMessage().toString());
+                Log.e("code: ", t.getStackTrace().toString());
             }
         });
 

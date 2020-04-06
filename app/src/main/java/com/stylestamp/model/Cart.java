@@ -8,7 +8,6 @@ import java.util.List;
 
 public class Cart {
 
-
     @SerializedName("cart_id")
     @Expose
     private String cartId;
@@ -16,6 +15,12 @@ public class Cart {
     @SerializedName("user_id")
     @Expose
     private String userId;
+
+    public Cart(String cartId, String userId, ArrayList<CartProducts> cartProducts) {
+        this.cartId = cartId;
+        this.userId = userId;
+        this.cartProducts = cartProducts;
+    }
 
     @SerializedName("cart_info")
     @Expose

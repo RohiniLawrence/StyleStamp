@@ -12,6 +12,11 @@ public class ProductImages {
     @Expose
     private String altText;
 
+    public ProductImages(String url, String altText) {
+        this.url = url;
+        this.altText = altText;
+    }
+
     public String getUrl() {
         return url;
     }

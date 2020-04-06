@@ -67,33 +67,54 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         String base = unm + ":" + pwd;
         final String keyHeader = "stylestamp@123";
         final String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP);
-        Log.e("parent category", categoryList.get(position).getCategoryId());
-
-        Call<SubCategoryResponse> call = apiInterface.getSubCategoriesById(authHeader, keyHeader, categoryList.get(position).getCategoryId());
-        call.enqueue(new Callback<SubCategoryResponse>() {
-            @Override
-            public void onResponse(Call<SubCategoryResponse> call, Response<SubCategoryResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-
-                    subCategories = response.body().getSubcategories();
-                    subCategoryListAdapter = new SubCategoryListAdapter(context, subCategories );
 
 
-                } else {
-                    Log.e("attaching", "nothing-shop-subcat");
-                    Log.e("shop-res", response.message());
-                }
-            }
-            @Override
-            public void onFailure(Call<SubCategoryResponse> call2, Throwable t) {
-                Log.e("subcat fail", t.toString());
-            }
-        });
 
 
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+
+                Log.e("parent category", categoryList.get(position).getCategoryId());
+                Call<SubCategoryResponse> call = apiInterface.getSubCategoriesById(authHeader, keyHeader, categoryList.get(position).getCategoryId());
+                call.enqueue(new Callback<SubCategoryResponse>() {
+                    @Override
+                    public void onResponse(Call<SubCategoryResponse> call, Response<SubCategoryResponse> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            if (!subCategories.isEmpty()) {
+                                subCategories.clear();
+                            }
+                            Log.e("subcat-res-msg",response.body().getMessage());
+                            Log.e("subcat-res-status",response.body().getStatus());
+
+                           if(response.body().getStatus() == "0"){
+                               subCategories.clear();
+
+                                subCategories.add(new Category("NA", "View All" , null, null));
+                            }
+                           else if(response.body().getStatus().equals("1")){
+                               Log.e("cats",String.valueOf(response.body().getSubcategories().size()));
+                               subCategories = response.body().getSubcategories();
+                               subCategoryListAdapter = new SubCategoryListAdapter(context, subCategories);
+                           }
+
+
+                        } else {
+                            Log.e("attaching", "nothing-shop-subcat");
+
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<SubCategoryResponse> call2, Throwable t) {
+                        Log.e("subcat fail", t.toString());
+                    }
+                });
+
+
+
+                //expanding categories
                 for(Category category: categoryList){
                     if(categoryList.indexOf(category) == position) {
                         category.setExpanded(!category.isExpanded());
