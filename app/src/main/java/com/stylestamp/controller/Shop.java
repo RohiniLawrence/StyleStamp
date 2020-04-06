@@ -28,6 +28,7 @@ import com.stylestamp.api.ApiInterface;
 import com.stylestamp.model.Category;
 import com.stylestamp.model.Product;
 import com.stylestamp.response.CategoryResponse;
+import com.stylestamp.response.ProductJsonResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -128,6 +129,7 @@ public class Shop extends Fragment implements PopupMenu.OnMenuItemClickListener,
                     categoryListAdapter.notifyDataSetChanged();
                     DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
                     recyclerView.addItemDecoration(dividerItemDecoration);
+                    initSearchView();
 
                 } else {
                     Log.e("attaching", "nothing-shop-cat");
@@ -140,15 +142,15 @@ public class Shop extends Fragment implements PopupMenu.OnMenuItemClickListener,
             }
         });
         //______________getting new arrivals_________________
-        Call<List<Product>> call3 = apiInterface.getAllProducts(authHeader, keyHeader);
-        call3.enqueue(new Callback<List<Product>>() {
+        Call<ProductJsonResponse> call3 = apiInterface.getAllProducts(authHeader, keyHeader);
+        call3.enqueue(new Callback<ProductJsonResponse>() {
             @Override
-            public void onResponse(Call<List<Product>> call3, Response<List<Product>> response3) {
+            public void onResponse(Call<ProductJsonResponse> call3, Response<ProductJsonResponse> response3) {
                 if (response3.isSuccessful() && response3.body() != null) {
                     if (!products.isEmpty()) {
                         products.clear();
                     }
-                    products = response3.body();
+                    products = response3.body().getProducts();
                     NewArrivalsAdapter newArrivalsAdapter = new NewArrivalsAdapter(getActivity(), products);
                     recyclerViewNewArrivals.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
                     recyclerViewNewArrivals.setAdapter(newArrivalsAdapter);
@@ -160,17 +162,13 @@ public class Shop extends Fragment implements PopupMenu.OnMenuItemClickListener,
                 }
             }
             @Override
-            public void onFailure(Call<List<Product>> call3, Throwable t) {
+            public void onFailure(Call<ProductJsonResponse> call3, Throwable t) {
 
                 Log.e("new arrivals fail--", t.toString());
             }
         });
 
 
-
-
-
-        initSearchView();
         return v;
 
     }
@@ -195,7 +193,7 @@ public class Shop extends Fragment implements PopupMenu.OnMenuItemClickListener,
     }
     public void flipperImages(int image) {
         ImageView imageView = new ImageView(getActivity());
-        //imageView.setBackgroundResource(image);
+        imageView.setBackgroundResource(image);
         viewFlipper.addView(imageView);
         viewFlipper.setFlipInterval(4000);
         viewFlipper.setAutoStart(true);

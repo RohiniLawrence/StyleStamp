@@ -2,6 +2,7 @@ package com.stylestamp.controller;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -30,9 +31,9 @@ public class ForgetPassword extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 userEmail = et_Email.getText().toString();
-
                 if (checkData()) {
-                    setContentView(R.layout.activity_login);
+                    Intent in = new Intent(ForgetPassword.this, Login.class);
+                    startActivity(in);
                 }
             }
         });

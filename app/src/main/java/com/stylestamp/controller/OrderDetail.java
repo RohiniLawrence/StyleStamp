@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 
 import com.stylestamp.R;
 import com.stylestamp.adapter.OrderDetailListAdapter;
+import com.stylestamp.model.CartProducts;
 import com.stylestamp.model.Category;
 import com.stylestamp.model.Order;
 import com.stylestamp.model.Product;
@@ -31,7 +32,7 @@ public class OrderDetail extends Fragment {
 
     Order order;
     OrderDetailListAdapter orderDetailListAdapter;
-    List<Product> products = new ArrayList<>();
+    List<CartProducts> products = new ArrayList<>();
     List<Category> categories = new ArrayList<>();
 
 
@@ -60,26 +61,16 @@ public class OrderDetail extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-/*        categories.add(new Category(0,"Woman","sdasd",TRUE));
-        categories.add(new Category(1,"Man","sdasd",TRUE));
-        categories.add(new Category(2,"Kids","sdasd",TRUE));
-        categories.add(new Category(3,"Home","sdasd",TRUE));*/
-  /*      products.add(new Product(0, 1, 0, 0, 0, "xyz", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
-        products.add(new Product(1, 1, 0, 0, 0, "abc", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
-        products.add(new Product(2, 1, 0, 0, 0, "asdas", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
-        products.add(new Product(3, 1, 0, 0, 0, "xaxa", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
-        products.add(new Product(0, 1, 0, 0, 0, "xyz", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
-*/
 
+        products = order.getProducts();
 
+//get List of products
         View v = inflater.inflate(R.layout.fragment_order_detail, container, false);
         orderDetailListAdapter = new OrderDetailListAdapter(getActivity(), products);
         RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView_orderDetails);

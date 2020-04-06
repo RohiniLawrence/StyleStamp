@@ -1,11 +1,15 @@
 package com.stylestamp.adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,20 +17,30 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.stylestamp.R;
+import com.stylestamp.api.ApiClient;
+import com.stylestamp.api.ApiInterface;
 import com.stylestamp.controller.ProductDetail;
+import com.stylestamp.model.CartProducts;
 import com.stylestamp.model.Product;
+import com.stylestamp.response.ProductResponse;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class OrderDetailListAdapter extends RecyclerView.Adapter<OrderDetailListAdapter.MyViewHolder> {
 
 
     private Context context;
-    private List<Product> products;
+    private Product product;
+    private List<CartProducts> cartProducts;
 
-    public OrderDetailListAdapter(Context context, List<Product> products) {
+
+    public OrderDetailListAdapter(Context context, List<CartProducts> cartProducts) {
         this.context = context;
-        this.products = products;
+        this.cartProducts = cartProducts;
     }
 
     @NonNull
@@ -39,26 +53,64 @@ public class OrderDetailListAdapter extends RecyclerView.Adapter<OrderDetailList
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
+        String unm = "admin";
+        String pwd = "1234";
+        String base = unm + ":" + pwd;
+        String keyHeader = "stylestamp@123";
+        String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP);
 
-//        holder.productTitle.setText(products.get(position).getProductName());
-//        holder.productPrice.setText(String.valueOf(products.get(position).getPrice()));
-        holder.productID.setText("Not Available");
-        holder.quantity.setText("Not Available");
-        holder.size.setText("Not Available");
-        holder.card.setOnClickListener(new View.OnClickListener() {
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<ProductResponse> call;
+        call = apiInterface.getProductById(authHeader, keyHeader,"1");//cartProducts.get(position).getProductId());
+        Log.e("cart-pro-id",cartProducts.get(position).getProductId());
+        call.enqueue(new Callback<ProductResponse>() {
             @Override
-            public void onClick(View v) {
-                AppCompatActivity activity = (AppCompatActivity) context;
-                ProductDetail productDetailFragment = new ProductDetail(products.get(position).getProductID());
-                activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, productDetailFragment).addToBackStack(null).commit();
+            public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
+                Log.e("log",response.body().getMessage());
+                if(response.isSuccessful() && response.body() != null ){
+                    product = response.body().getProduct();
+
+                    //                    Picasso.get().load( product.getImages().get(0).getUrl()).into(holder.productImage);
+                    holder.productTitle.setText(String.valueOf(product.getProductName()));
+                    holder.productPrice.setText(String.valueOf(product.getPrice()));
+                    holder.productID.setText(String.valueOf(product.getProductID()));
+                    holder.card.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            AppCompatActivity activity = (AppCompatActivity) context;
+                            ProductDetail productDetailFragment = new ProductDetail(product.getProductID());
+                            activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, productDetailFragment).addToBackStack(null).commit();
+                        }
+                    });
+
+
+                }
+                else{
+                    Toast.makeText(context, "No results", Toast.LENGTH_SHORT).show();
+                    holder.productTitle.setText("Not Available");
+                    holder.productPrice.setText("Not Available");
+                    holder.productID.setText("Not Available");
+                }
             }
+            @Override
+            public void onFailure(Call<ProductResponse> call, Throwable t) {
+
+                Log.e("product-api-res-fail",t.getMessage());
+            }
+
         });
+
+        holder.quantity.setText(cartProducts.get(position).getQuantity());
+        holder.size.setText(cartProducts.get(position).getSize());
+
+
+
     }
 
     @Override
     public int getItemCount() {
-        return products.size();
+        return cartProducts.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {

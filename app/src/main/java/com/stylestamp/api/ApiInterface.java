@@ -14,8 +14,10 @@ import com.stylestamp.response.SubCategoryResponse;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -63,6 +65,15 @@ public interface ApiInterface {
             @Header("Authorization") String credential,
             @Header("X-API-KEY") String key,
             @Path("userid") String userId
+    );
+
+    //cart..
+    @POST("cart/")
+    Call<CartJasonResponse> addToCart(
+            @Header("Authorization") String credential,
+            @Header("X-API-KEY") String key,
+            @Field("cart_id") String cartId
+
     );
 
     @GET("product/")

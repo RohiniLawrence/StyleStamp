@@ -12,34 +12,39 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-
         android:layout_margin="13dp"
-        app:cardCornerRadius="12dp">
+        app:cardCornerRadius="12dp"
+        >
 
-        <com.google.android.material.tabs.TabLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/orderHistoryTabbedLayout"
-            >
+            android:layout_height="match_parent">
 
-            <com.google.android.material.tabs.TabItem
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Active"
-                android:id="@+id/active"/>
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="OrderHistory"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:layout_marginVertical="20dp" />
 
-            <com.google.android.material.tabs.TabItem
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Previous"
-                android:id="@+id/previous"/>
-        </com.google.android.material.tabs.TabLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView_orderHistory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clipToPadding="false"
+                    android:foregroundGravity="center"
+                    android:overScrollMode="never"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            </LinearLayout>
+        </ScrollView>
     </androidx.cardview.widget.CardView>
-    <androidx.viewpager.widget.ViewPager
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/orderHistoryContainer">
-    </androidx.viewpager.widget.ViewPager>
 
 <!--    <FrameLayout
         android:id="@+id/ordersContainer"

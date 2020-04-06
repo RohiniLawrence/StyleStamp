@@ -24,6 +24,8 @@ public class Profile extends Fragment {
     Button myAccButton , orderHistoryButton;
     TextView helpAndInfo , changePassword, signOut;
     Context context;
+    SharedPreferences sp;
+    SharedPreferences.Editor editor;
     public Profile() {
 
     }
@@ -53,10 +55,29 @@ public class Profile extends Fragment {
         View v = inflater.inflate(R.layout.fragment_profile, container, false);
        myAccButton= v.findViewById(R.id.btnMyAccount);
        orderHistoryButton = v.findViewById(R.id.btnorderhistory);
-       helpAndInfo = v.findViewById(R.id.txtHelp);
-       changePassword = v.findViewById(R.id.txtChangePassword);
+       helpAndInfo = v.findViewById(R.id.txtHelp);/*
+       changePassword = v.findViewById(R.id.txtChangePassword);*/
        signOut = v.findViewById(R.id.txtlogout);
+       boolean signedIn;
 
+
+        sp = getActivity().getSharedPreferences("mp", 0);
+        String email = sp.getString("email", null);
+
+        if (email != null) {
+            signedIn = true;
+        } else {
+            signedIn = false;
+        }
+
+        if (!signedIn) {
+            NotSignedInFragment notSignedIn = new NotSignedInFragment();
+            Bundle args = new Bundle();
+            args.putString("Fragment", "profile");
+            notSignedIn.setArguments(args);
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, notSignedIn).addToBackStack(null).commit();
+
+        } else {
        orderHistoryButton.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View v) {
@@ -90,6 +111,7 @@ public class Profile extends Fragment {
                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.container, new MyAccountFragment()).commit();
            }
        });
+        }
         return v;
     }
 

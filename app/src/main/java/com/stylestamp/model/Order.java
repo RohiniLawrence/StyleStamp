@@ -4,137 +4,170 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
+import java.util.List;
+
 
 public class Order {
-    public Order(int orderId, String orderStatus) {
-        this.orderId = orderId;
-        this.orderStatus = orderStatus;
-    }
-
     @SerializedName("order_id")
     @Expose
-    private int orderId;
-
+    private String orderId;
     @SerializedName("user_id")
     @Expose
-    private int uesrId;
-
-
-    @SerializedName("orderDate")
-    @Expose
-    private Date orderDate;
-
-    @SerializedName("shipDate")
-    @Expose
-    private Date shipDate;
-
-    @SerializedName("order_status")
-    @Expose
-    private String orderStatus;
-
-    @SerializedName("shipped_status")
-    @Expose
-    private String shipStatus;
-
-    @SerializedName("payment_type")
-    @Expose
-    private String paymentType;
-
-    @SerializedName("shippingAddress")
-    @Expose
-    private Address shippingAddress;
-
-    @SerializedName("billingAddress")
-    @Expose
-    private Address billingAddress;
-
-    @SerializedName("orderInfo")
-    @Expose
-    private OrderInfo orderInfo;
+    private String userId;
 
     @SerializedName("promotion_id")
     @Expose
-    private Integer promotionId;
+    private String promoId;
+
+    @SerializedName("shipping_address_id")
+    @Expose
+    private String shipAddressId;
+
+    @SerializedName("mail_address_id")
+    @Expose
+    private String mailAddressId;
 
 
-    //setters and getters
-    public int getOrderId() {
+    @SerializedName("date")
+    @Expose
+    private Date date;
+
+
+    @SerializedName("shipped_status")
+    @Expose
+    private String shippedStatus;
+
+
+    @SerializedName("total")
+    @Expose
+    private String total;
+
+
+    @SerializedName("user")
+    @Expose
+    private User user;
+
+    @SerializedName("shipping_address")
+    @Expose
+    private Address shipAddress;
+
+
+    @SerializedName("mail_address")
+    @Expose
+    private Address mailAddress;
+
+    @SerializedName("products")
+    @Expose
+    private List<CartProducts> products;
+
+    public Order(String orderId, String userId, String promoId, String shipAddressId, String mailAddressId, Date date, String shippedStatus, String total, User user, Address shipAddress, Address mailAddress, List<CartProducts> products) {
+        this.orderId = orderId;
+        this.userId = userId;
+        this.promoId = promoId;
+        this.shipAddressId = shipAddressId;
+        this.mailAddressId = mailAddressId;
+        this.date = date;
+        this.shippedStatus = shippedStatus;
+        this.total = total;
+        this.user = user;
+        this.shipAddress = shipAddress;
+        this.mailAddress = mailAddress;
+        this.products = products;
+    }
+
+    public String getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(int orderId) {
+    public void setOrderId(String orderId) {
         this.orderId = orderId;
     }
 
-    public int getUesrId() {
-        return uesrId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUesrId(int uesrId) {
-        this.uesrId = uesrId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public Date getOrderDate() {
-        return orderDate;
+    public String getPromoId() {
+        return promoId;
     }
 
-    public void setOrderDate(Date orderDate) {
-        this.orderDate = orderDate;
+    public void setPromoId(String promoId) {
+        this.promoId = promoId;
     }
 
-    public Date getShipDate() {
-        return shipDate;
+    public String getShipAddressId() {
+        return shipAddressId;
     }
 
-    public void setShipDate(Date shipDate) {
-        this.shipDate = shipDate;
+    public void setShipAddressId(String shipAddressId) {
+        this.shipAddressId = shipAddressId;
     }
 
-    public String getOrderStatus() {
-        return orderStatus;
+    public String getMailAddressId() {
+        return mailAddressId;
     }
 
-    public void setOrderStatus(String orderStatus) {
-        this.orderStatus = orderStatus;
+    public void setMailAddressId(String mailAddressId) {
+        this.mailAddressId = mailAddressId;
     }
 
-    public String getShipStatus() {
-        return shipStatus;
+    public Date getDate() {
+        return date;
     }
 
-    public void setShipStatus(String shipStatus) {
-        this.shipStatus = shipStatus;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
-    public String getPaymentType() {
-        return paymentType;
+    public String getShippedStatus() {
+        return shippedStatus;
     }
 
-    public void setPaymentType(String paymentType) {
-        this.paymentType = paymentType;
+    public void setShippedStatus(String shippedStatus) {
+        this.shippedStatus = shippedStatus;
     }
 
-    public Address getShippingAddress() {
-        return shippingAddress;
+    public String getTotal() {
+        return total;
     }
 
-    public void setShippingAddress(Address shippingAddress) {
-        this.shippingAddress = shippingAddress;
+    public void setTotal(String total) {
+        this.total = total;
     }
 
-    public Address getBillingAddress() {
-        return billingAddress;
+    public User getUser() {
+        return user;
     }
 
-    public void setBillingAddress(Address billingAddress) {
-        this.billingAddress = billingAddress;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public OrderInfo getOrderInfo() {
-        return orderInfo;
+    public Address getShipAddress() {
+        return shipAddress;
     }
 
-    public void setOrderInfo(OrderInfo orderInfo) {
-        this.orderInfo = orderInfo;
+    public void setShipAddress(Address shipAddress) {
+        this.shipAddress = shipAddress;
+    }
+
+    public Address getMailAddress() {
+        return mailAddress;
+    }
+
+    public void setMailAddress(Address mailAddress) {
+        this.mailAddress = mailAddress;
+    }
+
+    public List<CartProducts> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<CartProducts> products) {
+        this.products = products;
     }
 }

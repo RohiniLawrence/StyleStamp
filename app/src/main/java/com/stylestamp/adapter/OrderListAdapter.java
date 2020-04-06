@@ -38,8 +38,8 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
     @Override
     public void onBindViewHolder(@NonNull OrderListAdapter.MyViewHolder holder, final int position) {
 
-        holder.statusTV.setText(orderList.get(position).getOrderStatus());
-        holder.orderIdTV.setText(String.valueOf( orderList.get(position).getOrderId() ));
+        holder.statusTV.setText(orderList.get(position).getShippedStatus());
+        holder.orderIdTV.setText(String.valueOf( orderList.get(position).getOrderId()));
         holder.dateOrderedTV.setText("Not Available");
         holder.viewDetailsTV.setOnClickListener(new View.OnClickListener() {
             @Override

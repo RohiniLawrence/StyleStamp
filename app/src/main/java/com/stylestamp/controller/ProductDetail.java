@@ -85,27 +85,7 @@ public class ProductDetail extends Fragment {
         String productId = getArguments().getString("productID");
         ArrayList<Product> products = new ArrayList<>();
 
-        sp = getActivity().getSharedPreferences("mp", 0);
-        String email=sp.getString("email",null);
-        if(email!=null)
-        {
-            signedIn=true;
-        }
-        else
-        {
-            signedIn=false;
-        }
 
-        if(!signedIn)
-        {
-            NotSignedInFragment notSignedIn = new NotSignedInFragment();
-            Bundle args = new Bundle();
-            args.putString("Fragment", "addToCart");
-            notSignedIn.setArguments(args);
-            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, notSignedIn).addToBackStack(null).commit();
-
-        }
-        else {
             ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
             String unm = "admin";
             String pwd = "1234";
@@ -126,6 +106,7 @@ public class ProductDetail extends Fragment {
                         Product product = productResponse.getProduct();
                         name.setText(product.getProductName());
                         price.setText(product.getPrice());
+                        
                         description.setText(product.getDescription());
                     } else {
                         Log.e("res-newarr-mes", response.message());
@@ -142,7 +123,31 @@ public class ProductDetail extends Fragment {
             addToCart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //add to Cart
+                    sp = getActivity().getSharedPreferences("mp", 0);
+                    String email=sp.getString("email",null);
+                    if(email!=null)
+                    {
+                        signedIn=true;
+                    }
+                    else
+                    {
+                        signedIn=false;
+                    }
+
+                    if(!signedIn)
+                    {
+                        NotSignedInFragment notSignedIn = new NotSignedInFragment();
+                        Bundle args = new Bundle();
+                        args.putString("Fragment", "addToCart");
+                        notSignedIn.setArguments(args);
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, notSignedIn).addToBackStack(null).commit();
+
+                    }
+                    else {
+
+                        //add to Cart
+                    }
+
                 }
             });
 
@@ -151,7 +156,7 @@ public class ProductDetail extends Fragment {
             final RelatedProductsAdapter relatedProductsAdapter = new RelatedProductsAdapter(getActivity(), products);
             recyclerViewRelatedProduct.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
             recyclerViewRelatedProduct.setAdapter(relatedProductsAdapter);
-        }
+
         return view;
     }
 }

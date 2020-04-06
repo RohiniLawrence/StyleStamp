@@ -7,17 +7,17 @@ import java.util.Date;
 
 public class Address {
 
-    @SerializedName("addressId")
+    @SerializedName("address_id")
     @Expose
-    private int addressId;
+    private String addressId;
 
     @SerializedName("street")
     @Expose
-    private int street;
+    private String street;
 
-    @SerializedName("civicNo")
+    @SerializedName("civil_No")
     @Expose
-    private int civicNo;
+    private String civicNo;
 
     @SerializedName("city")
     @Expose
@@ -31,61 +31,35 @@ public class Address {
     @Expose
     private String country;
 
-    @SerializedName("postalCode")
+    @SerializedName("postal_code")
     @Expose
     private String postalCode;
 
-    @SerializedName("apartmentNumber")
+    @SerializedName("apartment")
     @Expose
     private int apartmentNumber;
 
-    @SerializedName("addressStatus")
-    @Expose
-    private String status;
-
-    @SerializedName("addressType")
-    @Expose
-    private String addressType;
-
-    @SerializedName("createdDate")
-    @Expose
-    private Date createdDate;
-
-    @SerializedName("createdBy")
-    @Expose
-    private int createdBy;
-
-    @SerializedName("modifiedDate")
-    @Expose
-    private Date modifiedDate;
-
-    @SerializedName("modifiedBy")
-    @Expose
-    private int modifiedBy;
-
-    //setters and getters
-
-    public int getAddressId() {
+    public String getAddressId() {
         return addressId;
     }
 
-    public void setAddressId(int addressId) {
+    public void setAddressId(String addressId) {
         this.addressId = addressId;
     }
 
-    public int getStreet() {
+    public String getStreet() {
         return street;
     }
 
-    public void setStreet(int street) {
+    public void setStreet(String street) {
         this.street = street;
     }
 
-    public int getCivicNo() {
+    public String getCivicNo() {
         return civicNo;
     }
 
-    public void setCivicNo(int civicNo) {
+    public void setCivicNo(String civicNo) {
         this.civicNo = civicNo;
     }
 
@@ -129,51 +103,14 @@ public class Address {
         this.apartmentNumber = apartmentNumber;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getAddressType() {
-        return addressType;
-    }
-
-    public void setAddressType(String addressType) {
-        this.addressType = addressType;
-    }
-
-    public Date getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Date createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public int getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(int createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Date getModifiedDate() {
-        return modifiedDate;
-    }
-
-    public void setModifiedDate(Date modifiedDate) {
-        this.modifiedDate = modifiedDate;
-    }
-
-    public int getModifiedBy() {
-        return modifiedBy;
-    }
-
-    public void setModifiedBy(int modifiedBy) {
-        this.modifiedBy = modifiedBy;
+    public Address(String addressId, String street, String civicNo, String city, String state, String country, String postalCode, int apartmentNumber) {
+        this.addressId = addressId;
+        this.street = street;
+        this.civicNo = civicNo;
+        this.city = city;
+        this.state = state;
+        this.country = country;
+        this.postalCode = postalCode;
+        this.apartmentNumber = apartmentNumber;
     }
 }
