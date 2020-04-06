@@ -2,22 +2,23 @@ package com.stylestamp.controller;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Base64;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
+import android.widget.SearchView;
+import android.widget.TextView;
+import android.widget.ViewFlipper;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Base64;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.SearchView;
-import android.widget.TextView;
-import android.widget.ViewFlipper;
 
 import com.stylestamp.R;
 import com.stylestamp.adapter.CategoryListAdapter;
@@ -27,17 +28,15 @@ import com.stylestamp.api.ApiInterface;
 import com.stylestamp.model.Category;
 import com.stylestamp.model.Product;
 import com.stylestamp.response.CategoryResponse;
-import com.stylestamp.response.ProductJsonResponse;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Shop extends Fragment {
+public class Shop extends Fragment implements PopupMenu.OnMenuItemClickListener, View.OnClickListener {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private String mParam1;
@@ -52,6 +51,8 @@ public class Shop extends Fragment {
     List<Product> products = new ArrayList<>();
     List<Category> categories = new ArrayList<>();
     int images[] = {R.drawable.banner1, R.drawable.banner1_1, R.drawable.banner3};
+
+    ImageView imgMore;
 
     public static Shop newInstance(String param1, String param2) {
         Shop fragment = new Shop();
@@ -83,6 +84,8 @@ public class Shop extends Fragment {
             flipperImages(image);
         }
         recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
+        imgMore = v.findViewById(R.id.imgMore);
+        imgMore.setOnClickListener(this);
         final RecyclerView recyclerViewNewArrivals = (RecyclerView) v.findViewById(R.id.recyclerView_shop_newArrivals);
 
         TextView viewAll = v.findViewById(R.id.view_all_products);
@@ -137,15 +140,15 @@ public class Shop extends Fragment {
             }
         });
         //______________getting new arrivals_________________
-        Call<ProductJsonResponse> call3 = apiInterface.getAllProducts(authHeader, keyHeader);
-        call3.enqueue(new Callback<ProductJsonResponse>() {
+        Call<List<Product>> call3 = apiInterface.getAllProducts(authHeader, keyHeader);
+        call3.enqueue(new Callback<List<Product>>() {
             @Override
-            public void onResponse(Call<ProductJsonResponse> call3, Response<ProductJsonResponse> response3) {
+            public void onResponse(Call<List<Product>> call3, Response<List<Product>> response3) {
                 if (response3.isSuccessful() && response3.body() != null) {
                     if (!products.isEmpty()) {
                         products.clear();
                     }
-                    products = response3.body().getProducts();
+                    products = response3.body();
                     NewArrivalsAdapter newArrivalsAdapter = new NewArrivalsAdapter(getActivity(), products);
                     recyclerViewNewArrivals.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
                     recyclerViewNewArrivals.setAdapter(newArrivalsAdapter);
@@ -157,7 +160,7 @@ public class Shop extends Fragment {
                 }
             }
             @Override
-            public void onFailure(Call<ProductJsonResponse> call3, Throwable t) {
+            public void onFailure(Call<List<Product>> call3, Throwable t) {
 
                 Log.e("new arrivals fail--", t.toString());
             }
@@ -175,7 +178,7 @@ public class Shop extends Fragment {
     private void initSearchView() {
         searchView.setMaxWidth(Integer.MAX_VALUE);
         // listening to search query text change
-        searchView.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 // filter recycler view when query submitted
@@ -192,9 +195,49 @@ public class Shop extends Fragment {
     }
     public void flipperImages(int image) {
         ImageView imageView = new ImageView(getActivity());
-        imageView.setBackgroundResource(image);
+        //imageView.setBackgroundResource(image);
         viewFlipper.addView(imageView);
         viewFlipper.setFlipInterval(4000);
         viewFlipper.setAutoStart(true);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.imgMore:
+                showMenu(v);
+                break;
+        }
+    }
+
+    private void showMenu(View v) {
+        PopupMenu popup = new PopupMenu(getActivity(),v);
+        popup.setOnMenuItemClickListener(this);// to implement on click event on items of menu
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.shop_option_menu, popup.getMenu());
+        popup.show();
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_return_policy:
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.container, new ReturnPolicyFragment()).commit();
+                return true;
+            case R.id.action_shipping:
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.container, new ShippingFragment()).commit();
+                return true;
+            case R.id.action_privacy:
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.container, new PrivacyPolicyFragment()).commit();
+                return true;
+            case R.id.action_terms_and_condition:
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.container, new TermsAndConditionFragment()).commit();
+                return true;
+            case R.id.action_contact_us:
+                getActivity().getSupportFragmentManager().beginTransaction().add(R.id.container, new ContactUsFragment()).commit();
+                return true;
+            default:
+                return false;
+        }
     }
 }

@@ -4,15 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.stylestamp.R;
 
@@ -78,6 +77,21 @@ public class Profile extends Fragment {
            }
        });
 
+       helpAndInfo.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               getActivity().getSupportFragmentManager().beginTransaction().add(R.id.container, new HelpAndInfoFragment()).commit();
+           }
+       });
+
+       myAccButton.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               getActivity().getSupportFragmentManager().beginTransaction().add(R.id.container, new MyAccountFragment()).commit();
+           }
+       });
         return v;
     }
+
+
 }

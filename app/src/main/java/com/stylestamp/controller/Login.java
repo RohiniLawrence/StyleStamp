@@ -1,6 +1,5 @@
 package com.stylestamp.controller;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,12 +16,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.stylestamp.MainActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.stylestamp.R;
 import com.stylestamp.api.ApiClient;
-import com.stylestamp.api.ApiInterface;
 import com.stylestamp.api.LoginService;
+import com.stylestamp.model.User;
 import com.stylestamp.response.JsonResponse;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -33,12 +34,18 @@ public class Login extends AppCompatActivity {
     EditText et_Pass;
     Button loginSub,btnSignup;
     String userEmail,userPassword;
-    Retrofit retrofit=ApiClient.getClient();
+    Retrofit retrofit= ApiClient.getClient();
     TextView skip,forgetpassword;
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        sharedPreferences = getSharedPreferences(
+                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
 
         btnSignup=findViewById(R.id.btnSignup);
         loginSub = findViewById(R.id.btn_login);
@@ -49,9 +56,6 @@ public class Login extends AppCompatActivity {
         skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SharedPreferences pref = getApplicationContext().getSharedPreferences("mp", 0);
-                SharedPreferences.Editor editor = pref.edit();
-                editor.putString("email",null);
                 Intent in = new Intent(Login.this, Home.class);
                 startActivity(in);
             }
@@ -107,7 +111,7 @@ public class Login extends AppCompatActivity {
         return false;
     }
 
-    private void executeAuthenticateUser(String email,String password){//send request to base_url with necessary header authentication keys and parameters
+    /*private void executeAuthenticateUser(String email,String password){//send request to base_url with necessary header authentication keys and parameters
         LoginService loginService=retrofit.create(LoginService.class);
         String unm="admin";
         String pwd="1234";
@@ -132,10 +136,10 @@ public class Login extends AppCompatActivity {
                         SharedPreferences pref = getApplicationContext().getSharedPreferences("mp", 0); // 0 - for private mode
                         Intent intent=new Intent(Login.this,Home.class);
                         SharedPreferences.Editor editor = pref.edit();
-                        editor.putString("email",jsonResponse.getUser().getEmail());
                         editor.putString("uid", jsonResponse.getUser().getUserId());
                         editor.putString("first name",jsonResponse.getUser().getFirstName());
                         editor.putString("last name",jsonResponse.getUser().getLastName());
+                        editor.putString("email",jsonResponse.getUser().getEmail());
                         editor.putString("password",jsonResponse.getUser().getPassword());
                         editor.commit();
                         startActivity(intent);
@@ -151,6 +155,66 @@ public class Login extends AppCompatActivity {
             @Override
             public void onFailure(Call<JsonResponse> call, Throwable t) {
                 Toast.makeText(getApplicationContext(),"problem while retrieving data from server ",Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+     */
+
+    private void executeAuthenticateUser(String email,String password){
+        LoginService loginService=retrofit.create(LoginService.class);
+        String unm="admin";
+        String pwd="1234";
+        String base=unm+":"+pwd;
+        String keyHeader="stylestamp@123";
+        String authHeader="Basic "+ Base64.encodeToString(base.getBytes(),Base64.NO_WRAP);
+
+        Call<JsonResponse> call=loginService.basicLogin(keyHeader,authHeader,email,password);
+
+//                Call<User> call=loginService.basicLogin("jeelg46@gmail.com","12345678");
+        call.enqueue(new Callback<JsonResponse>() {
+            @Override
+            public void onResponse(Call<JsonResponse> call, Response<JsonResponse> response) {
+                Log.e("login-res",response.message());
+
+                if(response.body() != null) {
+                    int status = response.body().getStatus();
+
+//                    Log.e("status",String.valueOf(status));
+//                    Log.e("name",response.body().user.getFirstName()+" "+response.body().user.getLastName());
+//                    Log.e("email",response.body().user.getEmail());
+
+                    if (status == 0) {
+                        Toast.makeText(Login.this, "Invalid Credential", Toast.LENGTH_SHORT).show();
+
+                    } else if (status == 2) {
+                        Toast.makeText(Login.this, "Login Unsuccessful.", Toast.LENGTH_SHORT).show();
+
+                    } else if (status == 1) {
+                        Toast.makeText(Login.this, "Login Successful.", Toast.LENGTH_SHORT).show();
+
+                        User loginUser = response.body().user;
+
+                        editor.putString("userId","" + loginUser.getUserId());
+                        editor.putString("email",""+ loginUser.getEmail());
+                        editor.putString("firstName",""+ loginUser.getFirstName());
+                        editor.putString("lastName",""+ loginUser.getLastName());
+                        editor.putString("contact",""+ loginUser.getContact());
+                        editor.putString("dateOfBirth",""+ loginUser.getDateOfBirth());
+                        editor.putString("gender",""+ loginUser.getGender());
+                        editor.commit();
+
+                        startActivity(new Intent(Login.this, Home.class));
+                        finish();
+
+                    } else {
+                        Toast.makeText(Login.this, "Something Went Wrong.", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            }
+            @Override
+            public void onFailure(Call<JsonResponse> call, Throwable t) {
+
             }
         });
     }

@@ -1,5 +1,7 @@
 package com.stylestamp.controller;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -27,6 +28,9 @@ public class CheckOut extends Fragment {
 
     private EditText editName, editEmail, editphonenumber, editDeliveryInfo, edittxtPaymentInfo, editAddress;
     private CheckBox chkDeliveryMethod;
+
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
     public CheckOut() {
         // Required empty public constructor
@@ -48,7 +52,18 @@ public class CheckOut extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_checkout, container, false);
 
-        User user = new User("1","12345678","priyank@gmail.com","Priyank","Patel","1234567890","10/10/1990","male");
+        sharedPreferences = getActivity().getSharedPreferences(
+                getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+
+        User user = new User("" + sharedPreferences.getString("userId",""),
+                "",
+                "" + sharedPreferences.getString("email",""),
+                "" + sharedPreferences.getString("firstName",""),
+                "" + sharedPreferences.getString("lastName",""),
+                "" + sharedPreferences.getString("contact",""),
+                "" + sharedPreferences.getString("dateOfBirth",""),
+                "" + sharedPreferences.getString("gender",""));
 
         btnPurchase = rootView.findViewById(R.id.btnPurchase);
 

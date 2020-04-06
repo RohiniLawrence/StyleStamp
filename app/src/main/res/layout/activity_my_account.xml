@@ -3,7 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:clickable="true"
+
+    >
 
     <TextView
         android:id="@+id/txtName"
@@ -23,7 +27,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:hint="John Doe"
-        android:inputType="textWebPassword"
+        android:inputType="textPersonName"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
@@ -49,7 +53,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:hint="example@example.com"
-        android:inputType="textWebPassword"
+        android:inputType="textEmailAddress"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
@@ -74,7 +78,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:hint="1352153136"
-        android:inputType="textWebPassword"
+        android:inputType="text|phone"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
@@ -99,7 +103,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:hint="2100 bubenpark  xkknm njncdmncmnj nm"
-        android:inputType="textWebPassword"
+        android:inputType="text"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
@@ -124,7 +128,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:hint="VISA  ending in 8950"
-        android:inputType="textWebPassword"
+        android:inputType="text"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
