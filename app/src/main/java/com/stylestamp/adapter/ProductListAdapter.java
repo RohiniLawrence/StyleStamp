@@ -53,7 +53,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
 
         holder.productTitle.setText(arrProductListFiltered.get(position).getProductName());
-        holder.productPrice.setText(String.valueOf(arrProductListFiltered.get(position).getPrice()));
+      holder.productPrice.setText(String.valueOf(arrProductListFiltered.get(position).getPrice()));
 
        // Picasso.get().load( arrProductListFiltered.get(position).getImages().get(0).getUrl()).into(holder.productImage);
         holder.productCardView.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +63,7 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
                 AppCompatActivity activity = (AppCompatActivity) context;
                 ProductDetail productDetailFragment = new ProductDetail();
                 Bundle args = new Bundle();
-                args.putString("productID", arrProductListFiltered.get(position).getProductId());
+                args.putString("productID", arrProductListFiltered.get(position).getProductID());
                 productDetailFragment.setArguments(args);
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, productDetailFragment).addToBackStack(null).commit();
             }
@@ -107,10 +107,10 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
                         // name match condition. this might differ depending on your requirement
                         // here we are looking for name or phone number match
-                        if (row.getProductName().toLowerCase().contains(charString.toLowerCase()) || row.getProductName().contains(charSequence)) {
-                            filteredList.add(row);
-                        }
-                    }
+//                        if (row.getProductName().toLowerCase().contains(charString.toLowerCase()) || row.getProductName().contains(charSequence)) {
+//                            filteredList.add(row);
+//                        }
+                    }//:(
 
                     arrProductListFiltered = filteredList;
                 }

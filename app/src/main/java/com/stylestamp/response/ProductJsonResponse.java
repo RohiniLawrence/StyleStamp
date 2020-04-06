@@ -56,7 +56,7 @@ import java.util.List;
     }
 }
  */
-public class ProductResponse {
+public class ProductJsonResponse {
     @SerializedName("status")
     @Expose
     public int status;
@@ -64,14 +64,15 @@ public class ProductResponse {
     @SerializedName("message")
     @Expose
     public String message;
-        @SerializedName("product")
-        @Expose
-        public Product product;
+    @SerializedName("product")
+    @Expose
 
-    public ProductResponse(int status, String message, Product product) {
+    public List<Product> products;
+
+    public ProductJsonResponse(int status, String message, List<Product> products) {
         this.status = status;
         this.message = message;
-        this.product = product;
+        this.products = products;
     }
 
     public int getStatus() {
@@ -90,16 +91,12 @@ public class ProductResponse {
         this.message = message;
     }
 
-//    public Product getProducts() {
-//        return products;
-//    }
-//
-//    public void setProducts(Product products) {
-//        this.products = products;
-//    }
+    public List<Product> getProducts() {
+        return products;
+    }
 
-    public Product getProduct() {
-        return product;
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 }
 

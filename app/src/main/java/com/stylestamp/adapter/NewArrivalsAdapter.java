@@ -1,6 +1,7 @@
 package com.stylestamp.adapter;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,21 +39,23 @@ public class NewArrivalsAdapter extends RecyclerView.Adapter<NewArrivalsAdapter.
     public NewArrivalsAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        view = layoutInflater.inflate(R.layout.new_arrivals_related_products_card, parent,false);
+        view = layoutInflater.inflate(R.layout.new_arrivals_related_products_card, parent, false);
         return new NewArrivalsAdapter.MyViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull NewArrivalsAdapter.MyViewHolder holder, final int position) {
-
-//        holder.productTitle.setText(products.get(position).getProductName());
-//        holder.productPrice.setText(String.valueOf(products.get(position).getPrice()));
-        //holder.productImage.setImageResource(arrProductListFiltered.get(position).getImages().get(0));
+// productResponse class only? no product list adapter
+        holder.productTitle.setText(products.get(position).getProductName());
+        holder.productPrice.setText(String.valueOf(products.get(position).getPrice()));
         holder.productCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AppCompatActivity activity = (AppCompatActivity) context;
                 ProductDetail productDetailFragment = new ProductDetail();
+                Bundle args = new Bundle();
+                args.putString("productID", products.get(position).getProductID());
+                productDetailFragment.setArguments(args);
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, productDetailFragment).addToBackStack(null).commit();
             }
         });
@@ -61,20 +64,21 @@ public class NewArrivalsAdapter extends RecyclerView.Adapter<NewArrivalsAdapter.
 
     @Override
     public int getItemCount() {
-        if(products.size()<=10){
-        return products.size();}
-        else {
+        if (products.size() <= 10) {
+            return products.size();
+        } else {
             return 10;
         }
 
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder{
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView productTitle , productPrice;
+        TextView productTitle, productPrice;
         ImageView productImage;
         CardView productCardView;
-        public MyViewHolder(View itemView){
+
+        public MyViewHolder(View itemView) {
             super(itemView);
             productTitle = (TextView) itemView.findViewById(R.id.productTitle_newAV);
             productPrice = (TextView) itemView.findViewById(R.id.productPrice_newAV);

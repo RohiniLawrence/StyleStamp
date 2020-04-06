@@ -2,6 +2,7 @@ package com.stylestamp.adapter;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +41,9 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.MyView
     private Product productn;
     ProductResponse product;
     Dialog dialog;
+    SharedPreferences pref;
+    double total;
+
 
 
     public CartListAdapter(Context context, ArrayList<CartProducts> cartProducts) {
@@ -70,6 +75,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.MyView
                 dialog.dismiss();
             }
         });
+
         return new MyViewHolder(view);
     }
 
@@ -80,6 +86,8 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.MyView
         String base = unm + ":" + pwd;
         String keyHeader = "stylestamp@123";
         String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP);
+
+
 
 
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
@@ -94,9 +102,15 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.MyView
                     product = response.body();
 //                        int size=product.getProducts().size();
                     //                    Picasso.get().load( product.getImages().get(0).getUrl()).into(holder.productImage);
-                    holder.productTitle.setText(String.valueOf(product.getProducts().getProductName()));
-                    holder.productPrice.setText(String.valueOf(product.getProducts().getPrice()));
-                    holder.productID.setText(String.valueOf(product.getProducts().getProductID()));
+                    holder.productTitle.setText(String.valueOf(product.getProduct().getProductName()));
+                    holder.productPrice.setText(String.valueOf(product.getProduct().getPrice()));
+                    holder.productID.setText(String.valueOf(product.getProduct().getProductID()));
+                    pref = context.getSharedPreferences("mp", 0);
+                    total+=(Double.parseDouble(product.getProduct().getPrice()) *Double.parseDouble(cartProducts.get(position).getQuantity()) /*+Double.parseDouble(pref.getString("total", "0")*/);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString("total",String.valueOf(total));
+                    editor.apply();
+                    Log.e("total", String.valueOf(total));
 
                 }
                 else{
@@ -114,7 +128,6 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.MyView
 
         });
 
-
         holder.quantity.setText(cartProducts.get(position).getQuantity());
         holder.size.setText(cartProducts.get(position).getSize());
 //        holder.size.setText(cartProducts.get(position).getColor());
@@ -123,7 +136,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.MyView
             @Override
             public void onClick(View v) {
                 //write more code here afterwards *#*#
-              }
+            }
         });
 
         holder.editCartItem.setOnClickListener(new View.OnClickListener() {

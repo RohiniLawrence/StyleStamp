@@ -49,6 +49,9 @@ public class Login extends AppCompatActivity {
         skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SharedPreferences pref = getApplicationContext().getSharedPreferences("mp", 0);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.putString("email",null);
                 Intent in = new Intent(Login.this, Home.class);
                 startActivity(in);
             }
@@ -129,10 +132,10 @@ public class Login extends AppCompatActivity {
                         SharedPreferences pref = getApplicationContext().getSharedPreferences("mp", 0); // 0 - for private mode
                         Intent intent=new Intent(Login.this,Home.class);
                         SharedPreferences.Editor editor = pref.edit();
+                        editor.putString("email",jsonResponse.getUser().getEmail());
                         editor.putString("uid", jsonResponse.getUser().getUserId());
                         editor.putString("first name",jsonResponse.getUser().getFirstName());
                         editor.putString("last name",jsonResponse.getUser().getLastName());
-                        editor.putString("email",jsonResponse.getUser().getEmail());
                         editor.putString("password",jsonResponse.getUser().getPassword());
                         editor.commit();
                         startActivity(intent);

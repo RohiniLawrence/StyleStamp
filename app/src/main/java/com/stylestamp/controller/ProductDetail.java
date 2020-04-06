@@ -1,6 +1,7 @@
 package com.stylestamp.controller;
 
 import android.animation.ArgbEvaluator;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,19 +9,31 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.stylestamp.R;
 import com.stylestamp.adapter.NewArrivalsAdapter;
 import com.stylestamp.adapter.ProductDetailImagesListAdapter;
 import com.stylestamp.adapter.RelatedProductsAdapter;
+import com.stylestamp.api.ApiClient;
+import com.stylestamp.api.ApiInterface;
 import com.stylestamp.model.Category;
 import com.stylestamp.model.Product;
+import com.stylestamp.response.ProductJsonResponse;
+import com.stylestamp.response.ProductResponse;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ProductDetail extends Fragment {
     private static final String ARG_PARAM1 = "param1";
@@ -34,19 +47,13 @@ public class ProductDetail extends Fragment {
     public ProductDetail(String productID) {
         this.productID = productID;
     }
-
-
-
-
+    SharedPreferences sp;
+    SharedPreferences.Editor editor;
+    boolean signedIn;
     ViewPager viewPager;
     ProductDetailImagesListAdapter proAdapter;
     int productImages[] = new int[]{R.drawable.banner3, R.drawable.banner1_1, R.drawable.banner1};
-
-    public ProductDetail() {
-
-    }
-
-
+    public ProductDetail() { }
     public static ProductDetail newInstance(String param1, String param2) {
         ProductDetail fragment = new ProductDetail();
         Bundle args = new Bundle();
@@ -55,7 +62,6 @@ public class ProductDetail extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,48 +69,89 @@ public class ProductDetail extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-
         View view = inflater.inflate(R.layout.fragment_product_detail, container, false);
+        final TextView name = view.findViewById(R.id.pro_name_txt);
+        final TextView price = view.findViewById(R.id.price_text);
+        final TextView description = view.findViewById(R.id.description_text);
         proAdapter = new ProductDetailImagesListAdapter(productImages, this.getActivity());
         viewPager = view.findViewById(R.id.proDetViewPager);
         viewPager.setAdapter(proAdapter);
         ArrayList<Category> categories = new ArrayList<>();
         String productId = getArguments().getString("productID");
         ArrayList<Product> products = new ArrayList<>();
-/*
-        products.add(new Product(0, 1, 0, 0, 0, "xyz", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
-        products.add(new Product(1, 1, 0, 0, 0, "abc", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
-        products.add(new Product(2, 1, 0, 0, 0, "asdas", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
-        products.add(new Product(3, 1, 0, 0, 0, "xaxa", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
-        products.add(new Product(0, 1, 0, 0, 0, "xyz", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
-        products.add(new Product(1, 1, 0, 0, 0, "abc", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
-        products.add(new Product(2, 1, 0, 0, 0, "asdas", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
-        products.add(new Product(3, 1, 0, 0, 0, "xaxa", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
-        products.add(new Product(0, 1, 0, 0, 0, "xyz", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
-        products.add(new Product(1, 1, 0, 0, 0, "abc", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
-        products.add(new Product(2, 1, 0, 0, 0, "asdas", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
-        products.add(new Product(3, 1, 0, 0, 0, "xaxa", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
-        products.add(new Product(0, 1, 0, 0, 0, "xyz", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));
 
-*/
+        sp = getActivity().getSharedPreferences("mp", 0);
+        String email=sp.getString("email",null);
+        if(email!=null)
+        {
+            signedIn=true;
+        }
+        else
+        {
+            signedIn=false;
+        }
+
+        if(!signedIn)
+        {
+            NotSignedInFragment notSignedIn = new NotSignedInFragment();
+            Bundle args = new Bundle();
+            args.putString("Fragment", "addToCart");
+            notSignedIn.setArguments(args);
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, notSignedIn).addToBackStack(null).commit();
+
+        }
+        else {
+            ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+            String unm = "admin";
+            String pwd = "1234";
+            String base = unm + ":" + pwd;
+            String keyHeader = "stylestamp@123";
+
+            //basic authentication encryption to BASE64
+            String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP);
+
+            Call<ProductResponse> callProducts = apiInterface.getProductById(authHeader, keyHeader, productId);
+            Log.i("Calling:", "Products");
+            callProducts.enqueue(new Callback<ProductResponse>() {
+                @Override
+                public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
+                    if (response.body() != null) {
+                        Log.i("products to string:", response.toString());
+                        ProductResponse productResponse = response.body();
+                        Product product = productResponse.getProduct();
+                        name.setText(product.getProductName());
+                        price.setText(product.getPrice());
+                        description.setText(product.getDescription());
+                    } else {
+                        Log.e("res-newarr-mes", response.message());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ProductResponse> call, Throwable t) {
+                    Log.e("Products fail", "-------fail");
+                    Log.e("res-newarr-body", t.getMessage());
+                }
+            });
+            Button addToCart = view.findViewById(R.id.add_to_cart_button);
+            addToCart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //add to Cart
+                }
+            });
 
 
-
-
-
-
-        RecyclerView recyclerViewRelatedProduct = (RecyclerView) view.findViewById(R.id.recyclerView_shop_relatedProducts);
-        final RelatedProductsAdapter relatedProductsAdapter = new RelatedProductsAdapter(getActivity(), products);
-        recyclerViewRelatedProduct.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-        recyclerViewRelatedProduct.setAdapter(relatedProductsAdapter);
-
+            RecyclerView recyclerViewRelatedProduct = (RecyclerView) view.findViewById(R.id.recyclerView_shop_relatedProducts);
+            final RelatedProductsAdapter relatedProductsAdapter = new RelatedProductsAdapter(getActivity(), products);
+            recyclerViewRelatedProduct.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+            recyclerViewRelatedProduct.setAdapter(relatedProductsAdapter);
+        }
         return view;
     }
 }

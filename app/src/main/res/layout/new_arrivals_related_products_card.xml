@@ -5,8 +5,8 @@
     android:orientation="vertical"
     android:clickable="true"
     android:foreground="?android:selectableItemBackground"
-    android:layout_width="100dp"
-    android:layout_height="150dp"
+    android:layout_width="140dp"
+    android:layout_height="160dp"
     android:layout_margin="10dp"
     app:cardCornerRadius="17dp"
     >
@@ -20,7 +20,7 @@
         <ImageView
             android:id="@+id/productImage_newAV"
             android:layout_width="match_parent"
-            android:layout_height="160dp"
+            android:layout_height="130dp"
             android:scaleType="centerCrop"
             android:src="@drawable/tshirt"
             />

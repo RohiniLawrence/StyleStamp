@@ -50,7 +50,7 @@ public class OrderDetailListAdapter extends RecyclerView.Adapter<OrderDetailList
             @Override
             public void onClick(View v) {
                 AppCompatActivity activity = (AppCompatActivity) context;
-                ProductDetail productDetailFragment = new ProductDetail(products.get(position).getProductId());
+                ProductDetail productDetailFragment = new ProductDetail(products.get(position).getProductID());
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, productDetailFragment).addToBackStack(null).commit();
             }
         });

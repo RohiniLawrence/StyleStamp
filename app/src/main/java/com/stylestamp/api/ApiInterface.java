@@ -7,6 +7,7 @@ import com.stylestamp.model.Product;
 import com.stylestamp.response.CartJasonResponse;
 import com.stylestamp.response.CategoryResponse;
 import com.stylestamp.response.OrderHistoryJsonResponse;
+import com.stylestamp.response.ProductJsonResponse;
 import com.stylestamp.response.ProductResponse;
 import com.stylestamp.response.SubCategoryResponse;
 
@@ -47,7 +48,7 @@ public interface ApiInterface {
     );
 
     //order history..
-    @GET("orderHistory/")
+    @GET("orderHistory/{id}")
     Call<OrderHistoryJsonResponse> getOrderHistory(
 
             @Header("Authorization") String credential,
@@ -64,8 +65,8 @@ public interface ApiInterface {
             @Path("userid") String userId
     );
 
-    @GET("productapi/")
-    Call<List<Product>> getAllProducts(
+    @GET("product/")
+    Call<ProductJsonResponse> getProducts(
             @Header("Authorization") String credential,
             @Header("X-API-KEY") String key
     );
