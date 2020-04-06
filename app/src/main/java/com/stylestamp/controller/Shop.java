@@ -3,6 +3,7 @@ package com.stylestamp.controller;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.stylestamp.R;
@@ -82,6 +84,18 @@ public class Shop extends Fragment {
         recyclerView = (RecyclerView) v.findViewById(R.id.recyclerView);
         final RecyclerView recyclerViewNewArrivals = (RecyclerView) v.findViewById(R.id.recyclerView_shop_newArrivals);
 
+        TextView viewAll = v.findViewById(R.id.view_all_products);
+        viewAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProductFragment productFragment = new ProductFragment();
+                Bundle args = new Bundle();
+                args.putString("CategoryID", "all");
+                productFragment.setArguments(args);
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container, productFragment).addToBackStack(null).commit();
+
+            }
+        });
         searchView = v.findViewById(R.id.searchView);
         final ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         String unm = "admin";
@@ -102,7 +116,9 @@ public class Shop extends Fragment {
                         categories.clear();
                     }
 
+
                     categories = response.body().getCategories();
+
                     categoryListAdapter = new CategoryListAdapter(getActivity(), categories);
                     recyclerView.setAdapter(categoryListAdapter);
                     categoryListAdapter.notifyDataSetChanged();
@@ -120,7 +136,7 @@ public class Shop extends Fragment {
             }
         });
         //______________getting new arrivals_________________
-        Call<List<Product>> call3 = apiInterface.getProducts(authHeader, keyHeader);
+        Call<List<Product>> call3 = apiInterface.getAllProducts(authHeader, keyHeader);
         call3.enqueue(new Callback<List<Product>>() {
             @Override
             public void onResponse(Call<List<Product>> call3, Response<List<Product>> response3) {

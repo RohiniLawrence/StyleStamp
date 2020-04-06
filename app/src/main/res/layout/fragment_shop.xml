@@ -57,6 +57,12 @@
             android:layout_marginRight="10dp"
             app:cardCornerRadius="20dp">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -72,6 +78,19 @@
                     android:overScrollMode="never"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
             </FrameLayout>
+                <TextView
+                    android:id="@+id/view_all_products"
+                    android:text="View All Products"
+                    android:clickable="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="35dp"
+                    android:layout_weight="1"/>
+            </LinearLayout>
         </androidx.cardview.widget.CardView>
 
 

@@ -40,8 +40,6 @@ public class ProductDetail extends Fragment {
 
     ViewPager viewPager;
     ProductDetailImagesListAdapter proAdapter;
-    Integer[] colors = null;
-    ArgbEvaluator argbEvaluator = new ArgbEvaluator();
     int productImages[] = new int[]{R.drawable.banner3, R.drawable.banner1_1, R.drawable.banner1};
 
     public ProductDetail() {
@@ -78,10 +76,7 @@ public class ProductDetail extends Fragment {
         viewPager = view.findViewById(R.id.proDetViewPager);
         viewPager.setAdapter(proAdapter);
         ArrayList<Category> categories = new ArrayList<>();
-     /*   categories.add(new Category(0,"Men","dasdas", "null"));
-        categories.add(new Category(0,"Women","dasdas", "null"));
-        categories.add(new Category(0,"Kids","dasdas", "null"));
-        categories.add(new Category(0,"Home","dasdas", "null"));*/
+        String productId = getArguments().getString("productID");
         ArrayList<Product> products = new ArrayList<>();
 /*
         products.add(new Product(0, 1, 0, 0, 0, "xyz", "oh what a great clothing piece this is......sdsasdasdasda....asdasd", "fsdf132", "dasads", 49.99, 1,  categories.get(0)));

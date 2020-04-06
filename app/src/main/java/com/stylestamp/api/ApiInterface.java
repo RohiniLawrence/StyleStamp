@@ -63,8 +63,8 @@ public interface ApiInterface {
             @Path("userid") String userId
     );
 
-    @GET("product/")
-    Call<List<Product>> getProducts(
+    @GET("productapi/")
+    Call<List<Product>> getAllProducts(
             @Header("Authorization") String credential,
             @Header("X-API-KEY") String key
     );

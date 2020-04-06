@@ -4,9 +4,11 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,7 +74,6 @@ public class ProductFragment extends Fragment {
 
 
         products = new ArrayList<>();
-        String categoryId = getArguments().getString("CategoryID");
         final RecyclerView recyclerView = (RecyclerView) v.findViewById(R.id.productRecyclerView);
 
 
@@ -82,48 +83,99 @@ public class ProductFragment extends Fragment {
         String keyHeader = "stylestamp@123";
         String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP);
 
-
-        //___________GETTING PRODUCTS_________________
-
+        String categoryId = getArguments().getString("CategoryID");
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<List<Product>> call = apiInterface.getProductByCategoryId(authHeader, keyHeader, "3");
 
-        call.enqueue(new Callback<List<Product>>() {
-            @Override
-            public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
-                if(response.isSuccessful() && response.body() != null ){
-                    products = response.body();
-                    final ProductListAdapter productListAdapter = new ProductListAdapter(getActivity(), products);
-                    recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-                    recyclerView.setAdapter(productListAdapter);
-
-                    // listening to search query text change
-                    searchView.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
-                        @Override
-                        public boolean onQueryTextSubmit (String query){
-                            // filter recycler view when query submitted
-                            productListAdapter.getFilter().filter(query);
-                            return false;
+        if(categoryId=="all"){
+            //___________GETTING ALL PRODUCTS_________________
+            Call<List<Product>> call3 = apiInterface.getAllProducts(authHeader, keyHeader);
+            call3.enqueue(new Callback<List<Product>>() {
+                @Override
+                public void onResponse(Call<List<Product>> call3, Response<List<Product>> response3) {
+                    if (response3.isSuccessful() && response3.body() != null) {
+                        if (!products.isEmpty()) {
+                            products.clear();
                         }
+                        products = response3.body();
+                        final ProductListAdapter productListAdapter = new ProductListAdapter(getActivity(), products);
+                        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+                        recyclerView.setAdapter(productListAdapter);
 
-                        @Override
-                        public boolean onQueryTextChange (String query){
-                            // filter recycler view when text is changed
-                            productListAdapter.getFilter().filter(query);
-                            return false;
-                        }
-                    });
+                        // listening to search query text change
+                        searchView.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
+                            @Override
+                            public boolean onQueryTextSubmit(String query) {
+                                // filter recycler view when query submitted
+                                productListAdapter.getFilter().filter(query);
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onQueryTextChange(String query) {
+                                // filter recycler view when text is changed
+                                productListAdapter.getFilter().filter(query);
+                                return false;
+                            }
+                        });
+                    }
+                     else {
+                        Log.e("attaching--", "nothing-all pro");
+                        Log.e("all pro--", response3.message());
+                    }
                 }
-                else{
+                @Override
+                public void onFailure(Call<List<Product>> call3, Throwable t) {
+                    Log.e("all pro fail--", t.toString());
+                }
+            });
+
+
+
+
+            //___________GETTING PRODUCTS BY CATEGORY ID_________________
+
+
+            Call<List<Product>> call = apiInterface.getProductByCategoryId(authHeader, keyHeader, categoryId);
+
+            call.enqueue(new Callback<List<Product>>() {
+                @Override
+                public void onResponse(Call<List<Product>> call, Response<List<Product>> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        Log.e("product-res-body", response.body().toString());
+                        products = response.body();
+                        final ProductListAdapter productListAdapter = new ProductListAdapter(getActivity(), products);
+                        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+                        recyclerView.setAdapter(productListAdapter);
+
+                        // listening to search query text change
+                        searchView.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
+                            @Override
+                            public boolean onQueryTextSubmit(String query) {
+                                // filter recycler view when query submitted
+                                productListAdapter.getFilter().filter(query);
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onQueryTextChange(String query) {
+                                // filter recycler view when text is changed
+                                productListAdapter.getFilter().filter(query);
+                                return false;
+                            }
+                        });
+                    } else {
+                        Log.e("product-res-fail", response.message());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<Product>> call, Throwable t) {
+                    Log.e("product-failure", t.toString());
 
                 }
-            }
-            @Override
-            public void onFailure(Call<List<Product>> call, Throwable t) {
-            }
-        });
+            });
 
-
+        }
         searchView.setMaxWidth(Integer.MAX_VALUE);
 
 

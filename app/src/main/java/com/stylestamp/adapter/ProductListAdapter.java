@@ -2,6 +2,7 @@ package com.stylestamp.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -53,12 +54,17 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
         holder.productTitle.setText(arrProductListFiltered.get(position).getProductName());
         holder.productPrice.setText(String.valueOf(arrProductListFiltered.get(position).getPrice()));
-        Picasso.get().load( arrProductListFiltered.get(position).getImages().get(0).getUrl()).into(holder.productImage);
+
+       // Picasso.get().load( arrProductListFiltered.get(position).getImages().get(0).getUrl()).into(holder.productImage);
         holder.productCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 AppCompatActivity activity = (AppCompatActivity) context;
                 ProductDetail productDetailFragment = new ProductDetail();
+                Bundle args = new Bundle();
+                args.putString("productID", arrProductListFiltered.get(position).getProductId());
+                productDetailFragment.setArguments(args);
                 activity.getSupportFragmentManager().beginTransaction().replace(R.id.container, productDetailFragment).addToBackStack(null).commit();
             }
         });

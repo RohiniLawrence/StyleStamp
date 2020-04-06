@@ -33,33 +33,38 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
 
     List<Category> categoryList = new ArrayList<>();
-    List<Category> arrCategoryListFiltered  = new ArrayList<>();
-    List<Category> subCategories  ;
+    List<Category> arrCategoryListFiltered = new ArrayList<>();
+    List<Category> subCategories;
+    List<List<Category>> MegaSubCategoryList = new ArrayList<>();
+    ;
     SubCategoryListAdapter subCategoryListAdapter;
 
     Context context;
-    public CategoryListAdapter(Context context, List<Category> categories  ) {
+
+    public CategoryListAdapter(Context context, List<Category> categories) {
         this.categoryList = categories;
         this.arrCategoryListFiltered = categories;
         this.context = context;
     }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.category_row_item, parent, false);
         ViewHolder viewHolder = new ViewHolder(view);
-
         return viewHolder;
-
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
+        if (!MegaSubCategoryList.isEmpty()) {
+            MegaSubCategoryList.clear();
+        }
         holder.textView.setText(arrCategoryListFiltered.get(position).getCategoryName());
         final boolean isExpanded = arrCategoryListFiltered.get(position).isExpanded();
-        holder.expandableLayout.setVisibility(isExpanded?View.VISIBLE:View.GONE);
-        subCategories =new ArrayList<>();
+        holder.expandableLayout.setVisibility(isExpanded ? View.VISIBLE : View.GONE);
+
         holder.subCategoryRV.setAdapter(subCategoryListAdapter);
         final ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         String unm = "admin";
@@ -67,59 +72,45 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         String base = unm + ":" + pwd;
         final String keyHeader = "stylestamp@123";
         final String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP);
+        Log.e("parent category", categoryList.get(position).getCategoryId());
+        Call<SubCategoryResponse> call = apiInterface.getSubCategoriesById(authHeader, keyHeader, categoryList.get(position).getCategoryId());
+        call.enqueue(new Callback<SubCategoryResponse>() {
+            @Override
+            public void onResponse(Call<SubCategoryResponse> call, Response<SubCategoryResponse> response) {
+                subCategories = new ArrayList<>();
+                if (response.isSuccessful() && response.body() != null) {
+                    if (!subCategories.isEmpty()) {
+                        subCategories.clear();
+                    }
+                    if (response.body().getStatus().equals("1")) {
+                        Log.e("subcat-res-subcats", response.body().getSubcategories().toString());
+                        subCategories = response.body().getSubcategories();
+                        Log.e("List-subcats", subCategories.toString());
+                    } else {
+                        subCategories.add(new Category( categoryList.get(position).getCategoryId(), "View All", null, null));
+                    }
+                    MegaSubCategoryList.add(subCategories);
+                } else {
+                    Log.e("attaching", "nothing-shop-subcat");
+                }
+            }
 
-
-
-
+            @Override
+            public void onFailure(Call<SubCategoryResponse> call2, Throwable t) {
+                Log.e("subcat fail", t.toString());
+            }
+        });
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-
-
-                Log.e("parent category", categoryList.get(position).getCategoryId());
-                Call<SubCategoryResponse> call = apiInterface.getSubCategoriesById(authHeader, keyHeader, categoryList.get(position).getCategoryId());
-                call.enqueue(new Callback<SubCategoryResponse>() {
-                    @Override
-                    public void onResponse(Call<SubCategoryResponse> call, Response<SubCategoryResponse> response) {
-                        if (response.isSuccessful() && response.body() != null) {
-                            if (!subCategories.isEmpty()) {
-                                subCategories.clear();
-                            }
-                            Log.e("subcat-res-msg",response.body().getMessage());
-                            Log.e("subcat-res-status",response.body().getStatus());
-
-                           if(response.body().getStatus() == "0"){
-                               subCategories.clear();
-
-                                subCategories.add(new Category("NA", "View All" , null, null));
-                            }
-                           else if(response.body().getStatus().equals("1")){
-                               Log.e("cats",String.valueOf(response.body().getSubcategories().size()));
-                               subCategories = response.body().getSubcategories();
-                               subCategoryListAdapter = new SubCategoryListAdapter(context, subCategories);
-                           }
-
-
-                        } else {
-                            Log.e("attaching", "nothing-shop-subcat");
-
-                        }
-                    }
-                    @Override
-                    public void onFailure(Call<SubCategoryResponse> call2, Throwable t) {
-                        Log.e("subcat fail", t.toString());
-                    }
-                });
-
-
-
                 //expanding categories
-                for(Category category: categoryList){
-                    if(categoryList.indexOf(category) == position) {
+                subCategoryListAdapter = new SubCategoryListAdapter(context, MegaSubCategoryList.get(position));
+                for (Category category : categoryList) {
+                    if (categoryList.indexOf(category) == position) {
                         category.setExpanded(!category.isExpanded());
                         notifyItemChanged(position);
-                    }else{
+                    } else {
                         category.setExpanded(false);
                         notifyItemChanged(categoryList.indexOf(category));
                     }
@@ -134,16 +125,17 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         return arrCategoryListFiltered.size();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         RecyclerView subCategoryRV;
         LinearLayout expandableLayout;
-        TextView textView ;
+        TextView textView;
+
         public ViewHolder(@NonNull final View itemView) {
             super(itemView);
             textView = itemView.findViewById(R.id.rowTextView);
             itemView.setOnClickListener(this);
             expandableLayout = itemView.findViewById(R.id.expandable);
-            subCategoryRV =  (RecyclerView)  itemView.findViewById(R.id.subcategory_recycler_view);
+            subCategoryRV = (RecyclerView) itemView.findViewById(R.id.subcategory_recycler_view);
 
 
         }
@@ -160,7 +152,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
             @Override
             protected FilterResults performFiltering(CharSequence charSequence) {
                 String charString = charSequence.toString();
-                Log.i("Adapter","character String" + charString);
+                Log.i("Adapter", "character String" + charString);
                 if (charString.isEmpty()) {
                     arrCategoryListFiltered = categoryList;
                 } else {

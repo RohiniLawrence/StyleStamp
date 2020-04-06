@@ -61,7 +61,12 @@ public class NewArrivalsAdapter extends RecyclerView.Adapter<NewArrivalsAdapter.
 
     @Override
     public int getItemCount() {
-        return 10;
+        if(products.size()<=10){
+        return products.size();}
+        else {
+            return 10;
+        }
+
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder{
