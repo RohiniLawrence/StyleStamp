@@ -66,7 +66,7 @@ public interface ApiInterface {
     );
 
     @GET("product/")
-    Call<ProductJsonResponse> getProducts(
+    Call<ProductJsonResponse> getAllProducts(
             @Header("Authorization") String credential,
             @Header("X-API-KEY") String key
     );

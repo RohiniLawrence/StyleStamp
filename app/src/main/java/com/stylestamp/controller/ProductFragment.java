@@ -91,7 +91,7 @@ public class ProductFragment extends Fragment {
 
             //___________GETTING ALL PRODUCTS_________________
 
-            Call<ProductJsonResponse> callProducts = apiInterface.getProducts(authHeader,keyHeader);
+            Call<ProductJsonResponse> callProducts = apiInterface.getAllProducts(authHeader,keyHeader);
             Log.i("Calling:","Products");
             callProducts.enqueue(new Callback<ProductJsonResponse>() {
                 @Override
