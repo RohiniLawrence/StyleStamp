@@ -3,6 +3,7 @@ package com.stylestamp.adapter;
 import android.app.Dialog;
 import android.content.Context;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.Picasso;
+//import com.squareup.picasso.Picasso;
 import com.stylestamp.R;
 import com.stylestamp.api.ApiClient;
 import com.stylestamp.api.ApiInterface;
@@ -22,6 +23,8 @@ import com.stylestamp.model.Cart;
 import com.stylestamp.model.CartProducts;
 import com.stylestamp.model.Product;
 import com.stylestamp.model.ProductImages;
+import com.stylestamp.response.CartJasonResponse;
+import com.stylestamp.response.ProductResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +36,8 @@ import retrofit2.Response;
 public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.MyViewHolder> {
     private Context context;
     private ArrayList<CartProducts> cartProducts;
-    private Product product;
-
+    private Product productn;
+    ProductResponse product;
     Dialog dialog;
 
 
@@ -71,7 +74,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.MyView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
         String unm = "admin";
         String pwd = "1234";
         String base = unm + ":" + pwd;
@@ -80,19 +83,20 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.MyView
 
 
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<Product> call;
-        call = apiInterface.getProductById(authHeader, keyHeader, String.valueOf(cartProducts.get(position).getProductId()));
-
-        call.enqueue(new Callback<Product>() {
+        Call<ProductResponse> call;
+        call = apiInterface.getProductById(authHeader, keyHeader,"1");//cartProducts.get(position).getProductId());
+        Log.e("cart-pro-id",cartProducts.get(position).getProductId());
+        call.enqueue(new Callback<ProductResponse>() {
             @Override
-            public void onResponse(Call<Product> call, Response<Product> response) {
+            public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
+                Log.e("log",response.body().getMessage());
                 if(response.isSuccessful() && response.body() != null ){
                     product = response.body();
-
-                    Picasso.get().load( product.getImages().get(0).getUrl()).into(holder.productImage);
-                    holder.productTitle.setText(String.valueOf(product.getProductName()));
-                    holder.productPrice.setText(String.valueOf(product.getPrice()));
-                    holder.productID.setText(String.valueOf(product.getProductId()));
+//                        int size=product.getProducts().size();
+                    //                    Picasso.get().load( product.getImages().get(0).getUrl()).into(holder.productImage);
+                    holder.productTitle.setText(String.valueOf(product.getProducts().getProductName()));
+                    holder.productPrice.setText(String.valueOf(product.getProducts().getPrice()));
+                    holder.productID.setText(String.valueOf(product.getProducts().getProductID()));
 
                 }
                 else{
@@ -103,14 +107,17 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.MyView
                 }
             }
             @Override
-            public void onFailure(Call<Product> call, Throwable t) {
+            public void onFailure(Call<ProductResponse> call, Throwable t) {
+
+                Log.e("product-api-res-fail",t.getMessage());
             }
+
         });
 
 
         holder.quantity.setText(cartProducts.get(position).getQuantity());
-        /* holder.size.setText(cartProducts.get(position).getSize());*/
-        holder.size.setText("ONESIZE");
+        holder.size.setText(cartProducts.get(position).getSize());
+//        holder.size.setText(cartProducts.get(position).getColor());
 
         holder.removeCartItem.setOnClickListener(new View.OnClickListener() {
             @Override

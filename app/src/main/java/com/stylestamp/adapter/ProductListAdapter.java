@@ -18,7 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.squareup.picasso.Picasso;
+//import com.squareup.picasso.Picasso;
 import com.stylestamp.R;
 import com.stylestamp.controller.ProductDetail;
 import com.stylestamp.model.Product;
@@ -51,9 +51,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
 
-        holder.productTitle.setText(arrProductListFiltered.get(position).getProductName());
-        holder.productPrice.setText(String.valueOf(arrProductListFiltered.get(position).getPrice()));
-        Picasso.get().load( arrProductListFiltered.get(position).getImages().get(0).getUrl()).into(holder.productImage);
+//        holder.productTitle.setText(arrProductListFiltered.get(position).getProductName());
+//        holder.productPrice.setText(String.valueOf(arrProductListFiltered.get(position).getPrice()));
+//        Picasso.get().load( arrProductListFiltered.get(position).getImages().get(0).getUrl()).into(holder.productImage);
         holder.productCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,9 +101,9 @@ public class ProductListAdapter extends RecyclerView.Adapter<ProductListAdapter.
 
                         // name match condition. this might differ depending on your requirement
                         // here we are looking for name or phone number match
-                        if (row.getProductName().toLowerCase().contains(charString.toLowerCase()) || row.getProductName().contains(charSequence)) {
-                            filteredList.add(row);
-                        }
+//                        if (row.getProductName().toLowerCase().contains(charString.toLowerCase()) || row.getProductName().contains(charSequence)) {
+//                            filteredList.add(row);
+//                        }
                     }
 
                     arrProductListFiltered = filteredList;

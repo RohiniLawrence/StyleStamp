@@ -7,6 +7,7 @@ import com.stylestamp.model.Product;
 import com.stylestamp.response.CartJasonResponse;
 import com.stylestamp.response.CategoryResponse;
 import com.stylestamp.response.OrderHistoryJsonResponse;
+import com.stylestamp.response.ProductResponse;
 import com.stylestamp.response.SubCategoryResponse;
 
 import java.util.List;
@@ -69,11 +70,11 @@ public interface ApiInterface {
             @Header("X-API-KEY") String key
     );
 
-    @GET("getproductbyproductid/{id}")
-    Call<Product> getProductById(
+    @GET("product/{id}")
+    Call<ProductResponse> getProductById(
             @Header("Authorization") String credential,
             @Header("X-API-KEY") String key,
-            @Query("id") String id
+            @Path("id") String id
     );
 
     @GET("getproductbycategoryid/{id}")

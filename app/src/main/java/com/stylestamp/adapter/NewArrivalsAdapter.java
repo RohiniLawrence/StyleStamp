@@ -45,8 +45,8 @@ public class NewArrivalsAdapter extends RecyclerView.Adapter<NewArrivalsAdapter.
     @Override
     public void onBindViewHolder(@NonNull NewArrivalsAdapter.MyViewHolder holder, final int position) {
 
-        holder.productTitle.setText(products.get(position).getProductName());
-        holder.productPrice.setText(String.valueOf(products.get(position).getPrice()));
+//        holder.productTitle.setText(products.get(position).getProductName());
+//        holder.productPrice.setText(String.valueOf(products.get(position).getPrice()));
         //holder.productImage.setImageResource(arrProductListFiltered.get(position).getImages().get(0));
         holder.productCardView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -9,49 +9,66 @@ public class CartProducts {
 
     @SerializedName("product_id")
     @Expose
-    private int productId;
+    private String productId;
 
     @SerializedName("quantity")
     @Expose
-    private int quantity;
+    private String quantity;
     @SerializedName("size")
     @Expose
-    private int size;
+    private String size;
     @SerializedName("color")
     @Expose
-    private int color;
-    @SerializedName("product")
-    @Expose
-    private Product product;
-    public int getSize() {
-        return size;
-    }
+    private String color;
+//    @SerializedName("product")
+//    @Expose
+//    private Product product;
 
-    public void setSize(int size) {
+    public CartProducts(String productId, String quantity, String size, String color){//}, Product product) {
+        this.productId = productId;
+        this.quantity = quantity;
         this.size = size;
-    }
-
-    public int getColor() {
-        return color;
-    }
-
-    public void setColor(int color) {
         this.color = color;
+//        this.product = product;
     }
 
-    public int getProductId() {
+    public String getProductId() {
         return productId;
     }
 
-    public void setProductId(int productId) {
+    public void setProductId(String productId) {
         this.productId = productId;
     }
 
-    public int getQuantity() {
+    public String getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(String quantity) {
         this.quantity = quantity;
     }
+
+    public String getSize() {
+        return size;
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+//    public Product getProduct() {
+//        return product;
+//    }
+//
+//    public void setProduct(Product product) {
+//        this.product = product;
+//    }
 }
