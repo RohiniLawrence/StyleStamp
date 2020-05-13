@@ -27,10 +27,14 @@ import com.stylestamp.adapter.OrderHistoryPagerAdapter;
 import com.stylestamp.adapter.OrderListAdapter;
 import com.stylestamp.api.ApiClient;
 import com.stylestamp.api.ApiInterface;
+import com.stylestamp.model.Address;
 import com.stylestamp.model.Order;
+import com.stylestamp.model.Product;
+import com.stylestamp.model.User;
 import com.stylestamp.response.OrderHistoryJsonResponse;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -95,8 +99,8 @@ public class OrderHistoryFragment extends Fragment  {
                     }
                     orders = response.body().getOrders();
 
-                    OrderListAdapter orderListAdapter = new OrderListAdapter(getActivity(), orders);
-                    recyclerView.setAdapter(orderListAdapter);
+                   /* OrderListAdapter orderListAdapter = new OrderListAdapter(getActivity(), orders);
+                    recyclerView.setAdapter(orderListAdapter);*/
                 } else {
                     Log.e("orderHist-res", response.message());
                 }
@@ -109,6 +113,8 @@ public class OrderHistoryFragment extends Fragment  {
                 Log.e("fail", t.toString());
             }
         });
+
+
 
 
 

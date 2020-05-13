@@ -73,6 +73,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         final String keyHeader = "stylestamp@123";
         final String authHeader = "Basic " + Base64.encodeToString(base.getBytes(), Base64.NO_WRAP);
         Log.e("parent category", categoryList.get(position).getCategoryId());
+
         Call<SubCategoryResponse> call = apiInterface.getSubCategoriesById(authHeader, keyHeader, categoryList.get(position).getCategoryId());
         call.enqueue(new Callback<SubCategoryResponse>() {
             @Override

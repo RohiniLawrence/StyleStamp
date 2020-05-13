@@ -66,7 +66,6 @@ public class ProductJsonResponse {
     public String message;
     @SerializedName("product")
     @Expose
-
     public List<Product> products;
 
     public ProductJsonResponse(int status, String message, List<Product> products) {

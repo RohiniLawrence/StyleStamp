@@ -1,0 +1,576 @@
+base url
+http://stylestamp.dipenoverseas.com/api/
+@Header("Authorization") basic with(username:admin,password:1234)
+@Header("X-API-KEY") "stylestamp@123"
+
+
+
+get all customer users
+users/ @GET
+[
+    {
+        "user_id": "8",
+        "password": "7c222fb2927d828af22f592134e8932480637c0d",
+        "email": "ppatel@isimtl.com",
+        "first_name": "priyank",
+        "last_name": "patel",
+        "contact": "1234567891",
+        "D_O_B": "1998-10-15",
+        "user_type": "customer",
+        "status": "active",
+        "created_date": "2020-03-24 23:24:43",
+        "created_by": "0",
+        "modified_date": "2020-03-24 23:24:43",
+        "modified_by": "0",
+        "gender": "0",
+        "last_activity": "2020-03-24 23:24:43"
+    },
+    {
+        "user_id": "7",
+        "password": "7c222fb2927d828af22f592134e8932480637c0d",
+        "email": "ppatel@isi-mtl.com",
+        "first_name": "priyank",
+        "last_name": "patel",
+        "contact": "1234567891",
+        "D_O_B": "1998-10-15",
+        "user_type": "customer",
+        "status": "active",
+        "created_date": "2020-03-24 23:20:07",
+        "created_by": "0",
+        "modified_date": "2020-03-24 23:20:07",
+        "modified_by": "0",
+        "gender": "0",
+        "last_activity": "2020-03-24 23:20:07"
+    }
+]
+
+
+
+
+
+get user by id
+users/2 @GET
+[
+    {
+        "user_id": "8",
+        "password": "7c222fb2927d828af22f592134e8932480637c0d",
+        "email": "ppatel@isimtl.com",
+        "first_name": "priyank",
+        "last_name": "patel",
+        "contact": "1234567891",
+        "D_O_B": "1998-10-15",
+        "user_type": "customer",
+        "status": "active",
+        "created_date": "2020-03-24 23:24:43",
+        "created_by": "0",
+        "modified_date": "2020-03-24 23:24:43",
+        "modified_by": "0",
+        "gender": "0",
+        "last_activity": "2020-03-24 23:24:43"
+    }
+]
+
+
+
+
+
+login api
+login/ @POST
+@Field email,password
+invalid credentials:
+{
+    "status": 0,
+    "login_status": "failed",
+    "message": "Invalid credentials!."
+}
+if email is not in format or pasword length not minimum 8 chars:
+{
+    "status": 2,
+    "login_status": "failed",
+    "message": "Login Unsuccessful."
+}
+login successfull
+{
+    "status": 1,
+    "login_status": "success",
+    "message": "loggedin successfully",
+    "user": {
+        "user_id": "3",
+        "password": "7c222fb2927d828af22f592134e8932480637c0d",
+        "email": "jeelg46@gmail.com",
+        "first_name": "jeel",
+        "last_name": "gandhi",
+        "contact": "438866690",
+        "D_O_B": "1998-01-01",
+        "user_type": "customer",
+        "status": "active",
+        "created_date": "2020-03-10 22:33:53",
+        "created_by": "3",
+        "modified_date": "2020-03-24 06:11:59",
+        "modified_by": "3",
+        "gender": "3",
+        "last_activity": "2020-03-24 06:11:59"
+    }
+}
+
+
+
+get categories
+category/ @GET
+no category found
+{
+    "status": false,
+    "message": "No category were found."
+}
+all category
+[
+    {
+        "category_id": "5",
+        "category_name": "shoes",
+        "description": "",
+        "parent_category": null,
+        "status": "active",
+        "date_created": "2020-03-24 09:40:12",
+        "modified_date": "2020-03-24 04:40:12",
+        "created_by": "2",
+        "modified_by": "2"
+    },
+    {
+        "category_id": "4",
+        "category_name": "clothing",
+        "description": "",
+        "parent_category": null,
+        "status": "active",
+        "date_created": "2020-03-24 09:36:46",
+        "modified_date": "2020-03-24 04:36:46",
+        "created_by": "2",
+        "modified_by": "2"
+    }
+]
+
+
+
+get category by id
+/category/1 @GET
+if category found
+[
+    {
+        "category_id": "1",
+        "category_name": "mens",
+        "description": "fashion for male",
+        "parent_category": null,
+        "status": "active",
+        "date_created": "2020-03-23 17:01:08",
+        "modified_date": "2020-03-23 17:01:51",
+        "created_by": "2",
+        "modified_by": "2"
+    }
+]
+if not found
+{
+    "status": false,
+    "message": "No category were found."
+}
+
+
+
+Signup
+
+signup/ @POST
+@Header
+@Field fnm,lnm,email,password,contact_no,gender(0/1),dob(date of birth);
+account create successfully:
+{
+    "status": 1,
+    "message": "account created successfully"
+}
+not validate
+{
+    "status": 2,
+    "message": "error whille validating form"
+}
+
+forgotpassword/
+@post
+@field email
+success
+{
+    "status": "1",
+    "message": "new password sent to your email"
+}
+{
+    "status": "2",
+    "message": "Invalid email address"
+}
+
+{
+    "status": "0",
+    "message": "problem while sending email"
+}
+
+
+product
+
+product
+@GET
+id - by user id / if id is not specified retun list of all products
+
+if product not found
+{
+    "status": false,
+    "message": "No product were found."
+}
+product found
+{
+	product_id:
+	product_name:
+	decription:
+	price:
+	stock:
+	reorder_level:
+	discount_percentage:
+	category_id:
+	status	:
+	date_created:
+	date_modified:
+	created_by:
+	modified_by:
+}
+
+
+
+
+
+forgot password
+@POST
+@field email
+if mmail is not registered
+{
+    "status": "2",
+    "message": "Invalid email address"
+}
+if mail valid and registered
+{
+    "status": "1",
+    "message": "new password sent to your email"
+}
+if email id is not in valid format
+{
+    "status": "2",
+    "message": "enter valid email id"
+}
+
+Sprint 1 APIS
+--------------
+
+1. Login API
+
+
+POST Method
+path : http://localhost/Project/api/login
+
+When correct email and password :
+
+Form data :
+email:def@gmail.com
+password:Abc@123
+
+Response :
+
+{
+    "status": 1,
+    "login_status": "success",
+    "message": "Login Unsuccessful.",
+    "user": "1"
+}
+--------------------------------------------------------
+
+GET Method
+path : http://localhost/Project/api/login
+
+When incorrect email and password :
+
+
+Form input :
+email:abc@gmail.com
+password:Abc@12345
+
+
+Response :
+{
+    "status": 2,
+    "login_status": "failed",
+    "message": "Login Unsuccessful."
+}
+
+
+2. Settings API ( Get all settings )
+
+GET Method
+path : http://localhost/Project/api/settings
+
+
+Response :
+
+[
+    {
+        "settings_id": "1",
+        "settings_name": "companyname",
+        "status": "ative",
+        "entry_date": "2020-03-23 18:12:57",
+        "entered_by": "1",
+        "modified_date": "2020-03-18 15:18:49",
+        "modified_by": "1",
+        "setting_value": "stylestamp"
+    },
+    {
+        "settings_id": "2",
+        "settings_name": "banners",
+        "status": "ative",
+        "entry_date": "2020-03-23 18:12:57",
+        "entered_by": "1",
+        "modified_date": "2020-03-18 15:18:49",
+        "modified_by": "1",
+        "setting_value": "http://localhost/project/assets/images/banner1.jpg"
+    }
+]
+
+-------------------------------
+
+Get one settings :
+
+Path : http://localhost/Project/api/settings/1
+
+Response :
+
+[
+    {
+        "settings_id": "1",
+        "settings_name": "companyname",
+        "status": "ative",
+        "entry_date": "2020-03-23 18:12:57",
+        "entered_by": "1",
+        "modified_date": "2020-03-18 15:18:49",
+        "modified_by": "1",
+        "setting_value": "stylestamp"
+    }
+]
+
+
+Sprint 2 APIS
+--------------
+
+1. Get customer profile API
+
+
+GET Method
+path : http://localhost/Project/api/Getcustomerprofile/3
+
+When customer with user_id 3 exists in database :
+
+Response :
+
+[
+    {
+        "user_id": "3",
+        "first_name": "jeel",
+        "last_name": "gandhi",
+        "contact": "438866690",
+        "D_O_B": "1998-01-01",
+        "status": "active",
+        "gender": "3"
+    }
+]
+
+
+GET Method
+path : http://localhost/Project/api/Getcustomerprofile/4
+
+When customer with user_id 4 doesnt exist in database :
+
+Response :
+
+{
+    "status": false,
+    "message": "No user was found."
+}
+
+
+2. Delete Order API
+
+DELETE Method
+Path : http://localhost/Project/api/Deleteorder/5
+
+When order with order_id 5 exists in database table orders and order_info
+
+Response :
+
+{
+    "status": 1,
+    "message": "Order has been deleted"
+}
+
+
+3. Get order by user_id and order_id
+
+GET Method
+path: http://localhost/Project/api/Getorderbyuser/1/1
+
+When order exists in database table order and order_info with order_id 1 and user_id 1
+
+Response :
+
+[
+    {
+        "order_id": "1",
+        "user_id": "1",
+        "date": "2020-03-25 15:35:32",
+        "shipped_status": "notshipped",
+        "order_status": "pending",
+        "payment_type": "card",
+        "promotion_id": "123",
+        "status": "active",
+        "date_create": "2020-03-18 15:21:09",
+        "date_modified": "2020-03-18 16:17:12",
+        "created_by": "1",
+        "modified_by": "1",
+        "shipping_address_id": "1",
+        "shipping_date": "2020-03-18 15:21:09",
+        "mail_address": "4",
+        "total": "13.55",
+        "product_id": "1",
+        "quantity": "2",
+        "date_created": "2020-03-23 18:13:59"
+    }
+]
+
+--------------------
+
+GET Method
+path: http://localhost/Project/api/Getorderbyuser/1/2
+
+When order does not exist in database table order and order_info with user_id 1 and order_id 2
+
+Response :
+
+{
+    "status": false,
+    "message": "No orders were found."
+}
+
+
+4. Get order by status API
+
+GET Method
+path : http://localhost/Project/api/Getorderbystatus/2/delete
+
+When order exists in database with user_id 2 and order_status delete
+
+Response :
+
+[
+    {
+        "order_id": "2",
+        "user_id": "2",
+        "date": "2020-03-25 15:35:39",
+        "shipped_status": "notshipped",
+        "order_status": "delete",
+        "payment_type": "card",
+        "promotion_id": "124",
+        "status": "active",
+        "date_create": "2020-03-18 15:21:09",
+        "date_modified": "2020-03-18 16:17:12",
+        "created_by": "2",
+        "modified_by": "2",
+        "shipping_address_id": "2",
+        "shipping_date": "2020-03-18 15:21:09",
+        "mail_address": "5",
+        "total": "44.66",
+        "product_id": "2",
+        "quantity": "1",
+        "date_created": "2020-03-24 20:09:27"
+    },
+    {
+        "order_id": "6",
+        "user_id": "2",
+        "date": "2020-03-25 17:30:23",
+        "shipped_status": "notshipped",
+        "order_status": "delete",
+        "payment_type": "card",
+        "promotion_id": "124",
+        "status": "active",
+        "date_create": "2020-03-18 15:21:09",
+        "date_modified": "2020-03-18 16:17:12",
+        "created_by": "2",
+        "modified_by": "2",
+        "shipping_address_id": "2",
+        "shipping_date": "2020-03-18 15:21:09",
+        "mail_address": "3",
+        "total": "44.66",
+        "product_id": "2",
+        "quantity": "1",
+        "date_created": "2020-03-25 17:30:23"
+    }
+]
+
+
+---------------------------------------------------
+
+
+GET Method
+path : http://localhost/Project/api/Getorderbystatus/4/active
+
+When order does not exist in database with user_id 4 and order_status active
+
+Response :
+
+{
+    "status": false,
+    "message": "No orders were found."
+}
+
+
+5. Create Order API
+path : http://localhost/Project/api/Createorder/
+
+When new order created successfully
+
+Form Input:
+
+order_id:9
+user_id:2
+date:2020-03-19 14:20:02
+shipped_status:notshipped
+order_status:pending
+payment_type:card
+promotion_id:124
+status:active
+date_create:2020-03-19 14:20:02
+date_modified:2020-03-19 14:20:02
+created by:2
+modified_by:2
+shipping_address_id:2
+shipping_date:2020-03-19 14:20:02
+mail_address:4
+total:43.77
+product_id:2
+quantity:3
+
+
+Response :
+
+{
+    "status": 1,
+    "message": "Order added Successfully"
+}
+
+--------------------------------------------------
+
+When new failed to create new order
+
+Response :
+
+{
+    "status": 0,
+    "message": "Failed to add Order"
+}

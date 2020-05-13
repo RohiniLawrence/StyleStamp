@@ -63,7 +63,8 @@ public class Order {
     @Expose
     private List<CartProducts> products;
 
-    public Order(String orderId, String userId, String promoId, String shipAddressId, String mailAddressId, Date date, String shippedStatus, String total, User user, Address shipAddress, Address mailAddress, List<CartProducts> products) {
+
+    public Order(String orderId, String userId, String promoId, String shipAddressId, String mailAddressId, Date date, String shippedStatus, String orderStatus, String total, User user, Address shipAddress, Address mailAddress, List<CartProducts> products) {
         this.orderId = orderId;
         this.userId = userId;
         this.promoId = promoId;
@@ -71,6 +72,7 @@ public class Order {
         this.mailAddressId = mailAddressId;
         this.date = date;
         this.shippedStatus = shippedStatus;
+        this.orderStatus = orderStatus;
         this.total = total;
         this.user = user;
         this.shipAddress = shipAddress;

@@ -91,34 +91,34 @@ public class ProductFragment extends Fragment {
 
             //___________GETTING ALL PRODUCTS_________________
 
-            Call<ProductJsonResponse> callProducts = apiInterface.getAllProducts(authHeader,keyHeader);
-            Log.i("Calling:","Products");
+            Call<ProductJsonResponse> callProducts = apiInterface.getAllProducts(authHeader, keyHeader);
+            Log.i("Calling:", "Products");
             callProducts.enqueue(new Callback<ProductJsonResponse>() {
                 @Override
                 public void onResponse(Call<ProductJsonResponse> call, Response<ProductJsonResponse> response) {
-                    if(response.body() != null) {
-                        Log.i("products to string:",response.toString());
+                    if (response.body() != null) {
+                        Log.i("products to string:", response.toString());
                         ProductJsonResponse productJsonResponse = response.body();
-                        products=productJsonResponse.getProducts();
+                        products = productJsonResponse.getProducts();
                         final ProductListAdapter productListAdapter = new ProductListAdapter(getActivity(), products);
                         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
                         recyclerView.setAdapter(productListAdapter);
-                    }
-                    else{
-                        Log.e("res-allpro-mes",response.message());
+                    } else {
+                        Log.e("res-allpro-mes", response.message());
                     }
                 }
+
                 @Override
                 public void onFailure(Call<ProductJsonResponse> call, Throwable t) {
-                    Log.e("Products fail","-------fail");
-                    Log.e("res-allpro-body",t.getMessage());
+                    Log.e("Products fail", "-------fail");
+                    Log.e("res-allpro-body", t.getMessage());
                 }
             });
 
-
+        }else{
 
             //___________GETTING PRODUCTS_________________
-            Call<List<Product>> call = apiInterface.getProductByCategoryId(authHeader, keyHeader, "3");
+            Call<List<Product>> call = apiInterface.getProductByCategoryId(authHeader, keyHeader, categoryId);
 
             call.enqueue(new Callback<List<Product>>() {
                 @Override

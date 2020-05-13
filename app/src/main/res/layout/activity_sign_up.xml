@@ -95,6 +95,7 @@
                 android:layout_below="@+id/editContact"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="36dp"
+                android:checkedButton="@id/radioButton1"
                 android:orientation="horizontal"
                 >
 
@@ -104,7 +105,8 @@
                     android:layout_height="wrap_content"
                     android:text="Male"
                     android:checked="true"
-                    />
+                   />
+
 
 
                 <RadioButton

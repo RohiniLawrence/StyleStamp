@@ -90,6 +90,8 @@ public class Shop extends Fragment implements PopupMenu.OnMenuItemClickListener,
         final RecyclerView recyclerViewNewArrivals = (RecyclerView) v.findViewById(R.id.recyclerView_shop_newArrivals);
 
         TextView viewAll = v.findViewById(R.id.view_all_products);
+
+        //for viewing all products
         viewAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,7 +103,9 @@ public class Shop extends Fragment implements PopupMenu.OnMenuItemClickListener,
 
             }
         });
+
         searchView = v.findViewById(R.id.searchView);
+
         final ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         String unm = "admin";
         String pwd = "1234";

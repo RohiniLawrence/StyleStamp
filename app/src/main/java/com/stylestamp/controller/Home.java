@@ -29,7 +29,8 @@ public class Home extends AppCompatActivity implements BottomNavigationView.OnNa
 
         setSupportActionBar(toolbar);
         bottomNavigationView = findViewById(R.id.bottom_navigation_view);
-        if (savedInstanceState == null) this. onNavigationItemSelected(bottomNavigationView.getMenu().getItem(0));
+        if (savedInstanceState == null)
+            this.onNavigationItemSelected(bottomNavigationView.getMenu().getItem(0));
         bottomNavigationView.setSelectedItemId(R.id.nav_shop);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
     }

@@ -49,6 +49,7 @@ public class SignUp extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_sign_up);
         signupSub = findViewById(R.id.btnSignup);
         fname = findViewById(R.id.editFirstname);
         lname = findViewById(R.id.editLastname);
@@ -59,9 +60,9 @@ public class SignUp extends AppCompatActivity {
         radioSexGroup = findViewById(R.id.radioGroup1);
 
 
-Log.e("check", String.valueOf(radioSexGroup.getCheckedRadioButtonId()));
-       // int selectedId = radioSexGroup.getCheckedRadioButtonId();
-       // final RadioButton selectedradio = findViewById(selectedId);
+
+       int selectedId = radioSexGroup.getCheckedRadioButtonId();
+        final RadioButton selectedradio = findViewById(selectedId);
         signupSub.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -72,7 +73,7 @@ Log.e("check", String.valueOf(radioSexGroup.getCheckedRadioButtonId()));
                 e_mail = email.getText().toString();
                 pass = password.getText().toString();
                 contact_NO = contact_no.getText().toString();
-              //  Gender = selectedradio.getText().toString();
+              Gender = selectedradio.getText().toString();
 
                 Log.e("gender", Gender);
                 if (Gender == "Male") {
@@ -82,7 +83,7 @@ Log.e("check", String.valueOf(radioSexGroup.getCheckedRadioButtonId()));
                 }
 
 
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+               /* SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 String dateString = sdf.format(dob);
 
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
@@ -91,7 +92,7 @@ Log.e("check", String.valueOf(radioSexGroup.getCheckedRadioButtonId()));
                     System.out.println(Dob);
                 } catch (ParseException e) {
                     e.printStackTrace();
-                }
+                }*/
                 if (checkData()) {
                     executeSignupUser(f_name, l_name, contact_NO, e_mail, pass, g, Dob);
 
