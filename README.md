@@ -14,8 +14,9 @@
 ### Tools Used: 
 > Developed using:  **Android Studio**  
 > Languages & Libraries : **Java , XML, Retrofit**  
-> Wireframes: **Mockplus**   
-  > Project managed using **Jira**
+> Project managed using **Jira**  
+> Wireframes: **Mockplus** 
+
 
 
 
