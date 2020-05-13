@@ -12,10 +12,10 @@
 > * You can view your cart, place an order (payment funtionality hasn't been figured out yet). The order gets entered into the database.
 
 ### Tools Used: 
-> Developed using:  _Android Studio_**  
-> Languages & Libraries : _Java , XML, Retrofit_**  
-> Wireframes: _Mockplus_** <enter>  
-  > Project managed using _Jira_** <enter>
+> Developed using:  *Android Studio*  
+> Languages & Libraries : *Java , XML, Retrofit*  
+> Wireframes: *Mockplus*   
+  > Project managed using *Jira*
 
 
 
