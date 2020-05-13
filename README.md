@@ -3,7 +3,7 @@
 <img src="https://github.com/RohiniLawrence/StyleStamp/blob/master/app/src/main/res/drawable-xxhdpi/fulllogo.png" width="200"> 
 
 # Style Stamp : E-Commerce Android App 
-> This is an android clothing app. 
+> An e-commerce fashion and lifestyle app made for shopping trendy clothes and lifestyle items.    
 
 * You can login to the app using your credentials stored in the database. 
 * You can browse through clothes from different categories (Men, Women, Kids, Home). Also view details of the clothing item and add them to the cart. 
